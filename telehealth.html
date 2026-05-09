@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Telehealth Consultations — Wisdom Surgery Clinic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal:  { 50:'#f0fbfb',100:'#d9f4f4',200:'#b2e9e9',300:'#7dd8d8',400:'#3ec4c4',500:'#2ab4b4',600:'#1e9696',700:'#187878',800:'#155f5f',900:'#124f4f' },
+            navy:  { 50:'#eef3f8',100:'#d5e1ee',200:'#adc4dd',300:'#7aa0c6',400:'#4d7daf',500:'#2e5f94',600:'#1e4a7a',700:'#153964',800:'#0f2a4d',900:'#091d38' },
+          },
+          fontFamily: {
+            display: ['"Playfair Display"','Georgia','serif'],
+            sans:    ['"DM Sans"','system-ui','sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #f8fdfd; color: #1a2e3b; }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    .nav-glass {
+      background: rgba(248,253,253,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(42,180,180,0.12);
+      box-shadow: 0 2px 24px rgba(42,180,180,0.06),0 1px 4px rgba(0,0,0,0.04);
+    }
+    .nav-cta {
+      background: linear-gradient(135deg,#2ab4b4 0%,#1e9696 100%);
+      color:#fff;
+      box-shadow: 0 4px 18px rgba(42,180,180,0.35),0 1px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s ease;
+    }
+    .nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(42,180,180,0.45),0 2px 8px rgba(0,0,0,0.1); }
+    .nav-cta:focus-visible { outline:3px solid rgba(42,180,180,0.5); outline-offset:3px; }
+    .nav-cta-ghost {
+      color:#2ab4b4;
+      border:1.5px solid rgba(42,180,180,0.4);
+      transition: background 0.2s ease,border-color 0.2s ease,transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .nav-cta-ghost:hover { background:rgba(42,180,180,0.07); border-color:#2ab4b4; transform:translateY(-1px); }
+    .nav-cta-ghost:focus-visible { outline:3px solid rgba(42,180,180,0.5); outline-offset:3px; }
+    .nav-link {
+      position:relative; color:#4a6274; font-weight:500; font-size:0.9rem; letter-spacing:0.01em;
+      transition:color 0.2s ease;
+    }
+    .nav-link::after {
+      content:''; position:absolute; bottom:-3px; left:0; width:0; height:1.5px;
+      background:#2ab4b4; transition:width 0.25s ease;
+    }
+    .nav-link:hover { color:#2ab4b4; }
+    .nav-link:hover::after { width:100%; }
+    .nav-link:focus-visible { outline:2px solid rgba(42,180,180,0.5); outline-offset:4px; border-radius:2px; }
+    .nav-dropdown { position:relative; }
+    .nav-dropdown-menu {
+      position:absolute; top:calc(100% + 10px); left:50%;
+      transform:translateX(-50%) translateY(-4px);
+      background:#fff; border-radius:14px; padding:6px; min-width:180px; z-index:100;
+      box-shadow:0 8px 32px rgba(42,180,180,0.14),0 2px 8px rgba(0,0,0,0.08);
+      border:1px solid rgba(42,180,180,0.12);
+      opacity:0; visibility:hidden;
+      transition:opacity 0.2s ease,visibility 0.2s ease,transform 0.2s cubic-bezier(0.34,1.2,0.64,1);
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      opacity:1; visibility:visible; transform:translateX(-50%) translateY(0);
+    }
+    .nav-dropdown-item {
+      display:flex; align-items:center; gap:8px; padding:9px 14px; border-radius:8px;
+      color:#4a6274; font-size:0.875rem; font-weight:500; text-decoration:none; white-space:nowrap;
+      transition:background 0.15s ease,color 0.15s ease;
+    }
+    .nav-dropdown-item:hover { background:rgba(42,180,180,0.07); color:#2ab4b4; }
+    .nav-dropdown-item.active-page { background:rgba(42,180,180,0.10); color:#1e9696; font-weight:600; }
+    .mobile-menu { transition:opacity 0.25s ease,transform 0.25s cubic-bezier(0.4,0,0.2,1); }
+    .mobile-menu.hidden { opacity:0; transform:translateY(-8px); pointer-events:none; }
+    .mobile-menu.open { opacity:1; transform:translateY(0); pointer-events:auto; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2ab4b4 0%, #1e9696 100%);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(42,180,180,0.35), 0 1px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(42,180,180,0.45), 0 2px 8px rgba(0,0,0,0.1); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:focus-visible { outline: 3px solid rgba(42,180,180,0.5); outline-offset: 3px; }
+
+    .btn-ghost {
+      color: #2ab4b4;
+      border: 1.5px solid rgba(42,180,180,0.4);
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .btn-ghost:hover { background: rgba(42,180,180,0.07); border-color: #2ab4b4; transform: translateY(-1px); }
+    .btn-ghost:focus-visible { outline: 3px solid rgba(42,180,180,0.5); outline-offset: 3px; }
+
+    .card {
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(42,180,180,0.10);
+      box-shadow: 0 4px 16px rgba(42,180,180,0.06), 0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    .hero-bg {
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 40%, rgba(42,180,180,0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 70% at 10% 80%, rgba(21,55,100,0.04) 0%, transparent 55%),
+        #f8fdfd;
+    }
+
+    .section-teal { background: linear-gradient(160deg, #f0fbfb 0%, #e8f7f7 100%); }
+
+    .step-num {
+      background: linear-gradient(135deg, #2ab4b4 0%, #1a8a8a 100%);
+    }
+
+    .req-item {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(42,180,180,0.10);
+      box-shadow: 0 2px 12px rgba(42,180,180,0.05);
+      transition: transform 0.2s cubic-bezier(0.34,1.4,0.64,1), box-shadow 0.2s ease;
+    }
+    .req-item:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(42,180,180,0.12); }
+
+    .join-card {
+      background: linear-gradient(135deg, #1e9696 0%, #155f5f 100%);
+      box-shadow: 0 16px 48px rgba(42,180,180,0.30), 0 4px 16px rgba(0,0,0,0.10);
+    }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34,1.2,0.64,1); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    .wave-divider { line-height: 0; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- ═══ NAV ═══ -->
+  <header class="nav-glass sticky top-0 z-50">
+    <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html" class="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 rounded">
+        <img src="brand_assets/WisdomSurgery_Logo_Horizontal.png" alt="Wisdom Surgery Clinic" class="h-9 w-auto" />
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <div class="nav-dropdown">
+          <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#journey" class="nav-link flex items-center gap-1">
+            Your Journey
+            <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+          <div class="nav-dropdown-menu">
+            <a href="https://anna-bryan-joys.github.io/wisdomsurgery/new-patient-registration.html" class="nav-dropdown-item">
+              <svg class="w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              New Patient Form
+            </a>
+            <a href="telehealth.html" class="nav-dropdown-item active-page">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+              Telehealth
+            </a>
+          </div>
+        </div>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#services" class="nav-link">Services</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#about" class="nav-link">About</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="nav-link">Contact</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#faq" class="nav-link">FAQ</a>
+      </div>
+
+      <div class="hidden md:flex items-center gap-3">
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="nav-cta px-5 py-2.5 rounded-full text-sm font-semibold">Book Consultation</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/payment.html" class="nav-cta-ghost px-4 py-2.5 rounded-full text-sm font-medium flex items-center gap-1.5 bg-white">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+          Pay Invoice
+        </a>
+      </div>
+
+      <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-navy-700 hover:bg-teal-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400" aria-label="Open menu">
+        <svg id="menu-icon-open" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg id="menu-icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </nav>
+
+    <div id="mobile-menu" class="mobile-menu hidden md:hidden px-6 pb-5 pt-1 border-t border-teal-100">
+      <div class="flex flex-col gap-4">
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#journey" class="nav-link py-1" onclick="closeMobileMenu()">Your Journey</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/new-patient-registration.html" class="nav-link py-1 pl-4" style="color:#4a6274;font-size:0.85rem" onclick="closeMobileMenu()">↳ New Patient Form</a>
+        <a href="telehealth.html" class="nav-link py-1 pl-4" style="color:#1e9696;font-size:0.85rem" onclick="closeMobileMenu()">↳ Telehealth</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#services" class="nav-link py-1" onclick="closeMobileMenu()">Services</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#about" class="nav-link py-1" onclick="closeMobileMenu()">About</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="nav-link py-1" onclick="closeMobileMenu()">Contact</a>
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#faq" class="nav-link py-1" onclick="closeMobileMenu()">FAQ</a>
+        <div class="flex flex-col gap-2 mt-1">
+          <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="nav-cta px-5 py-3 rounded-full text-sm font-semibold text-center" onclick="closeMobileMenu()">Book Consultation</a>
+          <a href="https://anna-bryan-joys.github.io/wisdomsurgery/payment.html" class="nav-cta-ghost px-5 py-3 rounded-full text-sm font-medium text-center flex items-center justify-center gap-2 bg-white" onclick="closeMobileMenu()">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+            Pay Invoice
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero-bg relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+      <div class="max-w-2xl fade-up">
+        <p class="text-teal-500 font-semibold text-sm tracking-widest uppercase mb-4">Telehealth Consultations</p>
+        <h1 class="font-display text-4xl md:text-5xl font-semibold text-navy-900 leading-tight mb-6" style="letter-spacing:-0.02em">
+          Care from the<br />
+          <em class="text-teal-500 not-italic">comfort of home.</em>
+        </h1>
+        <p class="text-navy-600 text-lg leading-relaxed mb-6" style="line-height:1.75">
+          We want to meet you where you are, whether that means face-to-face or in the comfort of your home, office, or wherever you may need to connect. Let us welcome you into our virtual waiting room, with no travel, at a time that works with your schedule.
+        </p>
+        <img src="brand_assets/logo-black.PNG" alt="Dr Anna Raymond" class="h-28 w-auto mb-8 opacity-70" />
+        <div class="flex flex-wrap gap-4">
+          <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="btn-primary px-7 py-3.5 rounded-full font-semibold text-base">
+            Book a Telehealth Appointment
+          </a>
+          <a href="#join" class="btn-ghost px-7 py-3.5 rounded-full font-semibold text-base bg-white">
+            Join your appointment →
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="wave-divider">
+      <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+        <path d="M0 48C240 16 480 0 720 0C960 0 1200 16 1440 48V48H0V48Z" fill="#ffffff"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section class="bg-white py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16 fade-up">
+        <p class="text-teal-500 font-semibold text-sm tracking-widest uppercase mb-3">Simple from Start to Finish</p>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold text-navy-900" style="letter-spacing:-0.02em">How it works</h2>
+        <p class="text-navy-500 mt-4 max-w-xl mx-auto" style="line-height:1.75">No downloads, no accounts, no hassle. Your appointment runs in your browser, just like a regular visit — only from wherever you are.</p>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-6">
+
+        <div class="card rounded-2xl p-6 fade-up">
+          <div class="w-10 h-10 rounded-xl step-num flex items-center justify-center mb-4">
+            <span class="text-white font-display font-semibold text-lg">1</span>
+          </div>
+          <h3 class="font-display font-semibold text-navy-800 text-lg mb-2">Book</h3>
+          <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">
+            Contact us by phone or through our online link to arrange a telehealth consultation. We'll confirm a time that works for everyone.
+          </p>
+        </div>
+
+        <div class="card rounded-2xl p-6 fade-up" style="transition-delay:0.1s">
+          <div class="w-10 h-10 rounded-xl bg-teal-500 flex items-center justify-center mb-4">
+            <span class="text-white font-display font-semibold text-lg">2</span>
+          </div>
+          <h3 class="font-display font-semibold text-navy-800 text-lg mb-2">Receive your link</h3>
+          <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">
+            Shortly before your appointment, you'll receive a secure, unique link via SMS or email. No account or download is required.
+          </p>
+        </div>
+
+        <div class="card rounded-2xl p-6 fade-up" style="transition-delay:0.2s">
+          <div class="w-10 h-10 rounded-xl bg-teal-500 flex items-center justify-center mb-4">
+            <span class="text-white font-display font-semibold text-lg">3</span>
+          </div>
+          <h3 class="font-display font-semibold text-navy-800 text-lg mb-2">Join the call</h3>
+          <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">
+            At your appointment time, click your link, enter your name, and allow camera and microphone access. Our clinic will welcome you from the waiting room.
+          </p>
+        </div>
+
+        <div class="card rounded-2xl p-6 fade-up" style="transition-delay:0.3s">
+          <div class="w-10 h-10 rounded-xl bg-teal-500 flex items-center justify-center mb-4">
+            <span class="text-white font-display font-semibold text-lg">4</span>
+          </div>
+          <h3 class="font-display font-semibold text-navy-800 text-lg mb-2">Your consultation</h3>
+          <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">
+            Speak with Dr Anna face to face. She'll review your concerns, discuss your imaging, and walk you through your options — just as she would in person.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ JOIN CARD ═══ -->
+  <section id="join" class="section-teal py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="join-card rounded-3xl p-10 md:p-16 text-center fade-up" style="position:relative;overflow:hidden;">
+        <!-- Decorative radial -->
+        <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255,255,255,0.07) 0%, transparent 60%);"></div>
+
+        <div class="relative">
+          <div class="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center" style="background:rgba(255,255,255,0.12);">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+            </svg>
+          </div>
+
+          <h2 class="font-display text-3xl md:text-4xl font-semibold text-white mb-4" style="letter-spacing:-0.02em">Ready to join?</h2>
+          <p class="text-white mb-2 max-w-lg mx-auto" style="opacity:0.80;line-height:1.75">
+            Your secure appointment link will have been sent to you by SMS or email. Click it to open your session — or use the button below if you received a direct link.
+          </p>
+          <p class="text-sm mb-10 max-w-md mx-auto" style="color:rgba(255,255,255,0.55);line-height:1.7">
+            If you haven't received your link, please call us on <a href="tel:1300111324" style="color:rgba(255,255,255,0.75);text-decoration:underline;text-underline-offset:3px;">1300 111 324</a> and we'll resend it.
+          </p>
+
+          <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="inline-flex items-center gap-2.5 bg-white text-teal-700 font-semibold px-8 py-4 rounded-full text-base transition-all hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-700" style="box-shadow:0 8px 28px rgba(0,0,0,0.18);">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+            Open my appointment link
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHAT YOU'LL NEED ═══ -->
+  <section class="bg-white py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-14 fade-up">
+        <p class="text-teal-500 font-semibold text-sm tracking-widest uppercase mb-3">Before You Connect</p>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold text-navy-900" style="letter-spacing:-0.02em">What you'll need</h2>
+        <p class="text-navy-500 mt-4 max-w-lg mx-auto" style="line-height:1.75">Our tips to help you prepare for your appointment.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 fade-up" style="transition-delay:0.1s">
+
+        <div class="req-item rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #e8f8f8 0%, #d0f0f0 100%)">
+            <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-navy-800 mb-1.5">A device</h3>
+          <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">Computer, tablet, or smartphone — with a camera and microphone enabled.</p>
+        </div>
+
+        <div class="req-item rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #e8f8f8 0%, #d0f0f0 100%)">
+            <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-navy-800 mb-1.5">Internet connection</h3>
+          <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">A stable Wi-Fi or mobile data connection. A quiet spot at home works well.</p>
+        </div>
+
+        <div class="req-item rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #e8f8f8 0%, #d0f0f0 100%)">
+            <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-navy-800 mb-1.5">Your Choice of Browser</h3>
+          <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">Chrome, Edge, Firefox, or Safari. No downloads or plugins required — it runs in the browser.</p>
+        </div>
+
+        <div class="req-item rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #e8f8f8 0%, #d0f0f0 100%)">
+            <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-navy-800 mb-1.5">A private space</h3>
+          <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">Find a quiet, well-lit room where you can speak freely and feel comfortable during your consultation.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="py-20 md:py-24 relative overflow-hidden" style="background: linear-gradient(160deg, #fefcfa 0%, #f8f2e9 100%)">
+    <div class="max-w-2xl mx-auto px-6 text-center fade-up">
+      <p class="text-teal-500 font-semibold text-sm tracking-widest uppercase mb-3">Get Started</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold text-navy-900 mb-4" style="letter-spacing:-0.02em">Ready to book a telehealth appointment?</h2>
+      <p class="text-navy-500 mb-8 max-w-lg mx-auto" style="line-height:1.75">Reach out and we'll get you set up. A referral from a doctor or dentist is required for specialist consultations.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="btn-primary px-7 py-3.5 rounded-full font-semibold text-base">
+          Book via online form
+        </a>
+        <a href="tel:1300111324" class="btn-ghost px-7 py-3.5 rounded-full font-semibold text-base bg-white flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          Call 1300 111 324
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="bg-navy-900 text-navy-200 py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-10">
+        <div>
+          <img src="brand_assets/WisdomSurgery_Logo_Horizontal_Reversed-Picsart-BackgroundRemover.png" alt="Wisdom Surgery Clinic" class="h-8 w-auto mb-4" />
+          <p class="text-navy-400 text-sm leading-relaxed">Oral & Maxillofacial Surgery by Dr Anna Raymond. Specialist care with a personal touch.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white text-sm mb-4 tracking-wide">For Our Patients</h4>
+          <div class="flex flex-col gap-2">
+            <a href="https://anna-bryan-joys.github.io/wisdomsurgery/welcome.html" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">A Personal Welcome</a>
+            <a href="Patient Information.html#form" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">New Patient Form</a>
+            <a href="https://anna-bryan-joys.github.io/wisdomsurgery/Patient%20Information.html" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">Practice Policies</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white text-sm mb-4 tracking-wide">Contact</h4>
+          <div class="flex flex-col gap-2">
+            <a href="tel:1300111324" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">1300 111 324</a>
+            <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">Email Us</a>
+            <a href="https://anna-bryan-joys.github.io/wisdomsurgery/payment.html" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">Pay an invoice</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white text-sm mb-1 tracking-wide">Consulting Locations</h4>
+          <p class="text-xs mb-4 font-medium" style="color:#7dd8d8; letter-spacing:0.04em; text-shadow:0 0 8px rgba(125,216,216,0.9), 0 0 18px rgba(125,216,216,0.6), 0 0 35px rgba(125,216,216,0.3);">Click Each For Websites &amp; Directions</p>
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center gap-2 mb-1">
+              <p class="text-navy-300 text-sm">New Office</p>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background: rgba(42,180,180,0.15); color: #2ab4b4;">Coming Soon</span>
+            </div>
+            <a href="https://www.greenslopesprivate.com.au/" target="_blank" rel="noopener" class="group">
+              <p class="text-navy-300 text-sm group-hover:text-teal-400 transition-colors">Greenslopes Private Hospital</p>
+              <p class="text-navy-500 text-xs">Greenslopes QLD</p>
+            </a>
+            <a href="https://www.northwestprivatehospital.com.au/" target="_blank" rel="noopener" class="group">
+              <p class="text-navy-300 text-sm group-hover:text-teal-400 transition-colors">North West Private Hospital</p>
+              <p class="text-navy-500 text-xs">Everton Park QLD</p>
+            </a>
+            <a href="https://peninsulaprivatehospital.com.au/" target="_blank" rel="noopener" class="group">
+              <p class="text-navy-300 text-sm group-hover:text-teal-400 transition-colors">Peninsula Private Hospital</p>
+              <p class="text-navy-500 text-xs">Kippa-Ring QLD</p>
+            </a>
+            <a href="https://www.cabooltureprivate.com.au/" target="_blank" rel="noopener" class="group">
+              <p class="text-navy-300 text-sm group-hover:text-teal-400 transition-colors">Caboolture Private Hospital</p>
+              <p class="text-navy-500 text-xs">Caboolture QLD</p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-navy-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="text-navy-500 text-xs">© 2026 Wisdom Surgery Clinic. All rights reserved.</p>
+        <img src="brand_assets/WisdomSurgery_Logo_Circle.PNG" alt="" class="w-8 h-8 opacity-30 brightness-0 invert" />
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+    let menuOpen = false;
+    toggle.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('hidden', !menuOpen);
+      mobileMenu.classList.toggle('open', menuOpen);
+      iconOpen.classList.toggle('hidden', menuOpen);
+      iconClose.classList.toggle('hidden', !menuOpen);
+      toggle.setAttribute('aria-label', menuOpen ? 'Close menu' : 'Open menu');
+    });
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('open');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    }
+
+    document.querySelectorAll('.faq-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-trigger').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+  <style>
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease; opacity: 0; }
+    .faq-item.open .faq-answer { max-height: 400px; opacity: 1; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+  </style>
+</body>
+</html>
