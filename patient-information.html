@@ -716,19 +716,67 @@ body { font-family:'DM Sans',system-ui,sans-serif; background:#f8fdfd; color:#1a
 </div>
 
 <!-- ═══ FOOTER ═══ -->
-<footer style="background:#091d38;padding:32px 24px">
-  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-    <img src="brand_assets/WisdomSurgery_Logo_Horizontal.png" alt="Wisdom Surgery Clinic" class="h-7 w-auto" style="filter:brightness(0) invert(1);opacity:0.6"/>
-    <div class="flex flex-col items-center sm:items-start gap-2">
-      <p class="text-xs font-semibold opacity-60" style="color:#7aa0c6;letter-spacing:0.05em;text-transform:uppercase">For Our Patients</p>
-      <div class="flex flex-col sm:flex-row items-center gap-3">
-        <a href="https://anna-bryan-joys.github.io/wisdomsurgery/welcome.html" class="text-xs opacity-40 hover:opacity-70 transition-opacity" style="color:#7aa0c6">A Personal Welcome</a>
-        <a href="#" onclick="switchTab('form');return false;" class="text-xs opacity-40 hover:opacity-70 transition-opacity" style="color:#7aa0c6">New Patient Form</a>
-        <a href="#" onclick="switchTab('policies');return false;" class="text-xs opacity-40 hover:opacity-70 transition-opacity" style="color:#7aa0c6">Practice Policies</a>
-        <a href="#" onclick="switchTab('online-forms');return false;" class="text-xs opacity-40 hover:opacity-70 transition-opacity" style="color:#7aa0c6">Patient Forms</a>
+<footer class="bg-navy-900 text-navy-200 py-12">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-10">
+      <div>
+        <img src="https://anna-bryan-joys.github.io/wisdomsurgery/brand_assets/WisdomSurgery_Logo_Horizontal_Reversed-Picsart-BackgroundRemover.png" alt="Wisdom Surgery Clinic" class="h-8 w-auto mb-4" />
+        <p class="text-navy-400 text-sm leading-relaxed">Oral & Maxillofacial Surgery by Dr Anna Raymond. Specialist care with a personal touch.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white text-sm mb-4 tracking-wide">For Our Patients</h4>
+        <div class="flex flex-col gap-2">
+          <a href="https://anna-bryan-joys.github.io/wisdomsurgery/welcome.html" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">A Personal Welcome</a>
+          <a href="#" onclick="switchTab('form');window.scrollTo(0,0);return false;" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">New Patient Form</a>
+          <a href="#" onclick="switchTab('online-forms');window.scrollTo(0,0);return false;" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">Patient Forms</a>
+          <a href="#" onclick="switchTab('policies');window.scrollTo(0,0);return false;" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">Practice Policies</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white text-sm mb-4 tracking-wide">Contact</h4>
+        <div class="flex flex-col gap-2">
+          <a href="tel:1300111324" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">1300 111 324</a>
+          <a href="https://anna-bryan-joys.github.io/wisdomsurgery/index.html#contact" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">Email Us</a>
+          <a href="https://anna-bryan-joys.github.io/wisdomsurgery/payment.html" class="text-navy-400 text-sm hover:text-teal-400 transition-colors">Pay an invoice</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white text-sm mb-1 tracking-wide">Consulting Locations</h4>
+        <p class="text-xs mb-4 font-medium" style="color:#7dd8d8; letter-spacing:0.04em; text-shadow:0 0 8px rgba(125,216,216,0.9), 0 0 18px rgba(125,216,216,0.6), 0 0 35px rgba(125,216,216,0.3);">Click Each Line for Websites &amp; Directions</p>
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-2 mb-1">
+            <p class="text-navy-300 text-sm">New Office</p>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background: rgba(42,180,180,0.15); color: #2ab4b4;">Coming Soon</span>
+          </div>
+          <div class="flex flex-col gap-0.5">
+            <a href="https://www.greenslopesprivate.com.au/" target="_blank" rel="noopener" class="text-navy-300 text-sm hover:text-teal-400 transition-colors">Greenslopes Private Hospital</a>
+            <a href="https://maps.google.com/?q=Greenslopes+Private+Hospital,+Newdegate+St,+Greenslopes+QLD" target="_blank" rel="noopener" class="text-navy-500 text-xs hover:text-teal-500 transition-colors">Newdegate St, Greenslopes QLD</a>
+          </div>
+          <div class="flex flex-col gap-0.5">
+            <a href="https://www.northwestprivatehospital.com.au/" target="_blank" rel="noopener" class="text-navy-300 text-sm hover:text-teal-400 transition-colors">North West Private Hospital</a>
+            <a href="https://maps.google.com/?q=North+West+Private+Hospital,+137+Flockton+St,+Everton+Park+QLD" target="_blank" rel="noopener" class="text-navy-500 text-xs hover:text-teal-500 transition-colors">137 Flockton St, Everton Park QLD</a>
+          </div>
+          <div class="flex flex-col gap-0.5">
+            <a href="https://peninsulaprivatehospital.com.au/" target="_blank" rel="noopener" class="text-navy-300 text-sm hover:text-teal-400 transition-colors">Peninsula Private Hospital</a>
+            <a href="https://maps.google.com/?q=Peninsula+Private+Hospital,+Cnr+George+%26+Florence+Sts,+Kippa-Ring+QLD" target="_blank" rel="noopener" class="text-navy-500 text-xs hover:text-teal-500 transition-colors">Cnr George & Florence Sts, Kippa-Ring QLD</a>
+          </div>
+          <div class="flex flex-col gap-0.5">
+            <a href="https://www.cabooltureprivate.com.au/" target="_blank" rel="noopener" class="text-navy-300 text-sm hover:text-teal-400 transition-colors">Caboolture Private Hospital</a>
+            <a href="https://maps.google.com/?q=Caboolture+Private+Hospital,+McKean+St,+Caboolture+QLD" target="_blank" rel="noopener" class="text-navy-500 text-xs hover:text-teal-500 transition-colors">McKean St, Caboolture QLD</a>
+          </div>
+        </div>
       </div>
     </div>
-    <p class="text-xs opacity-30" style="color:#7aa0c6">© 2026 Wisdom Surgery Clinic</p>
+    <div class="mb-6">
+      <a href="https://wisdomsurgery.me" class="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Book A Consultation
+      </a>
+    </div>
+    <div class="border-t border-navy-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p class="text-navy-500 text-xs">© 2026 Wisdom Surgery Clinic. All rights reserved.</p>
+      <img src="https://anna-bryan-joys.github.io/wisdomsurgery/brand_assets/WisdomSurgery_Logo_Circle.PNG" alt="" class="w-8 h-8 opacity-30 brightness-0 invert" />
+    </div>
   </div>
 </footer>
 
