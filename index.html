@@ -251,9 +251,8 @@
     .print-copy-btn:hover { background: rgba(42,180,180,0.08); border-color: #2ab4b4; }
     @media print {
       nav, footer, .btn-ghost, .btn-primary, .print-copy-btn,
-      #step-1, #step-2, #step-3, #step-4, #step-5 { display: none !important; }
+      #step-1, #step-2, #step-3, #step-4 { display: none !important; }
       body { background: white !important; }
-      #step-success { display: block !important; }
       .fcard { box-shadow: none !important; border: 1px solid #ddd !important; }
     }
   </style>
@@ -615,7 +614,13 @@
       </div>
 
       <div style="margin-top:24px;display:flex;justify-content:space-between;align-items:center;">
-        <button class="btn-ghost" onclick="prevStep(5)">← Back</button>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button class="btn-ghost" onclick="prevStep(5)">← Back</button>
+          <button class="print-copy-btn" onclick="window.print()" style="margin-top:0;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print
+          </button>
+        </div>
         <button class="btn-primary" id="submit-btn" onclick="submitForm()">Send Request</button>
       </div>
     </div>
