@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post-operative Instructions — Wisdom Teeth | Wisdom Surgery Clinic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #2E6DB4;
+      --teal: #2BBFA4;
+      --teal-light: #5ED3BC;
+      --cream: #FDFAF5;
+      --cream-mid: #F5EFE4;
+      --cream-dark: #EDE5D6;
+      --ink: #1E2B3A;
+      --ink-mid: #3D4F5E;
+      --ink-light: #7A8A96;
+      --border: #D8CFC2;
+      --amber: #C97A20;
+      --amber-bg: #FFF8EE;
+      --amber-border: #F0C070;
+      --red: #C0392B;
+      --red-bg: #FFF5F5;
+      --red-border: #F0AAAA;
+      --radius: 8px;
+      --shadow: 0 2px 12px rgba(46,109,180,0.08);
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .page-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-img { height: 90px; width: auto; margin-bottom: 16px; }
+
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle { font-size: 0.9rem; color: var(--ink-light); line-height: 1.6; }
+
+    .accent-bar {
+      display: flex;
+      height: 3px;
+      width: 60px;
+      margin: 14px auto 0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .accent-bar span:first-child { flex: 1; background: var(--blue); }
+    .accent-bar span:last-child  { flex: 1; background: var(--teal); }
+
+    .patient-banner {
+      background: linear-gradient(135deg, rgba(46,109,180,0.07), rgba(43,191,164,0.06));
+      border: 1px solid rgba(43,191,164,0.22);
+      border-radius: 12px;
+      padding: 20px 28px;
+      margin-bottom: 18px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+
+    .patient-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 160px; }
+
+    .patient-field label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .patient-field input {
+      background: rgba(255,255,255,0.75);
+      border: 1.5px solid rgba(43,191,164,0.3);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .patient-field input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(43,191,164,0.15);
+    }
+
+    .section {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.0rem;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .section-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .body-text {
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+      line-height: 1.75;
+    }
+
+    .body-text p + p { margin-top: 10px; }
+    .body-text strong { color: var(--ink); font-weight: 600; }
+
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .info-list li {
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+      line-height: 1.6;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .info-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    .info-list li strong { color: var(--ink); }
+
+    .avoid-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .avoid-list li {
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+      line-height: 1.6;
+      padding: 9px 14px 9px 42px;
+      border-radius: 7px;
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      position: relative;
+    }
+
+    .avoid-list li::before {
+      content: '✗';
+      position: absolute;
+      left: 14px;
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .avoid-list li strong { color: var(--ink); }
+
+    .warning-box {
+      background: var(--amber-bg);
+      border: 1px solid var(--amber-border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .warning-box .warn-icon {
+      color: var(--amber);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .warning-box strong { color: var(--amber); }
+
+    .urgent-box {
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      margin-top: 12px;
+    }
+
+    .urgent-box strong { color: var(--red); }
+
+    .followup-field {
+      background: rgba(46,109,180,0.04);
+      border: 1px solid rgba(46,109,180,0.18);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+    }
+
+    .followup-write {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .followup-write label { font-size: 0.82rem; color: var(--ink-light); min-width: 90px; }
+
+    .followup-write input[type="text"],
+    .followup-write input[type="date"] {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.8);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+    }
+
+    /* Acknowledgment section */
+    .ack-section {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(43,191,164,0.35);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 16px rgba(43,191,164,0.1);
+    }
+
+    .ack-label {
+      font-size: 0.9rem;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .field-group { display: flex; flex-direction: column; gap: 5px; }
+
+    .field-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--ink-mid);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.8);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="date"]:focus,
+    textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(43,191,164,0.15);
+    }
+
+    .sig-wrap {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sig-wrap canvas {
+      display: block;
+      width: 100%;
+      height: 130px;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .sig-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      pointer-events: none;
+      font-style: italic;
+    }
+
+    .sig-clear-btn {
+      position: absolute;
+      top: 7px;
+      right: 9px;
+      font-size: 0.72rem;
+      color: var(--ink-light);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 7px;
+      cursor: pointer;
+      font-family: 'Source Sans 3', sans-serif;
+      transition: color 0.15s;
+    }
+
+    .sig-clear-btn:hover { color: #C0392B; border-color: #C0392B; }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: 8px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      color: white;
+      box-shadow: 0 4px 14px rgba(46,109,180,0.28);
+    }
+
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(46,109,180,0.36); }
+
+    .btn-secondary {
+      background: white;
+      color: var(--ink-mid);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 36px;
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      line-height: 1.7;
+    }
+
+    @media print {
+      @page { size: A4; margin: 16mm; }
+      body { background: white; font-size: 10pt; }
+      .page-wrap { max-width: 100%; padding: 0; }
+      .section, .patient-banner, .ack-section {
+        background: white;
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+        margin-bottom: 10px;
+        padding: 14px 16px;
+      }
+      .avoid-list li { break-inside: avoid; }
+            input { 
+        border: none !important;
+        border-bottom: 1.5px solid #333 !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding: 2px 0 !important;
+      }
+      input[type="radio"], input[type="checkbox"] {
+        border: 1.5px solid #333 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      textarea {
+        border: 1px solid #ccc !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+      .sig-wrap canvas { height: 80px; }
+      .form-actions { display: none; }
+      .form-footer { margin-top: 12px; font-size: 0.7rem; }
+      .warning-box, .urgent-box { break-inside: avoid; }
+    }
+
+    @media (max-width: 600px) {
+      .sig-grid { grid-template-columns: 1fr; }
+      .patient-banner { flex-direction: column; }
+      .section { padding: 20px 18px; }
+      .followup-write { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<div style="background:#0f2a4d;padding:12px 24px;display:flex;align-items:center;gap:16px;font-family:'DM Sans',sans-serif;">
+  <a href="../forms.html" style="color:#2ab4b4;font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;">
+    ← Patient Forms
+  </a>
+  <span style="color:rgba(255,255,255,0.3);">|</span>
+  <a href="../index.html" style="color:rgba(255,255,255,0.6);font-size:13px;text-decoration:none;">Request Appointment</a>
+</div>
+
+<div id="print-bar" style="background:#f0f9f9;border-bottom:1.5px solid #2ab4b4;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-family:'Source Sans 3',sans-serif;font-size:13px;color:#0f2a4d;position:sticky;top:0;z-index:100;">
+  <span>Type your answers directly into this form, then click <strong>Print / Save as PDF</strong> — save the PDF and email it back to us.</span>
+  <button onclick="window.print()" style="background:#2ab4b4;color:white;border:none;border-radius:999px;padding:7px 18px;font-size:12px;font-weight:600;font-family:'Source Sans 3',sans-serif;cursor:pointer;letter-spacing:0.03em;">Print / Save as PDF</button>
+</div>
+<style>@media print { #print-bar { display: none !important; } }</style>
+
+<div class="page-wrap">
+
+  <header class="form-header">
+    <img src="https://anna-bryan-joys.github.io/wisdomsurgery/brand_assets/WisdomSurgery_Logo_Horizontal.png" alt="Wisdom Surgery Clinic" class="logo-img" />
+    <h1 class="form-title">Post-operative Instructions</h1>
+    <p class="form-subtitle">Wisdom Tooth Removal — what to expect and how to care for yourself</p>
+    <div class="accent-bar"><span></span><span></span></div>
+  </header>
+
+  <!-- Patient banner -->
+  <div class="patient-banner">
+    <div class="patient-field">
+      <label for="patientName">Patient name</label>
+      <input type="text" id="patientName" placeholder="Full name" />
+    </div>
+    <div class="patient-field">
+      <label for="surgeryDate">Surgery date</label>
+      <input type="date" id="surgeryDate" />
+    </div>
+  </div>
+
+  <!-- 1. What to expect -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      What to Expect
+    </div>
+    <div class="body-text">
+      <p>Swelling, bruising, and discomfort are normal and expected after wisdom tooth removal. <strong>Swelling typically peaks at 48–72 hours</strong> and then gradually improves over the following week. Bruising may appear on the cheeks, jaw, or neck — this is also normal and will fade.</p>
+      <p>Most patients feel significantly better by <strong>day 5–7</strong>, though everyone recovers at a different rate. You may experience mild residual soreness for up to 2 weeks. If you have concerns about your recovery, please don't hesitate to contact us.</p>
+    </div>
+  </div>
+
+  <!-- 2. Bleeding -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+      </div>
+      Bleeding
+    </div>
+    <ul class="info-list">
+      <li>Some oozing is <strong>normal for the first few hours</strong> after surgery.</li>
+      <li><strong>Bite firmly on the gauze provided</strong> for 30–45 minutes. If the gauze becomes saturated, replace it with fresh gauze and continue biting firmly.</li>
+      <li><strong>Do not rinse vigorously, spit forcefully, or use a straw</strong> for the first 24 hours — suction and pressure dislodge the blood clot essential to healing.</li>
+      <li>If bleeding is persistent: <strong>bite firmly on a damp tea bag</strong> for 20–30 minutes. The tannins in tea help promote clotting.</li>
+    </ul>
+    <div class="warning-box" style="margin-top: 14px;">
+      <span class="warn-icon">⚠</span>
+      <span><strong>Seek urgent care if:</strong> you experience heavy, uncontrolled bleeding; large clots are forming and being dislodged; or you feel faint or weak from blood loss. Go to your nearest emergency department or call 000.</span>
+    </div>
+  </div>
+
+  <!-- 3. Swelling and pain -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      Swelling &amp; Pain Management
+    </div>
+    <ul class="info-list">
+      <li>Apply <strong>ice packs (wrapped in a cloth)</strong> to the outside of your face for 20 minutes on, 20 minutes off, for the first 24 hours. This reduces swelling.</li>
+      <li>After 48 hours, switch to <strong>warm packs</strong> to help resolve swelling more quickly.</li>
+      <li><strong>Take pain relief before the local anaesthetic wears off</strong> — do not wait until you are in significant pain. It is much harder to control pain once it sets in.</li>
+      <li>Recommended: <strong>ibuprofen 400mg + paracetamol 500mg alternated every 4 hours</strong> (unless contraindicated by your medical history or surgeon's advice). Do not exceed recommended doses.</li>
+      <li>If you have been prescribed <strong>stronger pain relief</strong>, take it as directed and do not drive or operate machinery while taking it.</li>
+    </ul>
+  </div>
+
+  <!-- 4. Diet -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+      </div>
+      Diet
+    </div>
+    <div class="body-text" style="margin-bottom: 10px;">Your diet in the days after surgery can make a significant difference to your comfort and healing.</div>
+    <ul class="info-list">
+      <li><strong>First 3–5 days: soft, cool foods</strong> — yoghurt, smoothies, scrambled eggs, mashed potato, cool soup, ice cream, soft pasta. Avoid anything requiring biting or chewing near the surgical sites.</li>
+      <li>Progress to normal <strong>soft foods</strong> as your comfort allows over the following week.</li>
+      <li><strong>Stay well hydrated</strong> — drink plenty of water throughout the day.</li>
+      <li>Avoid <strong>hard, crunchy, or chewy foods</strong> (bread crusts, chips, nuts, tough meat) until fully healed.</li>
+      <li>Avoid <strong>hot food and drinks</strong> for the first 24 hours — heat increases bleeding.</li>
+      <li>Avoid <strong>alcohol for 48 hours</strong> — it thins the blood, promotes bleeding, and interferes with pain relief.</li>
+      <li>Avoid <strong>spicy foods</strong> until the surgical sites are fully healed.</li>
+    </ul>
+  </div>
+
+  <!-- 5. Oral hygiene -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      Oral Hygiene
+    </div>
+    <ul class="info-list">
+      <li><strong>Day 1: do not brush the surgical sites.</strong> You may gently brush all other teeth as normal.</li>
+      <li>From <strong>Day 2: gently rinse with warm salt water</strong> after each meal — 1 teaspoon of salt dissolved in a glass of warm water. Let the water gently flow around your mouth and drain out; do not swish vigorously.</li>
+      <li>From <strong>Day 2–3: resume gentle brushing of all teeth</strong>, carefully avoiding the extraction sockets. A soft-bristled toothbrush is recommended.</li>
+      <li><strong>Do not use commercial mouthwash</strong> (e.g. Listerine) in the first 48 hours — the alcohol content can irritate healing tissue.</li>
+    </ul>
+  </div>
+
+  <!-- 6. What to avoid -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+      </div>
+      What to Avoid
+    </div>
+    <ul class="avoid-list">
+      <li><strong>Smoking</strong> — significantly increases the risk of dry socket (painful failure of clot formation). Avoid for at least 5 days, ideally 2 weeks or longer.</li>
+      <li><strong>Straws</strong> — the suction force dislodges the blood clot essential to healing.</li>
+      <li><strong>Spitting forcefully</strong> — same reason as straws; avoid for the first 24–48 hours.</li>
+      <li><strong>Touching or probing the socket</strong> with your tongue, fingers, or any object.</li>
+      <li><strong>Strenuous exercise</strong> for 3–5 days — elevated heart rate and blood pressure increase bleeding risk.</li>
+      <li><strong>Alcohol</strong> for 48 hours after surgery.</li>
+      <li><strong>Flying within 48 hours</strong> if possible — air pressure changes can affect healing sockets.</li>
+    </ul>
+  </div>
+
+  <!-- 7. Dry socket -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      Dry Socket — What to Watch For
+    </div>
+    <div class="body-text">
+      <p><strong>Dry socket (alveolar osteitis)</strong> occurs when the blood clot in the extraction socket fails to form properly or is dislodged before healing is complete. It affects approximately 5–30% of lower wisdom tooth removals, and is significantly more common in smokers.</p>
+      <p><strong>Signs of dry socket:</strong> a significant <em>worsening</em> of pain beginning 3–5 days after surgery (rather than improving), a bad taste or smell from the socket, and visible empty bone in the socket.</p>
+      <p><strong>What to do:</strong> contact the clinic as soon as possible. Dry socket is treatable — we will place a soothing dressing in the socket and provide additional pain relief. It resolves with appropriate care.</p>
+    </div>
+  </div>
+
+  <!-- 8. When to call / seek urgent care -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3-8.57A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      </div>
+      When to Call Us / Seek Urgent Care
+    </div>
+
+    <p class="body-text" style="margin-bottom: 10px;"><strong>Call us on 1300 111 324 if you experience:</strong></p>
+    <ul class="info-list" style="margin-top: 0;">
+      <li>Significant <strong>worsening pain after day 3</strong> — this may indicate dry socket or infection.</li>
+      <li><strong>Fever above 38°C</strong> — may indicate infection.</li>
+      <li><strong>Swelling that is increasing after day 3</strong> rather than gradually improving.</li>
+      <li><strong>Difficulty swallowing or opening your mouth</strong> that is worsening rather than improving.</li>
+    </ul>
+
+    <div class="urgent-box">
+      <strong>Go to your nearest emergency department or call 000 if you experience:</strong>
+      <ul style="margin-top: 8px; padding-left: 20px; line-height: 1.8;">
+        <li>Heavy, uncontrolled bleeding that does not respond to pressure.</li>
+        <li>Difficulty breathing or swallowing (could indicate spreading infection).</li>
+        <li>Severe allergic reaction to a prescribed medication (rash, hives, swollen throat, difficulty breathing).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 9. Follow-up -->
+  <div class="section">
+    <div class="section-heading">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      Your Follow-up Appointment
+    </div>
+    <div class="body-text">
+      <p>A follow-up appointment has been arranged for you. Please attend even if you are feeling well — this allows your surgeon to check healing and address any concerns.</p>
+    </div>
+    <div class="followup-field">
+      <div class="followup-write">
+        <label>Follow-up date:</label>
+        <input type="date" id="followupDate" />
+      </div>
+      <div class="followup-write" style="margin-top: 8px;">
+        <label>Time:</label>
+        <input type="text" id="followupTime" placeholder="e.g. 10:00 AM" />
+      </div>
+      <div class="followup-write" style="margin-top: 8px;">
+        <label>Notes:</label>
+        <input type="text" id="followupNotes" placeholder="Additional instructions from your surgeon" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Acknowledgment -->
+  <div class="ack-section">
+    <div class="section-heading" style="margin-bottom: 14px;">
+      <div class="section-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      Patient Acknowledgment
+    </div>
+    <p class="ack-label">"I have read and understood these post-operative instructions and have had the opportunity to ask questions. I understand that I should contact the clinic if I have any concerns during my recovery."</p>
+
+    <div class="sig-grid">
+      <div class="field-group" style="grid-column: 1 / -1;">
+        <span class="field-label">Full name</span>
+        <input type="text" id="sigName" placeholder="Print your full name" />
+      </div>
+
+      <div class="field-group">
+        <span class="field-label">Signature</span>
+        <div class="sig-wrap" id="sigWrap">
+          <canvas id="sigCanvas" height="130"></canvas>
+          <div class="sig-placeholder" id="sigPlaceholder">Draw your signature here</div>
+          <button type="button" class="sig-clear-btn" onclick="clearSignature()">Clear</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <span class="field-label">Date</span>
+        <input type="date" id="sigDate" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="form-actions">
+    <button type="button" class="btn btn-secondary" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / PDF
+    </button>
+  </div>
+
+  <footer class="form-footer">
+    <p><strong>Wisdom Surgery Clinic</strong> — Oral &amp; Maxillofacial Surgery</p>
+    <p>Questions during recovery? <a href="mailto:adminteam@wisdomsurgery.clinic" style="color:var(--teal); text-decoration:none;">adminteam@wisdomsurgery.clinic</a> &nbsp;·&nbsp; <a href="tel:1300111324" style="color:var(--ink-mid); text-decoration:none;">1300 111 324</a></p>
+  </footer>
+
+</div>
+
+<script>
+  // Auto-fill today's surgery date
+  document.getElementById('surgeryDate').valueAsDate = new Date();
+
+  // Signature canvas
+  const canvas = document.getElementById('sigCanvas');
+  const ctx = canvas.getContext('2d');
+  const placeholder = document.getElementById('sigPlaceholder');
+  let drawing = false;
+
+  function resizeCanvas() {
+    const ratio = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
+    ctx.scale(ratio, ratio);
+    ctx.strokeStyle = '#1E2B3A';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+  }
+
+  canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+  canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; });
+  canvas.addEventListener('mouseup', () => drawing = false);
+  canvas.addEventListener('mouseleave', () => drawing = false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; }, { passive: false });
+  canvas.addEventListener('touchend', () => drawing = false);
+
+  function clearSignature() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    placeholder.style.display = 'flex';
+  }
+
+  document.getElementById('sigDate').valueAsDate = new Date();
+</script>
+
+</body>
+</html>
