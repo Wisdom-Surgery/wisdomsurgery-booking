@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Request — Wisdom Surgery Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0f2a4d;
+      --teal: #2ab4b4;
+      --gold: #c9975e;
+      --border: #d0d7e2;
+      --line: #999;
+      --ink: #1a1a2e;
+      --ink-mid: #4a5568;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f7f9fc; font-family: 'DM Sans', sans-serif; color: var(--ink); font-size: 14px; }
+
+    /* ── Print bar ── */
+    #print-bar {
+      background: #f0f9f9; border-bottom: 1.5px solid var(--teal);
+      padding: 10px 24px; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 100;
+    }
+    #print-bar span { font-size: 13px; color: var(--navy); }
+    #print-bar button {
+      background: var(--teal); color: white; border: none;
+      border-radius: 999px; padding: 7px 18px; font-size: 12px;
+      font-weight: 600; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; letter-spacing: 0.03em;
+    }
+
+    /* ── Nav ── */
+    .back-nav {
+      background: var(--navy); padding: 12px 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .back-nav a { color: var(--teal); font-size: 13px; font-weight: 600; text-decoration: none; }
+    .back-nav span { color: rgba(255,255,255,0.3); }
+    .back-nav a.dim { color: rgba(255,255,255,0.6); font-weight: 400; }
+
+    /* ── Page ── */
+    .page { max-width: 780px; margin: 0 auto; padding: 32px 24px 64px; }
+
+    .form-header { text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .form-header img { height: 36px; margin-bottom: 16px; }
+    .form-header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 400; color: var(--navy); margin-bottom: 6px; }
+    .form-header p { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
+
+    /* ── Sections ── */
+    .section { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 22px 24px; margin-bottom: 16px; }
+    .section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+
+    /* ── Fields ── */
+    .field-row { display: grid; gap: 16px; margin-bottom: 16px; }
+    .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    label.flabel { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-mid); }
+    input.wl, select.wl, textarea.wl {
+      border: none; border-bottom: 1.5px solid var(--border);
+      background: transparent; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--ink); padding: 6px 0;
+      outline: none; width: 100%; border-radius: 0;
+    }
+    input.wl:focus, select.wl:focus, textarea.wl:focus { border-bottom-color: var(--teal); }
+    textarea.wl { resize: vertical; min-height: 72px; }
+    select.wl { appearance: none; -webkit-appearance: none; cursor: pointer; }
+
+    /* ── Checkboxes ── */
+    .check-group { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 4px; }
+    .check-item { display: flex; align-items: center; gap: 7px; font-size: 13px; cursor: pointer; }
+    .check-item input[type="checkbox"], .check-item input[type="radio"] {
+      width: 15px; height: 15px; border: 1.5px solid var(--border);
+      border-radius: 3px; appearance: none; -webkit-appearance: none;
+      cursor: pointer; background: white; flex-shrink: 0;
+      position: relative;
+    }
+    .check-item input[type="radio"] { border-radius: 50%; }
+    .check-item input[type="checkbox"]:checked { background: var(--teal); border-color: var(--teal); }
+    .check-item input[type="checkbox"]:checked::after {
+      content: ''; position: absolute; left: 4px; top: 1px;
+      width: 5px; height: 9px; border: 2px solid white;
+      border-top: none; border-left: none; transform: rotate(45deg);
+    }
+    .check-item input[type="radio"]:checked { background: var(--teal); border-color: var(--teal); }
+    .check-item input[type="radio"]:checked::after {
+      content: ''; position: absolute; left: 3px; top: 3px;
+      width: 7px; height: 7px; border-radius: 50%; background: white;
+    }
+
+    /* ── Info note ── */
+    .note { font-size: 12px; color: var(--ink-mid); margin-top: 8px; line-height: 1.6; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+    /* ── Footer ── */
+    .form-footer { text-align: center; font-size: 12px; color: var(--ink-mid); margin-top: 32px; line-height: 1.8; }
+    .form-footer a { color: var(--teal); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .field-row.cols-2, .field-row.cols-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      @page { size: A4; margin: 14mm; }
+      #print-bar, .back-nav { display: none !important; }
+      body { background: white; font-size: 10pt; }
+      .page { padding: 0; }
+      .section { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; margin-bottom: 10px; padding: 14px 16px; }
+      input.wl, select.wl, textarea.wl {
+        border-bottom: 1.5px solid #333 !important;
+        background: transparent !important;
+      }
+      input[type="checkbox"], input[type="radio"] {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="print-bar">
+  <span>Type your answers directly into this form, then click <strong>Print / Save as PDF</strong> — save the PDF and email it back to us.</span>
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="back-nav">
+  <a href="../forms.html">← Patient Forms</a>
+  <span>|</span>
+  <a href="../index.html" class="dim">Request Online</a>
+</div>
+
+<div class="page">
+
+  <div class="form-header">
+    <img src="https://anna-bryan-joys.github.io/wisdomsurgery/brand_assets/WisdomSurgery_Logo_Horizontal.png" alt="Wisdom Surgery Clinic" />
+    <h1>Appointment Request</h1>
+    <p>Complete this form and email it to <a href="mailto:adminteam@wisdomsurgery.clinic" style="color:var(--teal);text-decoration:none;">adminteam@wisdomsurgery.clinic</a> &nbsp;·&nbsp; or call us on <a href="tel:1300111324" style="color:var(--ink-mid);text-decoration:none;">1300 111 324</a></p>
+  </div>
+
+  <!-- ── About You ── -->
+  <div class="section">
+    <div class="section-title">About You</div>
+    <div class="field-row cols-2">
+      <div class="field">
+        <label class="flabel">First name *</label>
+        <input class="wl" type="text" placeholder="Anna" autocomplete="given-name" />
+      </div>
+      <div class="field">
+        <label class="flabel">Last name *</label>
+        <input class="wl" type="text" placeholder="Smith" autocomplete="family-name" />
+      </div>
+    </div>
+    <div class="field-row cols-3">
+      <div class="field">
+        <label class="flabel">Date of birth *</label>
+        <input class="wl" type="date" />
+      </div>
+      <div class="field">
+        <label class="flabel">Phone *</label>
+        <input class="wl" type="tel" placeholder="04XX XXX XXX" autocomplete="tel" />
+      </div>
+      <div class="field">
+        <label class="flabel">Suburb / Postcode</label>
+        <input class="wl" type="text" placeholder="Brisbane, 4000" />
+      </div>
+    </div>
+    <div class="field-row cols-2">
+      <div class="field">
+        <label class="flabel">Email address *</label>
+        <input class="wl" type="email" placeholder="your@email.com" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label class="flabel">Patient type</label>
+        <div class="check-group" style="margin-top:8px;">
+          <label class="check-item"><input type="radio" name="patienttype" /> New patient</label>
+          <label class="check-item"><input type="radio" name="patienttype" /> Returning patient</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Procedure & Timing ── -->
+  <div class="section">
+    <div class="section-title">Procedure &amp; Timing</div>
+    <div class="field" style="margin-bottom:16px;">
+      <label class="flabel">Reason for consultation (select all that apply) *</label>
+      <div class="check-group" style="margin-top:10px;">
+        <label class="check-item"><input type="checkbox" /> Wisdom tooth removal</label>
+        <label class="check-item"><input type="checkbox" /> Dental implants</label>
+        <label class="check-item"><input type="checkbox" /> Bone graft / sinus lift</label>
+        <label class="check-item"><input type="checkbox" /> Jaw (orthognathic) surgery</label>
+        <label class="check-item"><input type="checkbox" /> Orthodontic tooth exposure</label>
+        <label class="check-item"><input type="checkbox" /> Soft tissue procedure</label>
+        <label class="check-item"><input type="checkbox" /> Jaw cyst / bone lesion</label>
+        <label class="check-item"><input type="checkbox" /> Pre-prosthetic surgery</label>
+        <label class="check-item"><input type="checkbox" /> Not sure / other</label>
+      </div>
+    </div>
+    <div class="field-row cols-2">
+      <div class="field">
+        <label class="flabel">Urgency *</label>
+        <div class="check-group" style="margin-top:8px;">
+          <label class="check-item"><input type="radio" name="urgency" /> Routine — within a few weeks</label>
+          <label class="check-item"><input type="radio" name="urgency" /> Moderate — within 1–2 weeks</label>
+          <label class="check-item"><input type="radio" name="urgency" /> Urgent — pain or infection</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="flabel">Preferred time of day</label>
+        <div class="check-group" style="margin-top:8px;">
+          <label class="check-item"><input type="radio" name="timeofday" /> No preference</label>
+          <label class="check-item"><input type="radio" name="timeofday" /> Morning (before 12pm)</label>
+          <label class="check-item"><input type="radio" name="timeofday" /> Afternoon (after 12pm)</label>
+        </div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:8px;">
+      <label class="flabel">Preferred days</label>
+      <div class="check-group" style="margin-top:8px;">
+        <label class="check-item"><input type="checkbox" /> Monday</label>
+        <label class="check-item"><input type="checkbox" /> Tuesday</label>
+        <label class="check-item"><input type="checkbox" /> Wednesday</label>
+        <label class="check-item"><input type="checkbox" /> Thursday</label>
+        <label class="check-item"><input type="checkbox" /> Friday</label>
+        <label class="check-item"><input type="checkbox" /> Any day</label>
+      </div>
+    </div>
+    <div class="field" style="margin-top:16px;">
+      <label class="flabel">Additional notes</label>
+      <textarea class="wl" placeholder="Anything you'd like us to know — symptoms, concerns, previous treatment…"></textarea>
+    </div>
+  </div>
+
+  <!-- ── Location Preference ── -->
+  <div class="section">
+    <div class="section-title">Preferred Location</div>
+    <div class="field">
+      <label class="flabel">Select up to two locations</label>
+      <div class="check-group" style="margin-top:10px;">
+        <label class="check-item"><input type="checkbox" /> Greenslopes Private Hospital</label>
+        <label class="check-item"><input type="checkbox" /> North West Private (Everton Park)</label>
+        <label class="check-item"><input type="checkbox" /> Caboolture Private Hospital</label>
+        <label class="check-item"><input type="checkbox" /> Brisbane Private Hospital</label>
+        <label class="check-item"><input type="checkbox" /> Wisdom Surgery Clinic Cleveland</label>
+        <label class="check-item"><input type="checkbox" /> No preference</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Referral ── -->
+  <div class="section">
+    <div class="section-title">Referral Details</div>
+    <div class="field-row cols-2">
+      <div class="field">
+        <label class="flabel">Referring doctor / dentist *</label>
+        <input class="wl" type="text" placeholder="Dr Jane Smith" />
+      </div>
+      <div class="field">
+        <label class="flabel">Referrer's practice name</label>
+        <input class="wl" type="text" placeholder="Greenslopes Family Medical" />
+      </div>
+    </div>
+    <div class="field-row cols-2">
+      <div class="field">
+        <label class="flabel">Referral date</label>
+        <input class="wl" type="date" />
+      </div>
+      <div class="field">
+        <label class="flabel">Medicare number</label>
+        <input class="wl" type="text" placeholder="2345 67890 1" />
+      </div>
+    </div>
+    <p class="note">Please attach your referral letter to the email along with this completed form.</p>
+  </div>
+
+  <!-- ── Health Fund ── -->
+  <div class="section">
+    <div class="section-title">Health Insurance (if applicable)</div>
+    <div class="field-row cols-2">
+      <div class="field">
+        <label class="flabel">Health fund</label>
+        <div class="check-group" style="margin-top:8px;">
+          <label class="check-item"><input type="radio" name="fund" /> BUPA</label>
+          <label class="check-item"><input type="radio" name="fund" /> Medibank</label>
+          <label class="check-item"><input type="radio" name="fund" /> HCF</label>
+          <label class="check-item"><input type="radio" name="fund" /> nib</label>
+          <label class="check-item"><input type="radio" name="fund" /> HBF</label>
+          <label class="check-item"><input type="radio" name="fund" /> AHM</label>
+          <label class="check-item"><input type="radio" name="fund" /> Teachers Health</label>
+          <label class="check-item"><input type="radio" name="fund" /> Frank</label>
+          <label class="check-item"><input type="radio" name="fund" /> Other</label>
+          <label class="check-item"><input type="radio" name="fund" /> No fund</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="flabel">Membership number</label>
+        <input class="wl" type="text" placeholder="xxxxxxxx" style="margin-top:8px;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Declaration ── -->
+  <div class="section">
+    <div class="section-title">Declaration</div>
+    <label class="check-item" style="align-items:flex-start;gap:10px;line-height:1.6;font-size:13px;color:var(--ink-mid);">
+      <input type="checkbox" style="margin-top:3px;flex-shrink:0;" />
+      I confirm the information above is accurate and I consent to Wisdom Surgery Clinic contacting me to confirm this appointment request. I understand a referral is required to proceed.
+    </label>
+    <div class="field-row cols-2" style="margin-top:20px;">
+      <div class="field">
+        <label class="flabel">Full name</label>
+        <input class="wl" type="text" placeholder="Print full legal name" />
+      </div>
+      <div class="field">
+        <label class="flabel">Date</label>
+        <input class="wl" type="date" />
+      </div>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    Email completed form to <a href="mailto:adminteam@wisdomsurgery.clinic">adminteam@wisdomsurgery.clinic</a><br>
+    or call <a href="tel:1300111324" style="color:var(--ink-mid);text-decoration:none;">1300 111 324</a> &nbsp;·&nbsp;
+    Clinics across Brisbane, Everton Park, Caboolture, Redcliffe &amp; Cleveland
+  </div>
+
+</div>
+</body>
+</html>
