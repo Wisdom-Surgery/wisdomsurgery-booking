@@ -56,7 +56,7 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       Patient Policies
     </button>
-    <button class="tab-btn" id="tab-btn-form" onclick="switchTab('form')">
+    <button class="tab-btn" id="tab-btn-form" onclick="switchTab('form')" style="display:none;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       New Patient Registration
     </button>
@@ -356,7 +356,7 @@
   </div>
 
   <!-- Ready to register CTA -->
-  <div class="mt-8 p-6 rounded-2xl text-center" style="background:linear-gradient(135deg,#f0fbfb,#e5f7f7);border:1px solid rgba(42,180,180,0.2)">
+  <div class="mt-8 p-6 rounded-2xl text-center" style="display:none;background:linear-gradient(135deg,#f0fbfb,#e5f7f7);border:1px solid rgba(42,180,180,0.2)">
     <p class="font-display font-semibold text-navy-800 text-lg mb-2">Ready to register as a new patient?</p>
     <p class="text-navy-500 text-sm mb-4" style="line-height:1.7">Complete your new patient registration form — it takes about 10 minutes and helps us prepare for your visit.</p>
     <button onclick="switchTab('form')" class="nav-cta px-8 py-3 rounded-full font-semibold text-sm inline-flex items-center gap-2">
