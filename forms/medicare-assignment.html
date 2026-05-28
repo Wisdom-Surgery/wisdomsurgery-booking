@@ -687,16 +687,6 @@
     setTimeout(() => t.classList.remove('visible'), 3000);
   }
 
-  // ── Auto-fill rebate from item number ──
-  const rebateMap = {
-    '104': '$86.15', '105': '$43.35',
-    '91822': '$86.15', '91823': '$43.35', '91833': '$43.35'
-  };
-  function autoFillRebate(val) {
-    const code = val.split(' ')[0];
-    document.getElementById('s_rebate').value = rebateMap[code] || '';
-  }
-
   // ── Radio pill selection ──
   function selectPill(rowId, selId) {
     document.getElementById(rowId).querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
