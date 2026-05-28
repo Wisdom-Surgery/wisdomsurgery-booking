@@ -261,69 +261,87 @@
       </div>
     </div>
 
-    <!-- Service details -->
-    <div class="section">
-      <div class="section-heading">
-        <div class="section-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <!-- Service blocks container -->
+    <div id="serviceBlocksContainer">
+
+      <!-- Service block template — first block -->
+      <div class="section svc-block">
+        <div class="section-heading">
+          <div style="display:flex;align-items:center;gap:10px;flex:1;">
+            <div class="section-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <span class="svc-block-title">Service Details</span>
+          </div>
+          <button type="button" class="svc-remove-btn" onclick="removeServiceBlock(this)" style="display:none;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Remove
+          </button>
         </div>
-        Service Details
+
+        <div class="field-group">
+          <span class="field-label">Assignment type <span class="req">*</span></span>
+          <div class="radio-row svc-at-row">
+            <label class="radio-pill">
+              <input type="radio" name="s_assignType" value="pre" onchange="pillSelect(this)" />
+              Pre-service (before appointment)
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="s_assignType" value="post" onchange="pillSelect(this)" />
+              Post-service (after appointment)
+            </label>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <span class="field-label">Date of service <span class="req">*</span></span>
+            <input type="date" class="svc-date" />
+          </div>
+          <div class="field-group">
+            <span class="field-label">Time of service <span class="req">*</span></span>
+            <input type="time" class="svc-time" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <span class="field-label">Treating practitioner <span class="req">*</span></span>
+            <input type="text" class="svc-dr" value="Dr Anna Raymond" />
+          </div>
+          <div class="field-group">
+            <span class="field-label">MBS item number <span class="req">*</span></span>
+            <select class="svc-item" onchange="autoFillRebate(this)">
+              <option value="">— Select item —</option>
+              <option value="104 — Initial Specialist Consultation (In Person)">104 — Initial Consult (In Person)</option>
+              <option value="105 — Follow-Up Specialist Consultation (In Person)">105 — Follow-Up Consult (In Person)</option>
+              <option value="91822 — Initial Specialist Consultation (Video Telehealth)">91822 — Initial Consult (Video Telehealth)</option>
+              <option value="91823 — Follow-Up Specialist Consultation (Video Telehealth)">91823 — Follow-Up Consult (Video Telehealth)</option>
+              <option value="91833 — Follow-Up Telehealth (Phone)">91833 — Follow-Up Consult (Phone Telehealth)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <span class="field-label">Medicare rebate amount <span class="req">*</span></span>
+            <input type="text" class="svc-rebate" placeholder="Auto-filled on item selection" />
+          </div>
+          <div class="field-group">
+            <span class="field-label">Service description</span>
+            <input type="text" class="svc-desc" value="Specialist Consultation" />
+          </div>
+        </div>
+
+        <div style="margin-top:8px;padding-top:16px;border-top:1px dashed var(--border);">
+          <button type="button" onclick="addServiceBlock()" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border:1.5px dashed var(--teal);border-radius:8px;background:rgba(43,191,164,0.04);color:var(--teal);font-family:'Source Sans 3',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add new service
+          </button>
+        </div>
       </div>
 
-      <div class="field-group">
-        <span class="field-label">Assignment type <span class="req">*</span></span>
-        <div class="radio-row" id="s_assignTypeRow">
-          <label class="radio-pill" id="s_at1">
-            <input type="radio" name="s_assignType" value="pre" onchange="selectPill('s_assignTypeRow','s_at1')" />
-            Pre-service (before appointment)
-          </label>
-          <label class="radio-pill" id="s_at2">
-            <input type="radio" name="s_assignType" value="post" onchange="selectPill('s_assignTypeRow','s_at2')" />
-            Post-service (after appointment)
-          </label>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-group">
-          <span class="field-label">Date of service <span class="req">*</span></span>
-          <input type="date" id="s_date" />
-        </div>
-        <div class="field-group">
-          <span class="field-label">Time of service <span class="req">*</span></span>
-          <input type="time" id="s_time" />
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-group">
-          <span class="field-label">Treating practitioner <span class="req">*</span></span>
-          <input type="text" id="s_dr" value="Dr Anna Raymond" />
-        </div>
-        <div class="field-group">
-          <span class="field-label">MBS item number <span class="req">*</span></span>
-          <select id="s_items" onchange="autoFillRebate(this.value)">
-            <option value="">— Select item —</option>
-            <option value="104 — Initial Specialist Consultation (In Person)">104 — Initial Consult (In Person)</option>
-            <option value="105 — Follow-Up Specialist Consultation (In Person)">105 — Follow-Up Consult (In Person)</option>
-            <option value="91822 — Initial Specialist Consultation (Video Telehealth)">91822 — Initial Consult (Video Telehealth)</option>
-            <option value="91823 — Follow-Up Specialist Consultation (Video Telehealth)">91823 — Follow-Up Consult (Video Telehealth)</option>
-            <option value="91833 — Follow-Up Telehealth (Phone)">91833 — Follow-Up Consult (Phone Telehealth)</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-group">
-          <span class="field-label">Medicare rebate amount <span class="req">*</span></span>
-          <input type="text" id="s_rebate" placeholder="Auto-filled on item selection" />
-        </div>
-        <div class="field-group">
-          <span class="field-label">Service description</span>
-          <input type="text" id="s_svc" value="Specialist Consultation" />
-        </div>
-      </div>
-    </div>
+    </div><!-- /serviceBlocksContainer -->
 
     <!-- Generate link -->
     <div class="generate-section">
@@ -499,41 +517,115 @@
     modeBarBtn.style.cursor = 'default';
   }
 
+  // ── Service blocks ──
+  const REBATE_MAP = { '104':'$86.15','105':'$43.35','91822':'$86.15','91823':'$43.35','91833':'$43.35' };
+
+  function autoFillRebate(select) {
+    const code = select.value.split(' ')[0];
+    select.closest('.svc-block').querySelector('.svc-rebate').value = REBATE_MAP[code] || '';
+  }
+
+  function pillSelect(radio) {
+    const row = radio.closest('.svc-at-row');
+    row.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
+    radio.closest('.radio-pill').classList.add('selected');
+  }
+
+  function addServiceBlock() {
+    const container = document.getElementById('serviceBlocksContainer');
+    const template = container.querySelector('.svc-block');
+    const clone = template.cloneNode(true);
+    const idx = container.querySelectorAll('.svc-block').length + 1;
+
+    // Clear values
+    clone.querySelector('.svc-date').value = '';
+    clone.querySelector('.svc-time').value = '';
+    clone.querySelector('.svc-dr').value = 'Dr Anna Raymond';
+    clone.querySelector('.svc-item').value = '';
+    clone.querySelector('.svc-rebate').value = '';
+    clone.querySelector('.svc-desc').value = 'Specialist Consultation';
+    clone.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
+    clone.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+
+    // Unique radio name so each block is independent
+    clone.querySelectorAll('input[type="radio"]').forEach(r => r.name = `s_assignType_${idx}`);
+
+    // Update title and show remove button
+    clone.querySelector('.svc-block-title').textContent = `Service Details ${idx}`;
+    clone.querySelector('.svc-remove-btn').style.display = 'flex';
+
+    // Hide "Add new service" button on all blocks except the last
+    container.querySelectorAll('.svc-block').forEach(b => {
+      b.querySelector('button[onclick="addServiceBlock()"]').style.display = 'none';
+    });
+
+    container.appendChild(clone);
+    renumberBlocks();
+  }
+
+  function removeServiceBlock(btn) {
+    const block = btn.closest('.svc-block');
+    block.remove();
+    renumberBlocks();
+    // Show "Add new service" only on last block
+    const blocks = document.querySelectorAll('.svc-block');
+    blocks.forEach((b, i) => {
+      b.querySelector('button[onclick="addServiceBlock()"]').style.display = i === blocks.length - 1 ? 'inline-flex' : 'none';
+    });
+  }
+
+  function renumberBlocks() {
+    document.querySelectorAll('.svc-block').forEach((b, i) => {
+      b.querySelector('.svc-block-title').textContent = i === 0 ? 'Service Details' : `Service Details ${i + 1}`;
+      b.querySelector('.svc-remove-btn').style.display = i === 0 ? 'none' : 'flex';
+    });
+  }
+
   // ── Populate patient mode from URL params ──
   function populateFromParams(p) {
-    const pn  = p.get('pn')  || '';
-    const pb  = p.get('pb')  || '';
-    const at  = p.get('at')  || 'pre';
-    const sd  = p.get('sd')  || '';
-    const st  = p.get('st')  || '';
-    const dr  = p.get('dr')  || '';
-    const items = p.get('items') || '';
-    const rebate = p.get('rebate') || '';
-    const svc = p.get('svc') || '';
+    const pn = p.get('pn') || '';
+    const pb = p.get('pb') || '';
 
-    // Update all Dr name references
-    if (dr) document.querySelectorAll('.dr-name').forEach(el => el.textContent = dr);
+    // Pipe-separated per-service values
+    const ats     = (p.get('ats')     || '').split('|');
+    const dates   = (p.get('dates')   || '').split('|');
+    const times   = (p.get('times')   || '').split('|');
+    const drs     = (p.get('drs')     || '').split('|');
+    const items   = (p.get('items')   || '').split('|');
+    const rebates = (p.get('rebates') || '').split('|');
+    const svcs    = (p.get('svcs')    || '').split('|');
 
-    // Build service card
+    // Use first Dr name for agreement text
+    const firstDr = drs[0] || '';
+    if (firstDr) document.querySelectorAll('.dr-name').forEach(el => el.textContent = firstDr);
+
     const grid = document.getElementById('svcCardGrid');
     const rows = [
-      ['Patient',           pn  || '—'],
-      ['Date of birth',     pb  ? formatDate(pb) : '—'],
-      ['Assignment',        at === 'post' ? 'Post-service' : 'Pre-service'],
-      ['Date of service',   sd  ? formatDate(sd) : '—'],
-      ['Time of service',   st  ? formatTime(st) : '—'],
-      ['Treating practitioner', dr || '—', true],
-      ['MBS item number(s)', items || '—'],
-      ['Medicare rebate',   rebate || '—'],
+      ['Patient',       pn || '—'],
+      ['Date of birth', pb ? formatDate(pb) : '—'],
     ];
-    if (svc) rows.push(['Service', svc, true]);
 
-    grid.innerHTML = rows.map(([label, value, full]) =>
-      `<div class="svc-card-item${full ? ' svc-card-full' : ''}">
-        <span class="svc-card-label">${label}</span>
-        <span class="svc-card-value">${value}</span>
-      </div>`
-    ).join('');
+    const count = items.filter(Boolean).length;
+    items.filter(Boolean).forEach((item, i) => {
+      if (count > 1) rows.push([`― Service ${i + 1}`, '', 'divider']);
+      rows.push(['Assignment',            ats[i] === 'post' ? 'Post-service' : 'Pre-service']);
+      rows.push(['Date',                  dates[i] ? formatDate(dates[i]) : '—']);
+      rows.push(['Time',                  times[i] ? formatTime(times[i]) : '—']);
+      rows.push(['Practitioner',          drs[i] || '—']);
+      rows.push(['MBS item',              item]);
+      rows.push(['Medicare rebate',       rebates[i] || '—']);
+      if (svcs[i]) rows.push(['Service',  svcs[i]]);
+    });
+
+    if (count > 1) {
+      const total = rebates.reduce((s, r) => s + parseFloat((r||'0').replace(/[^0-9.]/g,'')||'0'), 0);
+      if (total > 0) rows.push(['Total rebate', `$${total.toFixed(2)}`, 'full']);
+    }
+
+    grid.innerHTML = rows.map(([label, value, flag]) => {
+      if (flag === 'divider') return `<div class="svc-card-item svc-card-full" style="border-top:1px dashed rgba(43,191,164,0.3);padding-top:8px;margin-top:4px;"><span class="svc-card-label" style="color:var(--blue);">${label}</span></div>`;
+      return `<div class="svc-card-item${flag === 'full' ? ' svc-card-full' : ''}"><span class="svc-card-label">${label}</span><span class="svc-card-value">${value}</span></div>`;
+    }).join('');
   }
 
   function formatDate(d) {
@@ -550,23 +642,26 @@
 
   // ── Generate patient link ──
   function generateLink() {
-    const pn     = document.getElementById('s_patientName').value.trim();
-    const pb     = document.getElementById('s_patientDOB').value;
-    const at     = document.querySelector('input[name="s_assignType"]:checked')?.value || '';
-    const sd     = document.getElementById('s_date').value;
-    const st     = document.getElementById('s_time').value;
-    const dr     = document.getElementById('s_dr').value.trim();
-    const items  = document.getElementById('s_items').value.trim();
-    const rebate = document.getElementById('s_rebate').value.trim();
-    const svc    = document.getElementById('s_svc').value.trim();
+    const pn = document.getElementById('s_patientName').value.trim();
+    const pb = document.getElementById('s_patientDOB').value;
 
-    if (!pn || !pb || !at || !sd || !st || !dr || !items || !rebate) {
+    const blocks = document.querySelectorAll('.svc-block');
+    const ats     = [...blocks].map(b => b.querySelector('input[type="radio"]:checked')?.value || '');
+    const dates   = [...blocks].map(b => b.querySelector('.svc-date').value);
+    const times   = [...blocks].map(b => b.querySelector('.svc-time').value);
+    const drs     = [...blocks].map(b => b.querySelector('.svc-dr').value.trim());
+    const items   = [...blocks].map(b => b.querySelector('.svc-item').value.trim());
+    const rebates = [...blocks].map(b => b.querySelector('.svc-rebate').value.trim());
+    const svcs    = [...blocks].map(b => b.querySelector('.svc-desc').value.trim());
+
+    if (!pn || !pb || ats.some(v=>!v) || dates.some(v=>!v) || times.some(v=>!v) || items.some(v=>!v) || rebates.some(v=>!v)) {
       showToast('Please complete all required fields first', true);
       return;
     }
 
-    const p = new URLSearchParams({ mode: 'patient', pn, pb, at, sd, st, dr, items, rebate });
-    if (svc) p.set('svc', svc);
+    const p = new URLSearchParams({ mode: 'patient', pn, pb,
+      ats: ats.join('|'), dates: dates.join('|'), times: times.join('|'),
+      drs: drs.join('|'), items: items.join('|'), rebates: rebates.join('|'), svcs: svcs.join('|') });
     const url = window.location.origin + window.location.pathname + '?' + p.toString();
 
     navigator.clipboard.writeText(url).then(() => {
