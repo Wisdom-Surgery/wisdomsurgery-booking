@@ -360,9 +360,9 @@
         About Bulk Billing
       </div>
       <div class="body-text">
-        <p>Bulk billing means your Medicare benefit is directed <strong>directly to Wisdom Surgery Clinic</strong> as full payment for the service provided. You have <strong>no out-of-pocket cost</strong> for the Medicare-covered component of your care.</p>
-        <p>By completing this form, you are assigning your Medicare benefit to Wisdom Surgery Clinic. This is a legal requirement under the <em>Health Insurance Act 1973</em>. This agreement meets the requirements of the <em>Health Insurance Amendment (Assignment of Medicare Benefits and Other Measures) Regulations 2025</em>, effective 1 July 2026.</p>
-        <p style="margin-top:12px;font-size:0.82rem;color:var(--ink-light);">This agreement is retained by Wisdom Surgery Clinic for a minimum of two years from the date the Medicare claim is lodged. A copy is available on request.</p>
+        <p>Bulk billing means your Medicare benefit is directed <strong>directly to <span class="dr-name">the treating practitioner</span></strong> as full payment for the service provided. You have <strong>no out-of-pocket cost</strong> for the Medicare-covered component of your care.</p>
+        <p>By completing this form, you are assigning your Medicare benefit to <span class="dr-name">the treating practitioner</span>. This is a legal requirement under the <em>Health Insurance Act 1973</em>. This agreement meets the requirements of the <em>Health Insurance Amendment (Assignment of Medicare Benefits and Other Measures) Regulations 2025</em>, effective 1 July 2026.</p>
+        <p style="margin-top:12px;font-size:0.82rem;color:var(--ink-light);">This agreement is retained by <span class="dr-name">the treating practitioner</span> for a minimum of two years from the date the Medicare claim is lodged. A copy is available on request.</p>
       </div>
     </div>
 
@@ -410,11 +410,11 @@
 
       <div class="statement-item">
         <svg class="statement-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <span>I assign my Medicare benefit (or the patient's Medicare benefit) to <strong id="drNameDisplay">the treating practitioner</strong> at Wisdom Surgery Clinic as full payment for the service described above. I understand this means there will be <strong>no out-of-pocket cost</strong> to me for the Medicare-covered portion of this service.</span>
+        <span>I assign my Medicare benefit (or the patient's Medicare benefit) to <strong id="drNameDisplay" class="dr-name">the treating practitioner</strong> as full payment for the service described above. I understand this means there will be <strong>no out-of-pocket cost</strong> to me for the Medicare-covered portion of this service.</span>
       </div>
       <div class="statement-item">
         <svg class="statement-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <span>I understand that Wisdom Surgery Clinic will claim the Medicare benefit directly from Services Australia. <strong>I do not need to claim this separately.</strong></span>
+        <span>I understand that <span class="dr-name">the treating practitioner</span> will claim the Medicare benefit directly from Services Australia. <strong>I do not need to claim this separately.</strong></span>
       </div>
       <div class="statement-item">
         <svg class="statement-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -511,8 +511,8 @@
     const rebate = p.get('rebate') || '';
     const svc = p.get('svc') || '';
 
-    // Update Dr name in agreement text
-    if (dr) document.getElementById('drNameDisplay').textContent = dr;
+    // Update all Dr name references
+    if (dr) document.querySelectorAll('.dr-name').forEach(el => el.textContent = dr);
 
     // Build service card
     const grid = document.getElementById('svcCardGrid');
