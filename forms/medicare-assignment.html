@@ -261,15 +261,24 @@
       </div>
     </div>
 
-    <!-- Service details -->
+    <!-- Practitioner & assignment -->
     <div class="section">
       <div class="section-heading">
         <div class="section-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
         </div>
-        Service Details
+        Practitioner &amp; Agreement Type
       </div>
-
+      <div class="field-row">
+        <div class="field-group">
+          <span class="field-label">Treating practitioner <span class="req">*</span></span>
+          <input type="text" id="s_dr" value="Dr Anna Raymond" />
+        </div>
+        <div class="field-group">
+          <span class="field-label">Service description</span>
+          <input type="text" id="s_svc" value="Specialist Consultation" />
+        </div>
+      </div>
       <div class="field-group">
         <span class="field-label">Assignment type <span class="req">*</span></span>
         <div class="radio-row" id="s_assignTypeRow">
@@ -283,37 +292,15 @@
           </label>
         </div>
       </div>
-
-      <div class="field-row">
-        <div class="field-group">
-          <span class="field-label">Date of service <span class="req">*</span></span>
-          <input type="date" id="s_date" />
-        </div>
-        <div class="field-group">
-          <span class="field-label">Time of service <span class="req">*</span></span>
-          <input type="time" id="s_time" />
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-group">
-          <span class="field-label">Treating practitioner <span class="req">*</span></span>
-          <input type="text" id="s_dr" value="Dr Anna Raymond" />
-        </div>
-        <div class="field-group">
-          <span class="field-label">Service description</span>
-          <input type="text" id="s_svc" value="Specialist Consultation" />
-        </div>
-      </div>
-
-      <!-- Service rows -->
-      <div id="serviceRows"></div>
-
-      <button type="button" onclick="addServiceRow()" style="display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:8px 16px;border:1.5px dashed var(--teal);border-radius:8px;background:rgba(43,191,164,0.04);color:var(--teal);font-family:'Source Sans 3',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Add another service
-      </button>
     </div>
+
+    <!-- Service blocks -->
+    <div id="serviceBlocks"></div>
+
+    <button type="button" onclick="addServiceBlock()" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;padding:9px 18px;border:1.5px dashed var(--teal);border-radius:8px;background:rgba(43,191,164,0.04);color:var(--teal);font-family:'Source Sans 3',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add another service
+    </button>
 
     <!-- Generate link -->
     <div class="generate-section">
@@ -489,101 +476,116 @@
     modeBarBtn.style.cursor = 'default';
   }
 
-  // ── Service rows (staff mode) ──
+  // ── Service blocks (staff mode) ──
   const ITEM_OPTIONS = [
-    { value: '104 — Initial Specialist Consultation (In Person)',    label: '104 — Initial Consult (In Person)' },
-    { value: '105 — Follow-Up Specialist Consultation (In Person)',  label: '105 — Follow-Up Consult (In Person)' },
-    { value: '91822 — Initial Specialist Consultation (Video Telehealth)', label: '91822 — Initial Consult (Video Telehealth)' },
-    { value: '91823 — Follow-Up Specialist Consultation (Video Telehealth)', label: '91823 — Follow-Up Consult (Video Telehealth)' },
-    { value: '91833 — Follow-Up Telehealth (Phone)', label: '91833 — Follow-Up Consult (Phone Telehealth)' },
+    { value: '104 — Initial Specialist Consultation (In Person)',         label: '104 — Initial Consult (In Person)' },
+    { value: '105 — Follow-Up Specialist Consultation (In Person)',       label: '105 — Follow-Up Consult (In Person)' },
+    { value: '91822 — Initial Specialist Consultation (Video Telehealth)',label: '91822 — Initial Consult (Video Telehealth)' },
+    { value: '91823 — Follow-Up Specialist Consultation (Video Telehealth)',label: '91823 — Follow-Up Consult (Video Telehealth)' },
+    { value: '91833 — Follow-Up Telehealth (Phone)',                      label: '91833 — Follow-Up Consult (Phone Telehealth)' },
   ];
 
-  function buildSelectOptions() {
+  function buildSelectOptions(selectedVal) {
     return '<option value="">— Select item —</option>' +
-      ITEM_OPTIONS.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+      ITEM_OPTIONS.map(o => `<option value="${o.value}"${o.value === selectedVal ? ' selected' : ''}>${o.label}</option>`).join('');
   }
 
-  function addServiceRow(itemVal, rebateVal) {
-    const container = document.getElementById('serviceRows');
+  function addServiceBlock(data) {
+    const container = document.getElementById('serviceBlocks');
     const idx = container.children.length;
     const div = document.createElement('div');
-    div.className = 'service-row';
-    div.style.cssText = 'display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-bottom:12px;padding:14px 16px;background:rgba(43,191,164,0.04);border:1px solid rgba(43,191,164,0.18);border-radius:8px;';
+    div.className = 'service-block section';
+    div.style.cssText = 'border-color:rgba(43,191,164,0.25);';
     div.innerHTML = `
-      <div class="field-group" style="margin:0;">
-        <span class="field-label">MBS item number <span class="req">*</span></span>
-        <select onchange="autoFillRebate(this)">${buildSelectOptions()}</select>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--cream-dark);">
+        <span style="font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:600;color:var(--blue);">Service ${idx + 1}</span>
+        <button type="button" onclick="removeServiceBlock(this)" title="Remove service" style="display:${idx === 0 ? 'none' : 'flex'};align-items:center;gap:5px;padding:4px 10px;border:1.5px solid #e0d8d0;border-radius:6px;background:white;cursor:pointer;color:#7A8A96;font-size:0.78rem;font-family:'Source Sans 3',sans-serif;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Remove
+        </button>
       </div>
-      <div class="field-group" style="margin:0;">
-        <span class="field-label">Medicare rebate <span class="req">*</span></span>
-        <input type="text" placeholder="Auto-filled" />
+      <div class="field-row">
+        <div class="field-group">
+          <span class="field-label">Date <span class="req">*</span></span>
+          <input type="date" class="svc-date" value="${data?.date || ''}" />
+        </div>
+        <div class="field-group">
+          <span class="field-label">Time <span class="req">*</span></span>
+          <input type="time" class="svc-time" value="${data?.time || ''}" />
+        </div>
       </div>
-      <button type="button" onclick="removeServiceRow(this)" title="Remove" style="width:34px;height:38px;border:1.5px solid #e0d8d0;border-radius:6px;background:white;cursor:pointer;color:#7A8A96;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;${idx === 0 ? 'visibility:hidden;' : ''}">×</button>
+      <div class="field-row">
+        <div class="field-group">
+          <span class="field-label">MBS item number <span class="req">*</span></span>
+          <select class="svc-item" onchange="autoFillRebate(this)">${buildSelectOptions(data?.item || '')}</select>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Medicare rebate <span class="req">*</span></span>
+          <input type="text" class="svc-rebate" placeholder="Auto-filled" value="${data?.rebate || ''}" />
+        </div>
+      </div>
     `;
-    if (itemVal) {
-      div.querySelector('select').value = itemVal;
-      div.querySelector('input').value = rebateVal || '';
-    }
     container.appendChild(div);
+    renumberBlocks();
   }
 
-  function removeServiceRow(btn) {
-    btn.closest('.service-row').remove();
-    // show remove button on first row only if more than one row
-    const rows = document.querySelectorAll('.service-row');
-    rows.forEach((r, i) => {
-      r.querySelector('button').style.visibility = (i === 0 && rows.length === 1) ? 'hidden' : 'visible';
+  function removeServiceBlock(btn) {
+    btn.closest('.service-block').remove();
+    renumberBlocks();
+  }
+
+  function renumberBlocks() {
+    document.querySelectorAll('.service-block').forEach((b, i) => {
+      b.querySelector('span').textContent = `Service ${i + 1}`;
+      b.querySelector('button[title="Remove service"]').style.display = i === 0 ? 'none' : 'flex';
     });
   }
 
   function autoFillRebate(select) {
     const code = select.value.split(' ')[0];
     const map = { '104':'$86.15','105':'$43.35','91822':'$86.15','91823':'$43.35','91833':'$43.35' };
-    select.closest('.service-row').querySelector('input').value = map[code] || '';
+    select.closest('.service-block').querySelector('.svc-rebate').value = map[code] || '';
   }
 
-  // Init first row in staff mode
-  if (MODE === 'staff') addServiceRow();
+  // Init first block in staff mode
+  if (MODE === 'staff') addServiceBlock();
 
   // ── Populate patient mode from URL params ──
   function populateFromParams(p) {
     const pn  = p.get('pn')  || '';
     const pb  = p.get('pb')  || '';
     const at  = p.get('at')  || 'pre';
-    const sd  = p.get('sd')  || '';
-    const st  = p.get('st')  || '';
     const dr  = p.get('dr')  || '';
     const svc = p.get('svc') || '';
 
-    // Multiple services encoded as pipe-separated
+    const datesList   = (p.get('dates')   || '').split('|').filter(Boolean);
+    const timesList   = (p.get('times')   || '').split('|').filter(Boolean);
     const itemsList   = (p.get('items')   || '').split('|').filter(Boolean);
     const rebatesList = (p.get('rebates') || '').split('|').filter(Boolean);
 
-    // Update all Dr name references
     if (dr) document.querySelectorAll('.dr-name').forEach(el => el.textContent = dr);
 
-    // Build service card
     const grid = document.getElementById('svcCardGrid');
     const rows = [
       ['Patient',               pn || '—'],
       ['Date of birth',         pb ? formatDate(pb) : '—'],
       ['Assignment',            at === 'post' ? 'Post-service' : 'Pre-service'],
-      ['Date of service',       sd ? formatDate(sd) : '—'],
-      ['Time of service',       st ? formatTime(st) : '—'],
       ['Treating practitioner', dr || '—', true],
     ];
-    if (svc) rows.push(['Service', svc, true]);
+    if (svc) rows.push(['Service type', svc, true]);
 
-    // Service lines
-    if (itemsList.length === 1) {
-      rows.push(['MBS item number', itemsList[0] || '—']);
-      rows.push(['Medicare rebate', rebatesList[0] || '—']);
-    } else {
-      itemsList.forEach((item, i) => {
-        rows.push([`Service ${i + 1}`, item || '—', true]);
-        rows.push(['Medicare rebate', rebatesList[i] || '—', true]);
-      });
-      // Total rebate
+    // One block per service
+    itemsList.forEach((item, i) => {
+      const label = itemsList.length > 1 ? `Service ${i + 1}` : 'Service';
+      rows.push([label, '', true]); // section divider label
+      rows.push(['Date', datesList[i] ? formatDate(datesList[i]) : '—']);
+      rows.push(['Time', timesList[i] ? formatTime(timesList[i]) : '—']);
+      rows.push(['MBS item', item || '—', true]);
+      rows.push(['Medicare rebate', rebatesList[i] || '—']);
+    });
+
+    // Total if multiple
+    if (itemsList.length > 1) {
       const total = rebatesList.reduce((sum, r) => {
         const n = parseFloat((r || '0').replace(/[^0-9.]/g, ''));
         return sum + (isNaN(n) ? 0 : n);
@@ -592,10 +594,12 @@
     }
 
     grid.innerHTML = rows.map(([label, value, full]) =>
-      `<div class="svc-card-item${full ? ' svc-card-full' : ''}">
-        <span class="svc-card-label">${label}</span>
-        <span class="svc-card-value">${value}</span>
-      </div>`
+      value === ''
+        ? `<div class="svc-card-item svc-card-full" style="border-top:1px dashed rgba(43,191,164,0.25);padding-top:10px;margin-top:4px;"><span class="svc-card-label" style="color:var(--blue);font-size:0.72rem;">${label}</span></div>`
+        : `<div class="svc-card-item${full ? ' svc-card-full' : ''}">
+            <span class="svc-card-label">${label}</span>
+            <span class="svc-card-value">${value}</span>
+           </div>`
     ).join('');
   }
 
@@ -621,17 +625,20 @@
     const dr  = document.getElementById('s_dr').value.trim();
     const svc = document.getElementById('s_svc').value.trim();
 
-    // Collect all service rows
-    const serviceRows = document.querySelectorAll('.service-row');
-    const itemsList   = [...serviceRows].map(r => r.querySelector('select').value.trim());
-    const rebatesList = [...serviceRows].map(r => r.querySelector('input').value.trim());
+    // Collect all service blocks
+    const blocks = document.querySelectorAll('.service-block');
+    const dates   = [...blocks].map(b => b.querySelector('.svc-date').value);
+    const times   = [...blocks].map(b => b.querySelector('.svc-time').value);
+    const itemsList   = [...blocks].map(b => b.querySelector('.svc-item').value.trim());
+    const rebatesList = [...blocks].map(b => b.querySelector('.svc-rebate').value.trim());
 
-    if (!pn || !pb || !at || !sd || !st || !dr || itemsList.some(i => !i) || rebatesList.some(r => !r)) {
+    if (!pn || !pb || !at || !dr || dates.some(d => !d) || times.some(t => !t) || itemsList.some(i => !i) || rebatesList.some(r => !r)) {
       showToast('Please complete all required fields first', true);
       return;
     }
 
-    const p = new URLSearchParams({ mode: 'patient', pn, pb, at, sd, st, dr,
+    const p = new URLSearchParams({ mode: 'patient', pn, pb, at, dr,
+      dates: dates.join('|'), times: times.join('|'),
       items: itemsList.join('|'), rebates: rebatesList.join('|') });
     if (svc) p.set('svc', svc);
     const url = window.location.origin + window.location.pathname + '?' + p.toString();
