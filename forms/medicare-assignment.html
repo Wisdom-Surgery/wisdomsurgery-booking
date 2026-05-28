@@ -298,29 +298,29 @@
       <div class="field-row">
         <div class="field-group">
           <span class="field-label">Treating practitioner <span class="req">*</span></span>
-          <input type="text" id="s_dr" placeholder="Dr full name" />
+          <input type="text" id="s_dr" value="Dr Anna Raymond" />
         </div>
         <div class="field-group">
-          <span class="field-label">MBS item number(s) <span class="req">*</span></span>
-          <input type="text" id="s_items" list="itemList" placeholder="e.g. 104 or 91822" />
-          <datalist id="itemList">
-            <option value="104 — Initial Specialist Consultation (In Person)">
-            <option value="105 — Follow-Up Specialist Consultation (In Person)">
-            <option value="91822 — Initial Specialist Consultation (Video Telehealth)">
-            <option value="91823 — Follow-Up Specialist Consultation (Video Telehealth)">
-            <option value="91833 — Follow-Up Specialist Consultation (Phone Telehealth)">
-          </datalist>
+          <span class="field-label">MBS item number <span class="req">*</span></span>
+          <select id="s_items" onchange="autoFillRebate(this.value)">
+            <option value="">— Select item —</option>
+            <option value="104 — Initial Specialist Consultation (In Person)">104 — Initial Consult (In Person)</option>
+            <option value="105 — Follow-Up Specialist Consultation (In Person)">105 — Follow-Up Consult (In Person)</option>
+            <option value="91822 — Initial Specialist Consultation (Video Telehealth)">91822 — Initial Consult (Video Telehealth)</option>
+            <option value="91823 — Follow-Up Specialist Consultation (Video Telehealth)">91823 — Follow-Up Consult (Video Telehealth)</option>
+            <option value="91833 — Follow-Up Telehealth (Phone)">91833 — Follow-Up Consult (Phone Telehealth)</option>
+          </select>
         </div>
       </div>
 
       <div class="field-row">
         <div class="field-group">
           <span class="field-label">Medicare rebate amount <span class="req">*</span></span>
-          <input type="text" id="s_rebate" placeholder="e.g. $78.05" />
+          <input type="text" id="s_rebate" placeholder="Auto-filled on item selection" />
         </div>
         <div class="field-group">
           <span class="field-label">Service description</span>
-          <input type="text" id="s_svc" placeholder="e.g. Wisdom Tooth Assessment" />
+          <input type="text" id="s_svc" value="Specialist Consultation" />
         </div>
       </div>
     </div>
@@ -590,6 +590,16 @@
     t.style.background = isError ? '#c0392b' : '#0f2a4d';
     t.classList.add('visible');
     setTimeout(() => t.classList.remove('visible'), 3000);
+  }
+
+  // ── Auto-fill rebate from item number ──
+  const rebateMap = {
+    '104': '$86.15', '105': '$43.35',
+    '91822': '$86.15', '91823': '$43.35', '91833': '$43.35'
+  };
+  function autoFillRebate(val) {
+    const code = val.split(' ')[0];
+    document.getElementById('s_rebate').value = rebateMap[code] || '';
   }
 
   // ── Radio pill selection ──
