@@ -301,28 +301,18 @@
           <input type="text" id="s_dr" value="Dr Anna Raymond" />
         </div>
         <div class="field-group">
-          <span class="field-label">MBS item number <span class="req">*</span></span>
-          <select id="s_items" onchange="autoFillRebate(this.value)">
-            <option value="">— Select item —</option>
-            <option value="104 — Initial Specialist Consultation (In Person)">104 — Initial Consult (In Person)</option>
-            <option value="105 — Follow-Up Specialist Consultation (In Person)">105 — Follow-Up Consult (In Person)</option>
-            <option value="91822 — Initial Specialist Consultation (Video Telehealth)">91822 — Initial Consult (Video Telehealth)</option>
-            <option value="91823 — Follow-Up Specialist Consultation (Video Telehealth)">91823 — Follow-Up Consult (Video Telehealth)</option>
-            <option value="91833 — Follow-Up Telehealth (Phone)">91833 — Follow-Up Consult (Phone Telehealth)</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <div class="field-group">
-          <span class="field-label">Medicare rebate amount <span class="req">*</span></span>
-          <input type="text" id="s_rebate" placeholder="Auto-filled on item selection" />
-        </div>
-        <div class="field-group">
           <span class="field-label">Service description</span>
           <input type="text" id="s_svc" value="Specialist Consultation" />
         </div>
       </div>
+
+      <!-- Service rows -->
+      <div id="serviceRows"></div>
+
+      <button type="button" onclick="addServiceRow()" style="display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:8px 16px;border:1.5px dashed var(--teal);border-radius:8px;background:rgba(43,191,164,0.04);color:var(--teal);font-family:'Source Sans 3',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add another service
+      </button>
     </div>
 
     <!-- Generate link -->
@@ -499,6 +489,62 @@
     modeBarBtn.style.cursor = 'default';
   }
 
+  // ── Service rows (staff mode) ──
+  const ITEM_OPTIONS = [
+    { value: '104 — Initial Specialist Consultation (In Person)',    label: '104 — Initial Consult (In Person)' },
+    { value: '105 — Follow-Up Specialist Consultation (In Person)',  label: '105 — Follow-Up Consult (In Person)' },
+    { value: '91822 — Initial Specialist Consultation (Video Telehealth)', label: '91822 — Initial Consult (Video Telehealth)' },
+    { value: '91823 — Follow-Up Specialist Consultation (Video Telehealth)', label: '91823 — Follow-Up Consult (Video Telehealth)' },
+    { value: '91833 — Follow-Up Telehealth (Phone)', label: '91833 — Follow-Up Consult (Phone Telehealth)' },
+  ];
+
+  function buildSelectOptions() {
+    return '<option value="">— Select item —</option>' +
+      ITEM_OPTIONS.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+  }
+
+  function addServiceRow(itemVal, rebateVal) {
+    const container = document.getElementById('serviceRows');
+    const idx = container.children.length;
+    const div = document.createElement('div');
+    div.className = 'service-row';
+    div.style.cssText = 'display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-bottom:12px;padding:14px 16px;background:rgba(43,191,164,0.04);border:1px solid rgba(43,191,164,0.18);border-radius:8px;';
+    div.innerHTML = `
+      <div class="field-group" style="margin:0;">
+        <span class="field-label">MBS item number <span class="req">*</span></span>
+        <select onchange="autoFillRebate(this)">${buildSelectOptions()}</select>
+      </div>
+      <div class="field-group" style="margin:0;">
+        <span class="field-label">Medicare rebate <span class="req">*</span></span>
+        <input type="text" placeholder="Auto-filled" />
+      </div>
+      <button type="button" onclick="removeServiceRow(this)" title="Remove" style="width:34px;height:38px;border:1.5px solid #e0d8d0;border-radius:6px;background:white;cursor:pointer;color:#7A8A96;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;${idx === 0 ? 'visibility:hidden;' : ''}">×</button>
+    `;
+    if (itemVal) {
+      div.querySelector('select').value = itemVal;
+      div.querySelector('input').value = rebateVal || '';
+    }
+    container.appendChild(div);
+  }
+
+  function removeServiceRow(btn) {
+    btn.closest('.service-row').remove();
+    // show remove button on first row only if more than one row
+    const rows = document.querySelectorAll('.service-row');
+    rows.forEach((r, i) => {
+      r.querySelector('button').style.visibility = (i === 0 && rows.length === 1) ? 'hidden' : 'visible';
+    });
+  }
+
+  function autoFillRebate(select) {
+    const code = select.value.split(' ')[0];
+    const map = { '104':'$86.15','105':'$43.35','91822':'$86.15','91823':'$43.35','91833':'$43.35' };
+    select.closest('.service-row').querySelector('input').value = map[code] || '';
+  }
+
+  // Init first row in staff mode
+  if (MODE === 'staff') addServiceRow();
+
   // ── Populate patient mode from URL params ──
   function populateFromParams(p) {
     const pn  = p.get('pn')  || '';
@@ -507,9 +553,11 @@
     const sd  = p.get('sd')  || '';
     const st  = p.get('st')  || '';
     const dr  = p.get('dr')  || '';
-    const items = p.get('items') || '';
-    const rebate = p.get('rebate') || '';
     const svc = p.get('svc') || '';
+
+    // Multiple services encoded as pipe-separated
+    const itemsList   = (p.get('items')   || '').split('|').filter(Boolean);
+    const rebatesList = (p.get('rebates') || '').split('|').filter(Boolean);
 
     // Update all Dr name references
     if (dr) document.querySelectorAll('.dr-name').forEach(el => el.textContent = dr);
@@ -517,16 +565,31 @@
     // Build service card
     const grid = document.getElementById('svcCardGrid');
     const rows = [
-      ['Patient',           pn  || '—'],
-      ['Date of birth',     pb  ? formatDate(pb) : '—'],
-      ['Assignment',        at === 'post' ? 'Post-service' : 'Pre-service'],
-      ['Date of service',   sd  ? formatDate(sd) : '—'],
-      ['Time of service',   st  ? formatTime(st) : '—'],
+      ['Patient',               pn || '—'],
+      ['Date of birth',         pb ? formatDate(pb) : '—'],
+      ['Assignment',            at === 'post' ? 'Post-service' : 'Pre-service'],
+      ['Date of service',       sd ? formatDate(sd) : '—'],
+      ['Time of service',       st ? formatTime(st) : '—'],
       ['Treating practitioner', dr || '—', true],
-      ['MBS item number(s)', items || '—'],
-      ['Medicare rebate',   rebate || '—'],
     ];
     if (svc) rows.push(['Service', svc, true]);
+
+    // Service lines
+    if (itemsList.length === 1) {
+      rows.push(['MBS item number', itemsList[0] || '—']);
+      rows.push(['Medicare rebate', rebatesList[0] || '—']);
+    } else {
+      itemsList.forEach((item, i) => {
+        rows.push([`Service ${i + 1}`, item || '—', true]);
+        rows.push(['Medicare rebate', rebatesList[i] || '—', true]);
+      });
+      // Total rebate
+      const total = rebatesList.reduce((sum, r) => {
+        const n = parseFloat((r || '0').replace(/[^0-9.]/g, ''));
+        return sum + (isNaN(n) ? 0 : n);
+      }, 0);
+      if (total > 0) rows.push(['Total rebate', `$${total.toFixed(2)}`, true]);
+    }
 
     grid.innerHTML = rows.map(([label, value, full]) =>
       `<div class="svc-card-item${full ? ' svc-card-full' : ''}">
@@ -550,22 +613,26 @@
 
   // ── Generate patient link ──
   function generateLink() {
-    const pn     = document.getElementById('s_patientName').value.trim();
-    const pb     = document.getElementById('s_patientDOB').value;
-    const at     = document.querySelector('input[name="s_assignType"]:checked')?.value || '';
-    const sd     = document.getElementById('s_date').value;
-    const st     = document.getElementById('s_time').value;
-    const dr     = document.getElementById('s_dr').value.trim();
-    const items  = document.getElementById('s_items').value.trim();
-    const rebate = document.getElementById('s_rebate').value.trim();
-    const svc    = document.getElementById('s_svc').value.trim();
+    const pn  = document.getElementById('s_patientName').value.trim();
+    const pb  = document.getElementById('s_patientDOB').value;
+    const at  = document.querySelector('input[name="s_assignType"]:checked')?.value || '';
+    const sd  = document.getElementById('s_date').value;
+    const st  = document.getElementById('s_time').value;
+    const dr  = document.getElementById('s_dr').value.trim();
+    const svc = document.getElementById('s_svc').value.trim();
 
-    if (!pn || !pb || !at || !sd || !st || !dr || !items || !rebate) {
+    // Collect all service rows
+    const serviceRows = document.querySelectorAll('.service-row');
+    const itemsList   = [...serviceRows].map(r => r.querySelector('select').value.trim());
+    const rebatesList = [...serviceRows].map(r => r.querySelector('input').value.trim());
+
+    if (!pn || !pb || !at || !sd || !st || !dr || itemsList.some(i => !i) || rebatesList.some(r => !r)) {
       showToast('Please complete all required fields first', true);
       return;
     }
 
-    const p = new URLSearchParams({ mode: 'patient', pn, pb, at, sd, st, dr, items, rebate });
+    const p = new URLSearchParams({ mode: 'patient', pn, pb, at, sd, st, dr,
+      items: itemsList.join('|'), rebates: rebatesList.join('|') });
     if (svc) p.set('svc', svc);
     const url = window.location.origin + window.location.pathname + '?' + p.toString();
 
@@ -590,16 +657,6 @@
     t.style.background = isError ? '#c0392b' : '#0f2a4d';
     t.classList.add('visible');
     setTimeout(() => t.classList.remove('visible'), 3000);
-  }
-
-  // ── Auto-fill rebate from item number ──
-  const rebateMap = {
-    '104': '$86.15', '105': '$43.35',
-    '91822': '$86.15', '91823': '$43.35', '91833': '$43.35'
-  };
-  function autoFillRebate(val) {
-    const code = val.split(' ')[0];
-    document.getElementById('s_rebate').value = rebateMap[code] || '';
   }
 
   // ── Radio pill selection ──
