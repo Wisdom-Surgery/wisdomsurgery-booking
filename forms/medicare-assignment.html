@@ -326,9 +326,28 @@
             <input type="date" id="appointmentDate" name="appointmentDate" />
           </div>
           <div class="field-group">
-            <span class="field-label">Treating practitioner</span>
-            <input type="text" id="practitionerPre" name="practitionerPre" placeholder="Dr name (if known)" />
+            <span class="field-label">Appointment time <span class="req">*</span></span>
+            <input type="time" id="appointmentTime" name="appointmentTime" />
           </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <span class="field-label">Treating practitioner <span class="req">*</span></span>
+            <input type="text" id="practitionerPre" name="practitionerPre" placeholder="Dr full name" oninput="updateDrName(this.value)" />
+          </div>
+          <div class="field-group">
+            <span class="field-label">MBS item number(s) <span class="req">*</span></span>
+            <input type="text" id="mbsItemsPre" name="mbsItemsPre" placeholder="e.g. 104, 320" />
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <span class="field-label">Medicare rebate amount <span class="req">*</span></span>
+            <input type="text" id="rebateAmountPre" name="rebateAmountPre" placeholder="e.g. $75.05" />
+          </div>
+        </div>
+        <div class="info-badge">
+          <strong>Staff to complete:</strong> Fill in practitioner name, MBS item number(s), and rebate amount before presenting to patient.
         </div>
       </div>
 
@@ -343,14 +362,25 @@
             <input type="date" id="serviceDate" name="serviceDate" />
           </div>
           <div class="field-group">
-            <span class="field-label">Treating practitioner <span class="req">*</span></span>
-            <input type="text" id="practitionerPost" name="practitionerPost" placeholder="Dr full name" />
+            <span class="field-label">Time of service <span class="req">*</span></span>
+            <input type="time" id="serviceTime" name="serviceTime" />
           </div>
         </div>
-        <div class="field-group">
-          <span class="field-label">MBS item number(s) <span class="req">*</span></span>
-          <input type="text" id="mbsItems" name="mbsItems" placeholder="e.g. 104, 320 — enter all items billed" />
-          <p class="note-text">List all MBS items claimed for this service. This is required for post-service assignment agreements.</p>
+        <div class="field-row">
+          <div class="field-group">
+            <span class="field-label">Treating practitioner <span class="req">*</span></span>
+            <input type="text" id="practitionerPost" name="practitionerPost" placeholder="Dr full name" oninput="updateDrName(this.value)" />
+          </div>
+          <div class="field-group">
+            <span class="field-label">MBS item number(s) <span class="req">*</span></span>
+            <input type="text" id="mbsItems" name="mbsItems" placeholder="e.g. 104, 320 — enter all items billed" />
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <span class="field-label">Medicare rebate amount <span class="req">*</span></span>
+            <input type="text" id="rebateAmountPost" name="rebateAmountPost" placeholder="e.g. $75.05" />
+          </div>
         </div>
       </div>
 
@@ -400,7 +430,7 @@
 
       <div class="statement-item">
         <svg class="statement-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <span>I assign my Medicare benefit (or the patient's Medicare benefit) to <strong>Wisdom Surgery Clinic</strong> as full payment for the service described above. I understand this means there will be <strong>no out-of-pocket cost</strong> to me for the Medicare-covered portion of this service.</span>
+        <span>I assign my Medicare benefit (or the patient's Medicare benefit) to <strong id="drNameDisplay">the treating practitioner</strong> at Wisdom Surgery Clinic as full payment for the service described above. I understand this means there will be <strong>no out-of-pocket cost</strong> to me for the Medicare-covered portion of this service.</span>
       </div>
       <div class="statement-item">
         <svg class="statement-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -480,6 +510,12 @@
 <script>
   // Set today's date
   document.getElementById('sigDate').valueAsDate = new Date();
+
+  // Update Dr name in agreement text
+  function updateDrName(val) {
+    const el = document.getElementById('drNameDisplay');
+    el.textContent = val.trim() ? val.trim() : 'the treating practitioner';
+  }
 
   // Radio pill selection
   function selectPill(rowId, selId) {
