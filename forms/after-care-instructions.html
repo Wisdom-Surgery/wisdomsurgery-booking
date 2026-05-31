@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home Care After Oral Surgery · Wisdom Surgery Clinic</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -176,47 +177,62 @@
   </div>
 
   <script>
-  (function() {
-    const p = new URLSearchParams(window.location.search);
+  (async function() {
+    const MEDS = { amox:'Amoxycillin', aug:'Augmentin', kef:'Keflex', clin:'Clindamycin' };
 
-    // Patient name + date
-    const name = p.get('name');
-    const date = p.get('date') || new Date().toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' });
-    document.getElementById('patient-name').textContent = name || '—';
-    document.getElementById('patient-date').textContent = date;
+    function showError(msg) {
+      document.querySelector('.card').innerHTML = `
+        <div style="text-align:center;padding:48px 20px;">
+          <img src="assets/emblem.png" style="width:52px;opacity:0.35;margin-bottom:18px;display:block;margin-left:auto;margin-right:auto;">
+          <p style="font-family:'Playfair Display',serif;font-size:1.1rem;color:#153964;margin-bottom:10px;">Instructions not found</p>
+          <p style="font-size:0.82rem;color:#4d7daf;line-height:1.6;">${msg}</p>
+          <p style="margin-top:16px;font-size:0.82rem;"><a href="tel:+61409630040" style="color:#27a8b5;font-weight:600;">0409 630 040</a></p>
+        </div>`;
+    }
 
-    // Personal note
-    const note = p.get('note');
-    if (note && note.trim()) {
-      document.getElementById('note-text').textContent = note;
+    const id = new URLSearchParams(window.location.search).get('id');
+    if (!id) { showError('No instructions ID found in this link. Please contact Wisdom Surgery Clinic.'); return; }
+
+    const _supa = supabase.createClient(
+      'https://mhgdzxftvqpqwpxryurm.supabase.co',
+      'sb_publishable_BtGpwhScIGtGO_Yx_LLKow_7HBigtxk'
+    );
+
+    const { data, error } = await _supa.from('patient_aftercare').select('*').eq('id', id).single();
+
+    if (error || !data) {
+      showError('These instructions could not be found. Please contact Wisdom Surgery Clinic.');
+      return;
+    }
+
+    if (new Date(data.expires_at) < new Date()) {
+      showError('These instructions have expired (links are valid for 7 days). Please contact Wisdom Surgery Clinic for a copy.');
+      return;
+    }
+
+    // Populate page
+    document.getElementById('patient-name').textContent = data.patient_name || '—';
+    document.getElementById('patient-date').textContent = data.date_str     || '—';
+
+    if (data.note) {
+      document.getElementById('note-text').textContent = data.note;
       document.getElementById('note-banner').classList.add('visible');
     }
 
-    // Medications
-    const MEDS = {
-      amox: 'Amoxycillin',
-      aug:  'Augmentin',
-      kef:  'Keflex',
-      clin: 'Clindamycin',
-    };
-    const medsParam = p.get('meds');
-    const medsList  = document.getElementById('meds-list');
-    const freqLine  = document.getElementById('freq-line');
-
-    if (medsParam) {
-      const selected = medsParam.split(',').filter(m => MEDS[m.trim()]);
-      selected.forEach(code => {
+    const medsList = document.getElementById('meds-list');
+    if (data.meds && data.meds.length) {
+      data.meds.forEach(code => {
         const pill = document.createElement('div');
         pill.className = 'med-pill';
-        pill.textContent = MEDS[code.trim()];
+        pill.textContent = MEDS[code] || code;
         medsList.appendChild(pill);
       });
     }
 
-    const freq = p.get('freq');
-    if (freq) {
-      freqLine.textContent = freq;
-      freqLine.style.display = 'block';
+    if (data.freq) {
+      const f = document.getElementById('freq-line');
+      f.textContent = data.freq;
+      f.style.display = 'block';
     }
   })();
   </script>
