@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Care After Oral Surgery · Wisdom Surgery Clinic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #dce8f0;
+      background-image: url('assets/after-care-bg.jpeg');
+      background-size: 500px auto;
+      background-repeat: repeat;
+      min-height: 100vh;
+      padding: 24px 12px 48px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 24px;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 28px;
+      box-shadow: 0 4px 32px rgba(21,57,100,0.12);
+    }
+
+    /* Personal note banner */
+    .personal-note {
+      background: linear-gradient(135deg, #e8f4f4, #f0fafb);
+      border: 1.5px solid #27a8b5;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      display: none;
+    }
+    .personal-note.visible { display: block; }
+    .personal-note-label {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #27a8b5; margin-bottom: 5px;
+    }
+    .personal-note-text {
+      font-size: 0.9rem; color: #153964; line-height: 1.5; font-style: italic;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .header { text-align: center; margin-bottom: 24px; }
+    .emblem { width: 52px; height: 52px; object-fit: contain; margin-bottom: 10px; opacity: 0.85; }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 600;
+      color: #153964; letter-spacing: -0.01em; line-height: 1.2;
+    }
+    h1 em { color: #27a8b5; font-style: italic; }
+
+    .meta-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      border-bottom: 1.5px solid #27a8b5; padding-bottom: 8px;
+      margin-bottom: 20px; gap: 12px;
+    }
+    .meta-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #27a8b5; }
+    .meta-value { font-size: 0.88rem; color: #153964; font-weight: 500; }
+
+    /* Instructions */
+    ol { padding-left: 18px; display: flex; flex-direction: column; gap: 11px; margin-bottom: 20px; }
+    li { font-size: 0.84rem; line-height: 1.55; color: #2a3f52; }
+    li strong { color: #153964; }
+
+    /* Medications */
+    .meds-section { margin: 16px 0; }
+    .meds-label { font-size: 0.78rem; color: #153964; line-height: 1.6; }
+    .meds-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 8px; }
+    .med-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 600;
+      background: #27a8b5; color: #fff;
+    }
+    .freq-line {
+      font-size: 0.82rem; color: #153964; font-weight: 500;
+      margin-top: 4px;
+    }
+
+    hr { border: none; border-top: 1px solid #dde8ee; margin: 20px 0; }
+
+    .footer { text-align: center; }
+    .footer p { font-size: 0.8rem; color: #2a3f52; line-height: 1.6; }
+    .footer strong { color: #153964; }
+    .footer a { color: #27a8b5; }
+    .footer .sms-note { font-size: 0.72rem; color: #27a8b5; font-style: italic; margin-top: 4px; }
+
+    /* Save tip (screen only) */
+    .save-tip {
+      margin-top: 20px; padding: 12px 14px;
+      background: #f0fafb; border-radius: 12px;
+      text-align: center; font-size: 0.72rem; color: #4d7daf; line-height: 1.5;
+    }
+
+    @media print {
+      html, body, * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .save-tip { display: none; }
+      body { padding: 0; }
+      .card { border-radius: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <!-- Personal note from Dr Anna -->
+    <div class="personal-note" id="note-banner">
+      <div class="personal-note-label">A note from Dr Anna Raymond</div>
+      <div class="personal-note-text" id="note-text"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <img src="assets/emblem.png" alt="" class="emblem">
+      <h1>Home Care <em>After</em> Oral Surgery</h1>
+    </div>
+
+    <!-- Patient + date -->
+    <div class="meta-row">
+      <div>
+        <div class="meta-label">Patient</div>
+        <div class="meta-value" id="patient-name">—</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="meta-label">Date</div>
+        <div class="meta-value" id="patient-date">—</div>
+      </div>
+    </div>
+
+    <ol>
+      <li><strong>Bleeding:</strong> Light traces of blood are normal in the first 24 hours. For active bleeding, avoid exertion and raised blood pressure. Bite on gauze for 10–20 minutes. Ongoing bleeding? Contact us.</li>
+
+      <li>
+        <strong>Pain Relief:</strong> Alternate paracetamol and ibuprofen every 3 hours. If pain is greater than 5/10, use Endone or Palexia as prescribed. Most stop prescription relief after 3 days; simple pain relief may be needed for 7 days. Avoid ibuprofen on an empty stomach.
+      </li>
+
+      <li>
+        <strong>Antibiotics:</strong> Take as prescribed:
+        <div class="meds-section">
+          <div class="meds-list" id="meds-list"></div>
+          <div class="freq-line" id="freq-line" style="display:none;"></div>
+        </div>
+      </li>
+
+      <li><strong>Swelling:</strong> Significant swelling is expected, peaking on day 3, subsiding over 3–4 days. Around-the-clock ice packs for 3 days help prevent swelling. Eat cold foods, keep head elevated.</li>
+      <li><strong>Nausea:</strong> If ongoing nausea occurs and anti-nausea medication is needed, contact your surgeon.</li>
+      <li><strong>Oral Hygiene:</strong> Do not brush or rinse the first 24 hours. After that, use warm salt water. Savacol (chlorhexidine), or Difflam (numbing) 3 times daily for up to 2 weeks — max 1 month to avoid staining.</li>
+      <li><strong>Food:</strong> Soft foods. Limited mouth opening is normal; it takes about 2 weeks before eating larger or chewy foods.</li>
+      <li><strong>Rest:</strong> Rest for a few days; avoid strenuous activity.</li>
+      <li><strong>Sutures:</strong> Sutures loosen by day 5–7 and dissolve by day 10–14. It's normal for sockets to slightly open and food to collect — keep them clean with gentle mouthwash and brush other teeth as normal.</li>
+      <li><strong>Smoking &amp; Vaping:</strong> Smoking or vaping greatly increases the risk of dry socket and infection. Do not smoke or vape for at least 48 hours after surgery.</li>
+      <li><strong>Follow-Up:</strong> We will call you one business day after surgery to check progress, provide documentation, and arrange a follow-up (face-to-face or telehealth in several weeks). We'll advise if scans are needed.</li>
+      <li><strong>Return to Work/School:</strong> Usually after 7 days. We provide medical/carer certificates and discuss this during follow-up.</li>
+      <li><strong>Emergency:</strong> Contact your surgeon within 24 hours if pain or swelling are still increasing after day 4, sockets emit pus or foul odour, or nausea or vomiting persists with dehydration concerns.</li>
+    </ol>
+
+    <hr>
+
+    <div class="footer">
+      <p><strong>After-Hours Contact:</strong> Dr Raymond — Mobile: <a href="tel:+61409630040">0409 630 040</a></p>
+      <p class="sms-note">Please SMS with your name first</p>
+    </div>
+
+    <div class="save-tip">
+      📱 Save or screenshot this page to keep your aftercare instructions handy.
+    </div>
+
+  </div>
+
+  <script>
+  (function() {
+    const p = new URLSearchParams(window.location.search);
+
+    // Patient name + date
+    const name = p.get('name');
+    const date = p.get('date') || new Date().toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' });
+    document.getElementById('patient-name').textContent = name || '—';
+    document.getElementById('patient-date').textContent = date;
+
+    // Personal note
+    const note = p.get('note');
+    if (note && note.trim()) {
+      document.getElementById('note-text').textContent = note;
+      document.getElementById('note-banner').classList.add('visible');
+    }
+
+    // Medications
+    const MEDS = {
+      amox: 'Amoxycillin',
+      aug:  'Augmentin',
+      kef:  'Keflex',
+      clin: 'Clindamycin',
+    };
+    const medsParam = p.get('meds');
+    const medsList  = document.getElementById('meds-list');
+    const freqLine  = document.getElementById('freq-line');
+
+    if (medsParam) {
+      const selected = medsParam.split(',').filter(m => MEDS[m.trim()]);
+      selected.forEach(code => {
+        const pill = document.createElement('div');
+        pill.className = 'med-pill';
+        pill.textContent = MEDS[code.trim()];
+        medsList.appendChild(pill);
+      });
+    }
+
+    const freq = p.get('freq');
+    if (freq) {
+      freqLine.textContent = freq;
+      freqLine.style.display = 'block';
+    }
+  })();
+  </script>
+</body>
+</html>
