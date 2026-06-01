@@ -565,12 +565,16 @@
     clone.querySelector('.svc-block-title').textContent = `Service Details ${idx}`;
     clone.querySelector('.svc-remove-btn').style.display = 'flex';
 
-    // Hide "Add new service" button on all blocks except the last
+    // Hide "Add new service" button on all existing blocks
     container.querySelectorAll('.svc-block').forEach(b => {
       b.querySelector('button[onclick="addServiceBlock()"]').style.display = 'none';
     });
 
     container.appendChild(clone);
+
+    // Always show "Add" button on the new last block
+    clone.querySelector('button[onclick="addServiceBlock()"]').style.display = 'inline-flex';
+
     renumberBlocks();
   }
 
