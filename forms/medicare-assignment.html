@@ -68,7 +68,7 @@
     .field-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-    input[type="text"], input[type="email"], input[type="date"], input[type="time"], select, textarea {
+    input[type="text"], input[type="email"], input[type="date"], input[type="number"], input[type="time"], select, textarea {
       width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
       border-radius: var(--radius); background: rgba(255,255,255,0.8);
       font-family: 'Source Sans 3', sans-serif; font-size: 0.95rem; color: var(--ink);
@@ -88,6 +88,14 @@
     .radio-pill:hover { border-color: var(--teal); }
     .radio-pill.selected { border-color: var(--blue); background: rgba(46,109,180,0.07); color: var(--blue); font-weight: 600; }
     .radio-pill input { width: 14px; height: 14px; accent-color: var(--blue); }
+    .dmy-group { display: flex; align-items: center; gap: 6px; }
+    .dmy-group input { text-align: center; }
+    .dmy-d, .dmy-m { width: 56px; }
+    .dmy-y { width: 76px; }
+    .dmy-sep { color: var(--ink-light); font-size: 1.1rem; line-height: 1; }
+    .dmy-group input[type="number"]::-webkit-inner-spin-button,
+    .dmy-group input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .dmy-group input[type="number"] { -moz-appearance: textfield; width: auto; }
 
     .note-text { font-size: 0.8rem; color: var(--ink-light); font-style: italic; margin-top: 6px; line-height: 1.5; }
 
@@ -257,7 +265,13 @@
         </div>
         <div class="field-group">
           <span class="field-label">Date of birth <span class="req">*</span></span>
-          <input type="date" id="s_patientDOB" />
+          <div class="dmy-group">
+            <input type="number" class="dmy-d" id="s_patientDOB_d" placeholder="DD" min="1" max="31" />
+            <span class="dmy-sep">/</span>
+            <input type="number" class="dmy-m" id="s_patientDOB_m" placeholder="MM" min="1" max="12" />
+            <span class="dmy-sep">/</span>
+            <input type="number" class="dmy-y" id="s_patientDOB_y" placeholder="YYYY" min="1900" max="2099" />
+          </div>
         </div>
       </div>
       <div class="field-row">
@@ -303,7 +317,13 @@
         <div class="field-row">
           <div class="field-group">
             <span class="field-label">Date of service <span class="req">*</span></span>
-            <input type="date" class="svc-date" />
+            <div class="dmy-group">
+              <input type="number" class="svc-date-d dmy-d" placeholder="DD" min="1" max="31" />
+              <span class="dmy-sep">/</span>
+              <input type="number" class="svc-date-m dmy-m" placeholder="MM" min="1" max="12" />
+              <span class="dmy-sep">/</span>
+              <input type="number" class="svc-date-y dmy-y" placeholder="YYYY" min="1900" max="2099" />
+            </div>
           </div>
           <div class="field-group">
             <span class="field-label">Time of service <span class="req">*</span></span>
@@ -467,7 +487,13 @@
 
         <div class="field-group">
           <span class="field-label">Date <span class="req">*</span></span>
-          <input type="date" id="sigDate" />
+          <div class="dmy-group">
+            <input type="number" class="dmy-d" id="sigDate_d" placeholder="DD" min="1" max="31" />
+            <span class="dmy-sep">/</span>
+            <input type="number" class="dmy-m" id="sigDate_m" placeholder="MM" min="1" max="12" />
+            <span class="dmy-sep">/</span>
+            <input type="number" class="dmy-y" id="sigDate_y" placeholder="YYYY" min="1900" max="2099" />
+          </div>
           <div style="margin-top:14px;">
             <span class="field-label" style="display:block;margin-bottom:5px;">Relationship to patient</span>
             <input type="text" id="sigRelationship" placeholder="e.g. Self, Parent, Carer" />
@@ -518,7 +544,10 @@
     modeBarBtn.textContent = 'Save as PDF';
     modeBarBtn.onclick = () => window.print();
     populateFromParams(params);
-    document.getElementById('sigDate').valueAsDate = new Date();
+    const _today = new Date();
+    document.getElementById('sigDate_d').value = _today.getDate();
+    document.getElementById('sigDate_m').value = _today.getMonth() + 1;
+    document.getElementById('sigDate_y').value = _today.getFullYear();
     initSignaturePad();
   } else {
     document.getElementById('staffSection').style.display = 'block';
@@ -549,7 +578,9 @@
     const idx = container.querySelectorAll('.svc-block').length + 1;
 
     // Clear values
-    clone.querySelector('.svc-date').value = '';
+    clone.querySelector('.svc-date-d').value = '';
+    clone.querySelector('.svc-date-m').value = '';
+    clone.querySelector('.svc-date-y').value = '';
     clone.querySelector('.svc-time').value = '';
     clone.querySelector('.svc-dr').value = 'Dr Anna Raymond';
     clone.querySelector('.svc-item').value = '';
@@ -648,6 +679,10 @@
     const [y,m,day] = d.split('-');
     return `${day}/${m}/${y}`;
   }
+  function readDMY(d, m, y) {
+    if (!d || !m || !y) return '';
+    return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  }
   function formatTime(t) {
     if (!t) return '';
     const [h, m] = t.split(':');
@@ -658,11 +693,19 @@
   // ── Generate patient link ──
   function generateLink() {
     const pn = document.getElementById('s_patientName').value.trim();
-    const pb = document.getElementById('s_patientDOB').value;
+    const pb = readDMY(
+      document.getElementById('s_patientDOB_d').value,
+      document.getElementById('s_patientDOB_m').value,
+      document.getElementById('s_patientDOB_y').value
+    );
 
     const blocks = document.querySelectorAll('.svc-block');
     const ats     = [...blocks].map(b => b.querySelector('input[type="radio"]:checked')?.value || '');
-    const dates   = [...blocks].map(b => b.querySelector('.svc-date').value);
+    const dates   = [...blocks].map(b => readDMY(
+      b.querySelector('.svc-date-d').value,
+      b.querySelector('.svc-date-m').value,
+      b.querySelector('.svc-date-y').value
+    ));
     const times   = [...blocks].map(b => b.querySelector('.svc-time').value);
     const drs     = [...blocks].map(b => b.querySelector('.svc-dr').value.trim());
     const items   = [...blocks].map(b => b.querySelector('.svc-item').value.trim());
