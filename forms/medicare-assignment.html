@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Medicare Assignment of Benefit — Wisdom Surgery Clinic</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -88,14 +90,6 @@
     .radio-pill:hover { border-color: var(--teal); }
     .radio-pill.selected { border-color: var(--blue); background: rgba(46,109,180,0.07); color: var(--blue); font-weight: 600; }
     .radio-pill input { width: 14px; height: 14px; accent-color: var(--blue); }
-    .dmy-group { display: flex; align-items: center; gap: 6px; }
-    .dmy-group input { text-align: center; }
-    .dmy-d, .dmy-m { width: 56px; }
-    .dmy-y { width: 76px; }
-    .dmy-sep { color: var(--ink-light); font-size: 1.1rem; line-height: 1; }
-    .dmy-group input[type="number"]::-webkit-inner-spin-button,
-    .dmy-group input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    .dmy-group input[type="number"] { -moz-appearance: textfield; width: auto; }
 
     .note-text { font-size: 0.8rem; color: var(--ink-light); font-style: italic; margin-top: 6px; line-height: 1.5; }
 
@@ -221,6 +215,14 @@
       .section, .agreement-section { padding: 20px 18px; }
       .form-title { font-size: 1.5rem; }
     }
+
+    /* Flatpickr theme overrides */
+    .flatpickr-calendar { font-family: 'Source Sans 3', sans-serif; border: 1.5px solid var(--border); border-radius: var(--radius); box-shadow: 0 4px 20px rgba(30,43,58,0.12); }
+    .flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--blue); border-color: var(--blue); }
+    .flatpickr-day:hover { background: rgba(43,191,164,0.15); border-color: transparent; }
+    .flatpickr-months .flatpickr-month, .flatpickr-weekdays, span.flatpickr-weekday { background: var(--blue); color: white; fill: white; }
+    .flatpickr-current-month .flatpickr-monthDropdown-months, .flatpickr-current-month input.cur-year { color: white; }
+    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: white; }
   </style>
 </head>
 <body>
@@ -265,13 +267,7 @@
         </div>
         <div class="field-group">
           <span class="field-label">Date of birth <span class="req">*</span></span>
-          <div class="dmy-group">
-            <input type="number" class="dmy-d" id="s_patientDOB_d" placeholder="DD" min="1" max="31" />
-            <span class="dmy-sep">/</span>
-            <input type="number" class="dmy-m" id="s_patientDOB_m" placeholder="MM" min="1" max="12" />
-            <span class="dmy-sep">/</span>
-            <input type="number" class="dmy-y" id="s_patientDOB_y" placeholder="YYYY" min="1900" max="2099" />
-          </div>
+          <input type="text" id="s_patientDOB" placeholder="DD/MM/YYYY" autocomplete="off" />
         </div>
       </div>
       <div class="field-row">
@@ -317,13 +313,7 @@
         <div class="field-row">
           <div class="field-group">
             <span class="field-label">Date of service <span class="req">*</span></span>
-            <div class="dmy-group">
-              <input type="number" class="svc-date-d dmy-d" placeholder="DD" min="1" max="31" />
-              <span class="dmy-sep">/</span>
-              <input type="number" class="svc-date-m dmy-m" placeholder="MM" min="1" max="12" />
-              <span class="dmy-sep">/</span>
-              <input type="number" class="svc-date-y dmy-y" placeholder="YYYY" min="1900" max="2099" />
-            </div>
+            <input type="text" class="svc-date" placeholder="DD/MM/YYYY" autocomplete="off" />
           </div>
           <div class="field-group">
             <span class="field-label">Time of service <span class="req">*</span></span>
@@ -487,13 +477,7 @@
 
         <div class="field-group">
           <span class="field-label">Date <span class="req">*</span></span>
-          <div class="dmy-group">
-            <input type="number" class="dmy-d" id="sigDate_d" placeholder="DD" min="1" max="31" />
-            <span class="dmy-sep">/</span>
-            <input type="number" class="dmy-m" id="sigDate_m" placeholder="MM" min="1" max="12" />
-            <span class="dmy-sep">/</span>
-            <input type="number" class="dmy-y" id="sigDate_y" placeholder="YYYY" min="1900" max="2099" />
-          </div>
+          <input type="text" id="sigDate" placeholder="DD/MM/YYYY" autocomplete="off" />
           <div style="margin-top:14px;">
             <span class="field-label" style="display:block;margin-bottom:5px;">Relationship to patient</span>
             <input type="text" id="sigRelationship" placeholder="e.g. Self, Parent, Carer" />
@@ -531,6 +515,12 @@
 </div>
 
 <script>
+  // ── Flatpickr date pickers ──
+  const DATEPICKER_CFG = { dateFormat: 'Y-m-d', altInput: true, altFormat: 'd/m/Y', allowInput: true };
+  flatpickr('#s_patientDOB', DATEPICKER_CFG);
+  flatpickr('.svc-date', DATEPICKER_CFG);
+  const sigDatePicker = flatpickr('#sigDate', DATEPICKER_CFG);
+
   // ── Mode detection ──
   const params = new URLSearchParams(window.location.search);
   const MODE = params.get('mode') === 'patient' ? 'patient' : 'staff';
@@ -544,10 +534,7 @@
     modeBarBtn.textContent = 'Save as PDF';
     modeBarBtn.onclick = () => window.print();
     populateFromParams(params);
-    const _today = new Date();
-    document.getElementById('sigDate_d').value = _today.getDate();
-    document.getElementById('sigDate_m').value = _today.getMonth() + 1;
-    document.getElementById('sigDate_y').value = _today.getFullYear();
+    sigDatePicker.setDate(new Date(), true);
     initSignaturePad();
   } else {
     document.getElementById('staffSection').style.display = 'block';
@@ -577,10 +564,12 @@
     const clone = template.cloneNode(true);
     const idx = container.querySelectorAll('.svc-block').length + 1;
 
-    // Clear values
-    clone.querySelector('.svc-date-d').value = '';
-    clone.querySelector('.svc-date-m').value = '';
-    clone.querySelector('.svc-date-y').value = '';
+    // Clear values — reinit Flatpickr on the fresh date input
+    const cloneDateInput = clone.querySelector('.svc-date');
+    cloneDateInput.removeAttribute('style');
+    cloneDateInput.value = '';
+    clone.querySelectorAll('.flatpickr-input').forEach(el => { if (el !== cloneDateInput) el.remove(); });
+    flatpickr(cloneDateInput, DATEPICKER_CFG);
     clone.querySelector('.svc-time').value = '';
     clone.querySelector('.svc-dr').value = 'Dr Anna Raymond';
     clone.querySelector('.svc-item').value = '';
@@ -679,10 +668,6 @@
     const [y,m,day] = d.split('-');
     return `${day}/${m}/${y}`;
   }
-  function readDMY(d, m, y) {
-    if (!d || !m || !y) return '';
-    return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-  }
   function formatTime(t) {
     if (!t) return '';
     const [h, m] = t.split(':');
@@ -693,19 +678,11 @@
   // ── Generate patient link ──
   function generateLink() {
     const pn = document.getElementById('s_patientName').value.trim();
-    const pb = readDMY(
-      document.getElementById('s_patientDOB_d').value,
-      document.getElementById('s_patientDOB_m').value,
-      document.getElementById('s_patientDOB_y').value
-    );
+    const pb = document.getElementById('s_patientDOB').value;
 
     const blocks = document.querySelectorAll('.svc-block');
     const ats     = [...blocks].map(b => b.querySelector('input[type="radio"]:checked')?.value || '');
-    const dates   = [...blocks].map(b => readDMY(
-      b.querySelector('.svc-date-d').value,
-      b.querySelector('.svc-date-m').value,
-      b.querySelector('.svc-date-y').value
-    ));
+    const dates   = [...blocks].map(b => b.querySelector('.svc-date').value);
     const times   = [...blocks].map(b => b.querySelector('.svc-time').value);
     const drs     = [...blocks].map(b => b.querySelector('.svc-dr').value.trim());
     const items   = [...blocks].map(b => b.querySelector('.svc-item').value.trim());
