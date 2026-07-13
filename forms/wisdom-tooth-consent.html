@@ -996,6 +996,10 @@
   const params = new URLSearchParams(window.location.search);
   const isPatient = params.get('mode') === 'patient';
 
+  // ── Tooth name helper ──
+  const TOOTH_NAMES = { '18':'Upper Right (18)', '28':'Upper Left (28)', '38':'Lower Left (38)', '48':'Lower Right (48)' };
+  const ANAES_LABELS = { local:'Local anaesthetic only', sedation:'Local + IV sedation', ga:'General anaesthesia' };
+
   if (isPatient) {
     document.body.classList.add('patient-mode');
     document.getElementById('mode-bar-label').textContent = 'Patient — read carefully, tick all declarations, and sign';
@@ -1007,10 +1011,6 @@
     document.getElementById('patientActions').style.display = 'flex';
     populateFromParams();
   }
-
-  // ── Tooth name helper ──
-  const TOOTH_NAMES = { '18':'Upper Right (18)', '28':'Upper Left (28)', '38':'Lower Left (38)', '48':'Lower Right (48)' };
-  const ANAES_LABELS = { local:'Local anaesthetic only', sedation:'Local + IV sedation', ga:'General anaesthesia' };
 
   function populateFromParams() {
     const pn    = params.get('pn')    || '';
