@@ -727,12 +727,21 @@
       </div>
 
       <div class="staff-divider"></div>
-      <p class="staff-subsection-label">Teeth to be removed <span class="req">*</span></p>
+      <div class="staff-field">
+        <span class="staff-label">Full procedure name <span class="req">*</span></span>
+        <input type="text" id="s_procedure" placeholder="e.g. Surgical removal of four impacted wisdom teeth" />
+      </div>
+
+      <p class="staff-subsection-label">Teeth Numbers Operated On <span class="req">*</span></p>
       <div class="staff-teeth-grid">
         <label class="tooth-check" id="s_lbl18"><input type="checkbox" id="s_t18" value="18" onchange="document.getElementById('s_lbl18').classList.toggle('checked',this.checked)" /> <span><strong class="tooth-label">Upper Right</strong><span class="tooth-code">Tooth 18 · UR8</span></span></label>
         <label class="tooth-check" id="s_lbl28"><input type="checkbox" id="s_t28" value="28" onchange="document.getElementById('s_lbl28').classList.toggle('checked',this.checked)" /> <span><strong class="tooth-label">Upper Left</strong><span class="tooth-code">Tooth 28 · UL8</span></span></label>
         <label class="tooth-check" id="s_lbl38"><input type="checkbox" id="s_t38" value="38" onchange="document.getElementById('s_lbl38').classList.toggle('checked',this.checked)" /> <span><strong class="tooth-label">Lower Left</strong><span class="tooth-code">Tooth 38 · LL8</span></span></label>
         <label class="tooth-check" id="s_lbl48"><input type="checkbox" id="s_t48" value="48" onchange="document.getElementById('s_lbl48').classList.toggle('checked',this.checked)" /> <span><strong class="tooth-label">Lower Right</strong><span class="tooth-code">Tooth 48 · LR8</span></span></label>
+      </div>
+      <div class="staff-field" style="margin-top:8px;">
+        <span class="staff-label">Other tooth notes <span style="font-weight:400;color:var(--ink-light);">(optional)</span></span>
+        <input type="text" id="s_teethNotes" placeholder="e.g. additional tooth numbers, chains, or other detail not covered above" />
       </div>
 
       <div class="staff-divider"></div>
@@ -741,6 +750,24 @@
         <label class="anaes-option" id="s_aLocal"><input type="radio" name="s_anaes" value="local" onchange="selectStaffAnaes('s_aLocal')" /> <span><strong>Local anaesthetic only</strong><span class="anaes-desc">Awake throughout the procedure.</span></span></label>
         <label class="anaes-option" id="s_aSedation"><input type="radio" name="s_anaes" value="sedation" onchange="selectStaffAnaes('s_aSedation')" /> <span><strong>Local + IV sedation</strong><span class="anaes-desc">Deeply relaxed, breathing independently. Anaesthetist present.</span></span></label>
         <label class="anaes-option" id="s_aGA"><input type="radio" name="s_anaes" value="ga" onchange="selectStaffAnaes('s_aGA')" /> <span><strong>General anaesthesia (hospital)</strong><span class="anaes-desc">Fully asleep. Separate anaesthetist consent also required.</span></span></label>
+      </div>
+
+      <div class="staff-divider"></div>
+      <p class="staff-subsection-label">Surgeon Confirmation <span class="req">*</span></p>
+      <p class="body-text" style="margin-bottom:10px;grid-column: 1 / -1;">By signing below, you confirm this procedure, its risks, and alternatives have been discussed with the patient.</p>
+      <div class="sig-grid" style="grid-column: 1 / -1;">
+        <div class="field-group">
+          <span class="field-label">Surgeon signature <span class="req">*</span></span>
+          <div class="sig-wrap" id="s_drSigWrap">
+            <canvas id="s_drSigCanvas" height="130"></canvas>
+            <div class="sig-placeholder" id="s_drSigPlaceholder">Draw signature here</div>
+            <button type="button" class="sig-clear-btn" onclick="drSigPad.clear()">Clear</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date <span class="req">*</span></span>
+          <input type="date" id="s_drSigDate" />
+        </div>
       </div>
 
       <button type="button" class="staff-generate-btn" onclick="generateLink()">
@@ -761,101 +788,6 @@
   </div>
 
   <form id="consentForm" novalidate>
-
-    <!-- Patient details (staff mode only — patient sees summary card instead) -->
-    <div class="patient-banner staff-only">
-      <div class="patient-field">
-        <label for="patientName">Patient name <span style="color:var(--teal)">*</span></label>
-        <input type="text" id="patientName" placeholder="Full name" required />
-      </div>
-      <div class="patient-field">
-        <label for="patientDOB">Date of birth <span style="color:var(--teal)">*</span></label>
-        <input type="date" id="patientDOB" required />
-      </div>
-      <div class="patient-field">
-        <label for="patientEmail">Email address</label>
-        <input type="email" id="patientEmail" placeholder="your@email.com" />
-      </div>
-      <div class="patient-field">
-        <label for="surgeryDate">Planned surgery date</label>
-        <input type="date" id="surgeryDate" />
-      </div>
-    </div>
-
-    <!-- Teeth to be removed (staff mode only) -->
-    <div class="section staff-only">
-      <div class="section-heading">
-        <div class="section-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        Teeth to be Removed
-      </div>
-      <p class="body-text">Please confirm which wisdom teeth your surgeon has recommended for removal.</p>
-      <div class="teeth-grid" id="teethGrid">
-        <label class="tooth-check" id="lbl18">
-          <input type="checkbox" name="teeth" value="18" onchange="toggleTooth('lbl18', this)" />
-          <span>
-            <strong class="tooth-label">Upper Right Wisdom Tooth</strong>
-            <span class="tooth-code">Tooth 18 · Upper right (UR8)</span>
-          </span>
-        </label>
-        <label class="tooth-check" id="lbl28">
-          <input type="checkbox" name="teeth" value="28" onchange="toggleTooth('lbl28', this)" />
-          <span>
-            <strong class="tooth-label">Upper Left Wisdom Tooth</strong>
-            <span class="tooth-code">Tooth 28 · Upper left (UL8)</span>
-          </span>
-        </label>
-        <label class="tooth-check" id="lbl38">
-          <input type="checkbox" name="teeth" value="38" onchange="toggleTooth('lbl38', this)" />
-          <span>
-            <strong class="tooth-label">Lower Left Wisdom Tooth</strong>
-            <span class="tooth-code">Tooth 38 · Lower left (LL8)</span>
-          </span>
-        </label>
-        <label class="tooth-check" id="lbl48">
-          <input type="checkbox" name="teeth" value="48" onchange="toggleTooth('lbl48', this)" />
-          <span>
-            <strong class="tooth-label">Lower Right Wisdom Tooth</strong>
-            <span class="tooth-code">Tooth 48 · Lower right (LR8)</span>
-          </span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Anaesthesia (staff mode only) -->
-    <div class="section staff-only">
-      <div class="section-heading">
-        <div class="section-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
-        Anaesthesia
-      </div>
-      <p class="body-text">Your surgeon will have discussed the planned method of anaesthesia with you. Please confirm below.</p>
-      <div class="anaes-options">
-        <label class="anaes-option" id="aLocal">
-          <input type="radio" name="anaesthesia" value="local" onchange="selectAnaes('aLocal')" />
-          <span>
-            <strong>Local anaesthetic only</strong>
-            <span class="anaes-desc">Numbing injections in the mouth. You will be awake throughout the procedure.</span>
-          </span>
-        </label>
-        <label class="anaes-option" id="aSedation">
-          <input type="radio" name="anaesthesia" value="sedation" onchange="selectAnaes('aSedation')" />
-          <span>
-            <strong>Local anaesthetic + intravenous sedation</strong>
-            <span class="anaes-desc">You will be deeply relaxed and drowsy but breathing independently. An anaesthetist will be present.</span>
-          </span>
-        </label>
-        <label class="anaes-option" id="aGA">
-          <input type="radio" name="anaesthesia" value="ga" onchange="selectAnaes('aGA')" />
-          <span>
-            <strong>General anaesthesia (hospital)</strong>
-            <span class="anaes-desc">You will be fully asleep. Administered by your anaesthetist in hospital. Separate consent from your anaesthetist will also be required.</span>
-          </span>
-        </label>
-      </div>
-    </div>
 
     <!-- Patient-facing content: hidden in staff mode -->
     <div class="patient-only">
@@ -987,6 +919,19 @@
         </label>
       </div>
 
+      <!-- Surgeon's signature (on file, read-only) -->
+      <div class="sig-grid" id="drSigBlock" style="margin-bottom:18px;">
+        <div class="field-group" style="grid-column: 1 / -1;">
+          <span class="field-label">Surgeon signature <span style="font-weight:400;color:var(--ink-light);">(on file)</span></span>
+          <div class="sig-wrap" style="background:rgba(0,0,0,0.02);">
+            <img id="drSigImg" alt="Surgeon signature" style="display:block;width:100%;height:110px;object-fit:contain;" />
+          </div>
+        </div>
+        <div class="field-group" style="grid-column: 1 / -1;">
+          <span class="field-label">Signed by <span id="drSigName"></span> on <span id="drSigDateLabel"></span></span>
+        </div>
+      </div>
+
       <!-- Signature -->
       <div class="sig-grid">
         <div class="field-group" style="grid-column: 1 / -1;">
@@ -1072,8 +1017,12 @@
     const pb    = params.get('pb')    || '';
     const sd    = params.get('sd')    || '';
     const dr    = params.get('dr')    || 'Dr Anna Raymond';
+    const proc  = params.get('proc')  || '';
     const teeth = (params.get('teeth') || '').split(',').filter(Boolean);
+    const teethNotes = params.get('teethNotes') || '';
     const anaes = params.get('anaes') || '';
+    const drsig = params.get('drsig') || '';
+    const drsigdate = params.get('drsigdate') || '';
 
     const teethLabel = teeth.map(t => TOOTH_NAMES[t] || t).join(', ') || '—';
     const anaesLabel = ANAES_LABELS[anaes] || '—';
@@ -1085,12 +1034,21 @@
       <div class="psc-row"><span class="psc-label">Date of birth</span><span class="psc-value">${dobLabel}</span></div>
       <div class="psc-row"><span class="psc-label">Surgeon</span><span class="psc-value">${dr}</span></div>
       <div class="psc-row"><span class="psc-label">Surgery date</span><span class="psc-value">${dateLabel}</span></div>
-      <div class="psc-row full"><span class="psc-label">Teeth to be removed</span><span class="psc-value">${teethLabel}</span></div>
+      <div class="psc-row full"><span class="psc-label">Full procedure name</span><span class="psc-value">${proc || '—'}</span></div>
+      <div class="psc-row full"><span class="psc-label">Teeth Numbers Operated On</span><span class="psc-value">${teethLabel}</span></div>
+      ${teethNotes ? `<div class="psc-row full"><span class="psc-label">Other tooth notes</span><span class="psc-value">${teethNotes}</span></div>` : ''}
       <div class="psc-row full"><span class="psc-label">Anaesthesia</span><span class="psc-value">${anaesLabel}</span></div>
     `;
 
     // Pre-fill signature name
     if (pn) document.getElementById('sigName').value = pn;
+
+    // Surgeon signature (on file)
+    if (drsig) document.getElementById('drSigImg').src = drsig;
+    document.getElementById('drSigName').textContent = dr;
+    document.getElementById('drSigDateLabel').textContent = drsigdate
+      ? new Date(drsigdate + 'T00:00:00').toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' })
+      : '—';
   }
 
   // ── Staff: generate link ──
@@ -1099,15 +1057,23 @@
     const pb = document.getElementById('s_dob').value;
     const sd = document.getElementById('s_date').value;
     const dr = document.getElementById('s_dr').value.trim();
+    const proc = document.getElementById('s_procedure').value.trim();
     const teeth = ['18','28','38','48'].filter(t => document.getElementById('s_t' + t).checked);
+    const teethNotes = document.getElementById('s_teethNotes').value.trim();
     const anaes = document.querySelector('input[name="s_anaes"]:checked')?.value || '';
+    const drSigDate = document.getElementById('s_drSigDate').value;
 
-    if (!pn || !pb || !sd || teeth.length === 0 || !anaes) {
-      alert('Please complete all required fields — patient name, DOB, surgery date, at least one tooth, and anaesthesia type.');
+    if (!pn || !pb || !sd || !proc || teeth.length === 0 || !anaes) {
+      alert('Please complete all required fields — patient name, DOB, surgery date, full procedure name, at least one tooth, and anaesthesia type.');
+      return;
+    }
+    if (!drSigPad.hasSignature() || !drSigDate) {
+      alert('Please add the surgeon\'s signature and date before generating the link.');
       return;
     }
 
-    const p = new URLSearchParams({ mode:'patient', pn, pb, sd, dr, teeth: teeth.join(','), anaes });
+    const drsig = drSigPad.dataURL();
+    const p = new URLSearchParams({ mode:'patient', pn, pb, sd, dr, proc, teeth: teeth.join(','), teethNotes, anaes, drsig, drsigdate: drSigDate });
     const url = window.location.origin + window.location.pathname + '?' + p.toString();
     navigator.clipboard.writeText(url).then(() => {
       const toast = document.getElementById('staff-toast');
@@ -1122,62 +1088,62 @@
     document.getElementById(id).classList.add('selected');
   }
 
-  // Teeth checkboxes (existing patient form - kept for potential future use)
-  function toggleTooth(id, cb) {
-    document.getElementById(id).classList.toggle('checked', cb.checked);
-  }
-
-  // Anaesthesia radio (existing patient form)
-  function selectAnaes(id) {
-    document.querySelectorAll('.anaes-option:not(.staff-only *)').forEach(el => el.classList.remove('selected'));
-    document.getElementById(id).classList.add('selected');
-  }
-
   // Declarations
   function toggleDecl(id, cb) {
     document.getElementById(id).classList.toggle('checked', cb.checked);
   }
 
-  // Signature canvas
-  const canvas = document.getElementById('sigCanvas');
-  const ctx = canvas.getContext('2d');
-  const placeholder = document.getElementById('sigPlaceholder');
-  let drawing = false;
-  let hasSig = false;
+  // ── Reusable signature pad ──
+  function makeSigPad(canvasId, placeholderId) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    const placeholder = document.getElementById(placeholderId);
+    let drawing = false;
+    let hasSig = false;
 
-  function resizeCanvas() {
-    const ratio = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * ratio;
-    canvas.height = rect.height * ratio;
-    ctx.scale(ratio, ratio);
-    ctx.strokeStyle = '#1E2B3A';
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
+    function resizeCanvas() {
+      const ratio = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      ctx.scale(ratio, ratio);
+      ctx.strokeStyle = '#1E2B3A';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const t = e.touches ? e.touches[0] : e;
+      return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+    }
+
+    canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+    canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; hasSig = true; });
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseleave', () => drawing = false);
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; hasSig = true; }, { passive: false });
+    canvas.addEventListener('touchend', () => drawing = false);
+
+    return {
+      clear() { ctx.clearRect(0, 0, canvas.width, canvas.height); placeholder.style.display = 'flex'; hasSig = false; },
+      hasSignature() { return hasSig; },
+      dataURL() { return canvas.toDataURL('image/png'); }
+    };
   }
 
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
+  const sigPad = makeSigPad('sigCanvas', 'sigPlaceholder');
+  function clearSignature() { sigPad.clear(); }
 
-  function getPos(e) {
-    const rect = canvas.getBoundingClientRect();
-    const t = e.touches ? e.touches[0] : e;
-    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
-  }
-
-  canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
-  canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; hasSig = true; });
-  canvas.addEventListener('mouseup', () => drawing = false);
-  canvas.addEventListener('mouseleave', () => drawing = false);
-  canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
-  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; hasSig = true; }, { passive: false });
-  canvas.addEventListener('touchend', () => drawing = false);
-
-  function clearSignature() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    placeholder.style.display = 'flex';
-    hasSig = false;
+  let drSigPad;
+  if (!isPatient) {
+    drSigPad = makeSigPad('s_drSigCanvas', 's_drSigPlaceholder');
+    document.getElementById('s_drSigDate').valueAsDate = new Date();
   }
 
   // Auto-fill today's date
@@ -1191,7 +1157,7 @@
     const decls = document.querySelectorAll('.declaration-item input[type="checkbox"]');
     const allChecked = [...decls].every(cb => cb.checked);
 
-    if (!sigName || !sigDate || !hasSig) {
+    if (!sigName || !sigDate || !sigPad.hasSignature()) {
       alert('Please provide your full name, signature, and date.');
       return;
     }
