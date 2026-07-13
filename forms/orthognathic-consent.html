@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Orthognathic Surgery — Consent for Surgery | Wisdom Surgery Clinic</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
@@ -159,7 +159,7 @@
     .body-text p + p { margin-top: 10px; }
     .body-text strong { color: var(--ink); font-weight: 600; }
 
-    /* ── Teeth/procedure selection ── */
+    /* ── Procedure selection ── */
     .teeth-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -236,6 +236,7 @@
 
     /* ── Risk panels ── */
     .risk-group { margin-bottom: 20px; }
+
     .risk-group:last-child { margin-bottom: 0; }
 
     .risk-frequency {
@@ -527,7 +528,7 @@
       }
       .risk-item { break-inside: avoid; }
       .declaration-item { break-inside: avoid; }
-            input { 
+            input {
         border: none !important;
         border-bottom: 1.5px solid #333 !important;
         background: transparent !important;
@@ -549,7 +550,6 @@
       .form-actions { display: none; }
       .form-footer { margin-top: 12px; font-size: 0.7rem; }
       .nerve-callout, .info-box { break-inside: avoid; }
-      .success-overlay { display: none !important; }
     }
 
     @media (max-width: 600px) {
@@ -558,10 +558,128 @@
       .patient-banner { flex-direction: column; }
       .section { padding: 20px 18px; }
     }
+
+    /* ── Two-mode system ── */
+    .staff-only { display: block; }
+    .patient-only { display: none; }
+    body.patient-mode .staff-only { display: none; }
+    body.patient-mode .patient-only { display: block; }
+
+    /* Staff section */
+    .staff-section {
+      background: linear-gradient(135deg, rgba(46,109,180,0.06), rgba(43,191,164,0.05));
+      border: 1px solid rgba(43,191,164,0.25);
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .staff-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+    .staff-section-sub {
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+    .staff-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .staff-field { display: flex; flex-direction: column; gap: 5px; }
+    .staff-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--ink-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .staff-label .req { color: var(--teal); }
+    .staff-divider {
+      grid-column: 1 / -1;
+      height: 1px;
+      background: var(--cream-dark);
+      margin: 6px 0;
+    }
+    .staff-subsection-label {
+      grid-column: 1 / -1;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--ink-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      margin-top: 6px;
+    }
+    .staff-generate-btn {
+      grid-column: 1 / -1;
+      margin-top: 10px;
+      padding: 13px 28px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(46,109,180,0.28);
+      transition: all 0.2s;
+    }
+    .staff-generate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(46,109,180,0.36); }
+    .staff-toast {
+      grid-column: 1 / -1;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(43,191,164,0.1);
+      border: 1px solid rgba(43,191,164,0.3);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: var(--teal);
+      margin-top: 6px;
+    }
+    .staff-toast.visible { display: flex; }
+    .staff-teeth-grid { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .staff-anaes-options { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 7px; }
+
+    /* Patient summary card */
+    .patient-summary-card {
+      background: linear-gradient(135deg, rgba(46,109,180,0.07), rgba(43,191,164,0.06));
+      border: 1px solid rgba(43,191,164,0.3);
+      border-radius: 14px;
+      padding: 22px 28px;
+      margin-bottom: 20px;
+    }
+    .psc-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .psc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+    .psc-row { display: flex; flex-direction: column; gap: 2px; }
+    .psc-row.full { grid-column: 1 / -1; }
+    .psc-label { font-size: 0.68rem; font-weight: 700; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.07em; }
+    .psc-value { font-size: 0.95rem; color: var(--ink); font-weight: 500; }
+
+    @media (max-width: 600px) {
+      .staff-fields { grid-template-columns: 1fr; }
+      .staff-teeth-grid { grid-template-columns: 1fr; }
+      .psc-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-<div style="background:#0f2a4d;padding:12px 24px;display:flex;align-items:center;gap:16px;font-family:'DM Sans',sans-serif;">
+<div style="background:#0f2a4d;padding:max(env(safe-area-inset-top),12px) 24px 12px;display:flex;align-items:center;gap:16px;font-family:'DM Sans',sans-serif;">
   <a href="../forms.html" style="color:#2ab4b4;font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;">
     ← Patient Forms
   </a>
@@ -569,104 +687,111 @@
   <a href="../index.html" style="color:rgba(255,255,255,0.6);font-size:13px;text-decoration:none;">Request Appointment</a>
 </div>
 
-<div id="print-bar" style="background:#f0f9f9;border-bottom:1.5px solid #2ab4b4;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-family:'Source Sans 3',sans-serif;font-size:13px;color:#0f2a4d;position:sticky;top:0;z-index:100;">
-  <span>Type your answers directly into this form, then click <strong>Print / Save as PDF</strong> — save the PDF and email it back to us.</span>
-  <button onclick="window.print()" style="background:#2ab4b4;color:white;border:none;border-radius:999px;padding:7px 18px;font-size:12px;font-weight:600;font-family:'Source Sans 3',sans-serif;cursor:pointer;letter-spacing:0.03em;">Print / Save as PDF</button>
+<div id="mode-bar" style="background:#0f2a4d;padding:max(env(safe-area-inset-top),10px) 24px 10px;display:flex;align-items:center;justify-content:space-between;font-family:'Source Sans 3',sans-serif;font-size:13px;color:rgba(255,255,255,0.75);position:sticky;top:0;z-index:200;">
+  <span id="mode-bar-label">Staff — fill in details and generate a patient link</span>
+  <span id="mode-bar-badge" style="background:rgba(43,191,164,0.2);color:#2ab4b4;border:1px solid rgba(43,191,164,0.35);border-radius:999px;padding:3px 12px;font-size:11px;font-weight:600;letter-spacing:0.04em;">STAFF MODE</span>
 </div>
-<style>@media print { #print-bar { display: none !important; } }</style>
+<div id="print-bar" style="display:none;background:#f0f9f9;border-bottom:1.5px solid #2ab4b4;padding:10px 24px;align-items:center;justify-content:space-between;font-family:'Source Sans 3',sans-serif;font-size:13px;color:#0f2a4d;position:sticky;top:0;z-index:100;">
+  <span>Read carefully, tick all declarations, sign, then click <strong>Save as PDF</strong> — save the PDF and email it back to us.</span>
+  <button onclick="window.print()" style="background:#2ab4b4;color:white;border:none;border-radius:999px;padding:7px 18px;font-size:12px;font-weight:600;font-family:'Source Sans 3',sans-serif;cursor:pointer;letter-spacing:0.03em;">Save as PDF</button>
+</div>
+<style>@media print { #mode-bar, #print-bar { display: none !important; } }</style>
 
 <div class="page-wrap">
 
   <!-- Header -->
   <header class="form-header">
-    <img src="https://wisdom-surgery.github.io/wisdomsurgery/brand_assets/Wisdomsurgery%20Clinic%20logo%20-%20stamp%20version-Picsart-BackgroundRemover.PNG" alt="Wisdom Surgery Clinic" class="logo-img" />
+    <img src="assets/logo-emblem.png" alt="Wisdom Surgery Clinic" class="logo-img" />
     <h1 class="form-title">Orthognathic Surgery</h1>
     <p class="form-subtitle">Consent for Surgery — jaw repositioning surgery — please read carefully and ask questions before signing.</p>
     <div class="accent-bar"><span></span><span></span></div>
   </header>
 
+  <!-- ══ STAFF SECTION ══ -->
+  <div class="staff-section staff-only">
+    <p class="staff-section-title">Generate Patient Consent Link</p>
+    <p class="staff-section-sub">Fill in the patient and procedure details below, then generate a personalised link to send to the patient. They open the link, read the consent, sign, and save the PDF to email back.</p>
+    <div class="staff-fields">
+      <div class="staff-field">
+        <span class="staff-label">Patient full name <span class="req">*</span></span>
+        <input type="text" id="s_name" placeholder="Full name" />
+      </div>
+      <div class="staff-field">
+        <span class="staff-label">Date of birth <span class="req">*</span></span>
+        <input type="date" id="s_dob" />
+      </div>
+      <div class="staff-field">
+        <span class="staff-label">Surgery date <span class="req">*</span></span>
+        <input type="date" id="s_date" />
+      </div>
+      <div class="staff-field">
+        <span class="staff-label">Surgeon</span>
+        <input type="text" id="s_dr" value="Dr Anna Raymond" />
+      </div>
+
+      <div class="staff-divider"></div>
+      <div class="staff-field">
+        <span class="staff-label">Full procedure name <span class="req">*</span></span>
+        <input type="text" id="s_procedure" placeholder="e.g. Bimaxillary osteotomy with genioplasty" />
+      </div>
+
+      <p class="staff-subsection-label">Jaw(s) / Procedure Type <span class="req">*</span></p>
+      <div class="staff-teeth-grid">
+        <label class="tooth-check" id="s_lblLeFort"><input type="checkbox" id="s_pLeFort" value="lefort" onchange="document.getElementById('s_lblLeFort').classList.toggle('checked',this.checked)" /> <span><strong class="tooth-label">Le Fort I Osteotomy</strong><span class="tooth-code">Upper jaw repositioning</span></span></label>
+        <label class="tooth-check" id="s_lblBSSO"><input type="checkbox" id="s_pBSSO" value="bsso" onchange="document.getElementById('s_lblBSSO').classList.toggle('checked',this.checked)" /> <span><strong class="tooth-label">Bilateral Sagittal Split Osteotomy (BSSO)</strong><span class="tooth-code">Lower jaw repositioning</span></span></label>
+        <label class="tooth-check" id="s_lblGenio"><input type="checkbox" id="s_pGenio" value="genioplasty" onchange="document.getElementById('s_lblGenio').classList.toggle('checked',this.checked)" /> <span><strong class="tooth-label">Genioplasty</strong><span class="tooth-code">Chin repositioning</span></span></label>
+        <label class="tooth-check" id="s_lblBimax"><input type="checkbox" id="s_pBimax" value="bimaxillary" onchange="document.getElementById('s_lblBimax').classList.toggle('checked',this.checked)" /> <span><strong class="tooth-label">Bimaxillary Osteotomy</strong><span class="tooth-code">Both jaws simultaneously</span></span></label>
+      </div>
+      <div class="staff-field" style="margin-top:8px;">
+        <span class="staff-label">Other procedure notes <span style="font-weight:400;color:var(--ink-light);">(optional)</span></span>
+        <input type="text" id="s_procNotes" placeholder="e.g. planned hospital admission, additional detail not covered above" />
+      </div>
+
+      <div class="staff-divider"></div>
+      <p class="staff-subsection-label">Anaesthesia planned <span class="req">*</span></p>
+      <div class="staff-anaes-options">
+        <label class="anaes-option selected" id="s_aGA"><input type="radio" name="s_anaes" value="ga" checked onchange="selectStaffAnaes('s_aGA')" /> <span><strong>General anaesthesia (hospital)</strong><span class="anaes-desc">Orthognathic surgery is performed under general anaesthesia in hospital. A separate consent from the anaesthetist is also required.</span></span></label>
+      </div>
+
+      <div class="staff-divider"></div>
+      <p class="staff-subsection-label">Surgeon Confirmation <span class="req">*</span></p>
+      <p class="body-text" style="margin-bottom:10px;grid-column: 1 / -1;">By signing below, you confirm this procedure, its risks, and alternatives have been discussed with the patient.</p>
+      <div class="sig-grid" style="grid-column: 1 / -1;">
+        <div class="field-group">
+          <span class="field-label">Surgeon signature <span class="req">*</span></span>
+          <div class="sig-wrap" id="s_drSigWrap">
+            <canvas id="s_drSigCanvas" height="130"></canvas>
+            <div class="sig-placeholder" id="s_drSigPlaceholder">Draw signature here</div>
+            <button type="button" class="sig-clear-btn" onclick="drSigPad.clear()">Clear</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date <span class="req">*</span></span>
+          <input type="date" id="s_drSigDate" />
+        </div>
+      </div>
+
+      <button type="button" class="staff-generate-btn" onclick="generateLink()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        Generate Patient Link
+      </button>
+      <div class="staff-toast" id="staff-toast">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Link copied — send it to the patient to open and sign.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PATIENT SUMMARY CARD (patient mode only) ══ -->
+  <div class="patient-summary-card patient-only" id="patientSummaryCard">
+    <p class="psc-title">Your Procedure — Please review before signing</p>
+    <div class="psc-grid" id="pscGrid"></div>
+  </div>
+
   <form id="consentForm" novalidate>
 
-    <!-- Patient details -->
-    <div class="patient-banner">
-      <div class="patient-field">
-        <label for="patientName">Patient name <span style="color:var(--teal)">*</span></label>
-        <input type="text" id="patientName" placeholder="Full name" required />
-      </div>
-      <div class="patient-field">
-        <label for="patientDOB">Date of birth <span style="color:var(--teal)">*</span></label>
-        <input type="date" id="patientDOB" required />
-      </div>
-      <div class="patient-field">
-        <label for="patientEmail">Email address</label>
-        <input type="email" id="patientEmail" placeholder="your@email.com" />
-      </div>
-      <div class="patient-field">
-        <label for="surgeryDate">Planned surgery date</label>
-        <input type="date" id="surgeryDate" />
-      </div>
-    </div>
-
-    <!-- Procedure -->
-    <div class="section">
-      <div class="section-heading">
-        <div class="section-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        Planned Procedure(s)
-      </div>
-      <p class="body-text">Please confirm the surgical procedure(s) your surgeon has recommended.</p>
-      <div class="teeth-grid" id="procGrid">
-        <label class="tooth-check" id="lblLeFort">
-          <input type="checkbox" name="procedure" value="lefort" onchange="toggleTooth('lblLeFort', this)" />
-          <span>
-            <strong class="tooth-label">Le Fort I Osteotomy</strong>
-            <span class="tooth-code">Upper jaw repositioning</span>
-          </span>
-        </label>
-        <label class="tooth-check" id="lblBSSO">
-          <input type="checkbox" name="procedure" value="bsso" onchange="toggleTooth('lblBSSO', this)" />
-          <span>
-            <strong class="tooth-label">Bilateral Sagittal Split Osteotomy (BSSO)</strong>
-            <span class="tooth-code">Lower jaw repositioning</span>
-          </span>
-        </label>
-        <label class="tooth-check" id="lblGenioplasty">
-          <input type="checkbox" name="procedure" value="genioplasty" onchange="toggleTooth('lblGenioplasty', this)" />
-          <span>
-            <strong class="tooth-label">Genioplasty</strong>
-            <span class="tooth-code">Chin repositioning</span>
-          </span>
-        </label>
-        <label class="tooth-check" id="lblBimaxillary">
-          <input type="checkbox" name="procedure" value="bimaxillary" onchange="toggleTooth('lblBimaxillary', this)" />
-          <span>
-            <strong class="tooth-label">Bimaxillary Osteotomy</strong>
-            <span class="tooth-code">Both jaws simultaneously</span>
-          </span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Anaesthesia -->
-    <div class="section">
-      <div class="section-heading">
-        <div class="section-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
-        Anaesthesia
-      </div>
-      <p class="body-text">Orthognathic surgery is performed under general anaesthesia in hospital. A separate consent will be required from your anaesthetist.</p>
-      <div class="anaes-options">
-        <label class="anaes-option selected" id="aGA">
-          <input type="radio" name="anaesthesia" value="ga" checked onchange="selectAnaes('aGA')" />
-          <span>
-            <strong>General anaesthesia (hospital)</strong>
-            <span class="anaes-desc">You will be fully asleep. Administered by your anaesthetist in hospital. A separate consent form from your anaesthetist will also be required prior to surgery.</span>
-          </span>
-        </label>
-      </div>
-    </div>
+    <!-- Patient-facing content: hidden in staff mode -->
+    <div class="patient-only">
 
     <!-- About the procedure -->
     <div class="section">
@@ -760,7 +885,7 @@
         <p><strong>Conservative management with orthodontics alone</strong> — limited by the degree of skeletal discrepancy. Orthodontic treatment can move teeth but cannot reposition the underlying jaw bones.</p>
         <p><strong>Camouflage orthodontics</strong> — teeth are moved to compensate for the skeletal problem. This approach may compromise long-term stability, periodontal health, or facial aesthetics, and is unsuitable for significant skeletal discrepancies.</p>
         <p><strong>Waiting or deferral</strong> — surgery does not become easier with age. Deferring treatment may increase surgical complexity as bone density increases and growth is completed.</p>
-        <p>Surgery is recommended when the skeletal discrepancy cannot be adequately addressed by orthodontics alone, or where the functional and aesthetic outcomes of surgery are significantly superior to non-surgical alternatives. Please discuss alternatives with your surgeon before signing this form.</p>
+        <p>Surgery is recommended when the skeletal discrepancy cannot be adequately addressed by orthodontics alone, or where the functional and aesthetic outcomes of surgery are significantly superior to non-surgical alternatives. If you would like to discuss alternatives further, please ask your surgeon before signing this form.</p>
       </div>
     </div>
 
@@ -805,6 +930,19 @@
         </label>
       </div>
 
+      <!-- Surgeon's signature (on file, read-only) -->
+      <div class="sig-grid" id="drSigBlock" style="margin-bottom:18px;">
+        <div class="field-group" style="grid-column: 1 / -1;">
+          <span class="field-label">Surgeon signature <span style="font-weight:400;color:var(--ink-light);">(on file)</span></span>
+          <div class="sig-wrap" style="background:rgba(0,0,0,0.02);">
+            <img id="drSigImg" alt="Surgeon signature" style="display:block;width:100%;height:110px;object-fit:contain;" />
+          </div>
+        </div>
+        <div class="field-group" style="grid-column: 1 / -1;">
+          <span class="field-label">Signed by <span id="drSigName"></span> on <span id="drSigDateLabel"></span></span>
+        </div>
+      </div>
+
       <!-- Signature -->
       <div class="sig-grid">
         <div class="field-group" style="grid-column: 1 / -1;">
@@ -833,16 +971,14 @@
       </div>
     </div>
 
+    </div><!-- /patient-only content -->
+
     <!-- Actions -->
-    <div class="form-actions">
-      <span class="email-note">A copy will be sent to your email address upon submission.</span>
-      <button type="button" class="btn btn-secondary" onclick="window.print()">
+    <div class="form-actions patient-only" id="patientActions" style="display:none;">
+      <span class="email-note">Save as PDF, then email to <a href="mailto:adminteam@wisdomsurgery.clinic" style="color:var(--teal);text-decoration:none;">adminteam@wisdomsurgery.clinic</a></span>
+      <button type="button" class="btn btn-primary" onclick="window.print()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        Print / PDF
-      </button>
-      <button type="submit" class="btn btn-primary">
-        Submit Consent
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Save as PDF
       </button>
     </div>
 
@@ -867,14 +1003,102 @@
 </div>
 
 <script>
-  // Procedure checkboxes
-  function toggleTooth(id, cb) {
-    document.getElementById(id).classList.toggle('checked', cb.checked);
+  // ── Mode detection ──
+  const params = new URLSearchParams(window.location.search);
+  const isPatient = params.get('mode') === 'patient';
+
+  // ── Procedure/anaesthesia label helpers ──
+  const PROC_NAMES = { lefort:'Le Fort I Osteotomy (upper jaw)', bsso:'Bilateral Sagittal Split Osteotomy (lower jaw)', genioplasty:'Genioplasty (chin)', bimaxillary:'Bimaxillary Osteotomy (both jaws)' };
+  const ANAES_LABELS = { ga:'General anaesthesia (hospital)' };
+
+  if (isPatient) {
+    document.body.classList.add('patient-mode');
+    document.getElementById('mode-bar-label').textContent = 'Patient — read carefully, tick all declarations, and sign';
+    document.getElementById('mode-bar-badge').textContent = 'PATIENT MODE';
+    document.getElementById('mode-bar-badge').style.background = 'rgba(46,109,180,0.2)';
+    document.getElementById('mode-bar-badge').style.color = '#6a9fd8';
+    document.getElementById('mode-bar-badge').style.borderColor = 'rgba(46,109,180,0.35)';
+    document.getElementById('print-bar').style.display = 'flex';
+    document.getElementById('patientActions').style.display = 'flex';
+    populateFromParams();
   }
 
-  // Anaesthesia radio
-  function selectAnaes(id) {
-    document.querySelectorAll('.anaes-option').forEach(el => el.classList.remove('selected'));
+  function populateFromParams() {
+    const pn    = params.get('pn')    || '';
+    const pb    = params.get('pb')    || '';
+    const sd    = params.get('sd')    || '';
+    const dr    = params.get('dr')    || 'Dr Anna Raymond';
+    const proc  = params.get('proc')  || '';
+    const procTypes = (params.get('procTypes') || '').split(',').filter(Boolean);
+    const procNotes = params.get('procNotes') || '';
+    const anaes = params.get('anaes') || '';
+    const drsig = params.get('drsig') || '';
+    const drsigdate = params.get('drsigdate') || '';
+
+    const procTypesLabel = procTypes.map(t => PROC_NAMES[t] || t).join(', ') || '—';
+    const anaesLabel = ANAES_LABELS[anaes] || '—';
+    const dateLabel  = sd ? new Date(sd + 'T00:00:00').toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' }) : '—';
+    const dobLabel   = pb ? new Date(pb + 'T00:00:00').toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' }) : '—';
+
+    document.getElementById('pscGrid').innerHTML = `
+      <div class="psc-row"><span class="psc-label">Patient</span><span class="psc-value">${pn || '—'}</span></div>
+      <div class="psc-row"><span class="psc-label">Date of birth</span><span class="psc-value">${dobLabel}</span></div>
+      <div class="psc-row"><span class="psc-label">Surgeon</span><span class="psc-value">${dr}</span></div>
+      <div class="psc-row"><span class="psc-label">Surgery date</span><span class="psc-value">${dateLabel}</span></div>
+      <div class="psc-row full"><span class="psc-label">Full procedure name</span><span class="psc-value">${proc || '—'}</span></div>
+      <div class="psc-row full"><span class="psc-label">Jaw(s) / Procedure type</span><span class="psc-value">${procTypesLabel}</span></div>
+      ${procNotes ? `<div class="psc-row full"><span class="psc-label">Other procedure notes</span><span class="psc-value">${procNotes}</span></div>` : ''}
+      <div class="psc-row full"><span class="psc-label">Anaesthesia</span><span class="psc-value">${anaesLabel}</span></div>
+    `;
+
+    // Pre-fill signature name
+    if (pn) document.getElementById('sigName').value = pn;
+
+    // Surgeon signature (on file)
+    if (drsig) document.getElementById('drSigImg').src = drsig;
+    document.getElementById('drSigName').textContent = dr;
+    document.getElementById('drSigDateLabel').textContent = drsigdate
+      ? new Date(drsigdate + 'T00:00:00').toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' })
+      : '—';
+  }
+
+  // ── Staff: generate link ──
+  function generateLink() {
+    const pn = document.getElementById('s_name').value.trim();
+    const pb = document.getElementById('s_dob').value;
+    const sd = document.getElementById('s_date').value;
+    const dr = document.getElementById('s_dr').value.trim();
+    const proc = document.getElementById('s_procedure').value.trim();
+    const procTypes = ['LeFort','BSSO','Genio','Bimax']
+      .map(k => ({ id:'s_p'+k, val:{LeFort:'lefort',BSSO:'bsso',Genio:'genioplasty',Bimax:'bimaxillary'}[k] }))
+      .filter(o => document.getElementById(o.id).checked)
+      .map(o => o.val);
+    const procNotes = document.getElementById('s_procNotes').value.trim();
+    const anaes = document.querySelector('input[name="s_anaes"]:checked')?.value || '';
+    const drSigDate = document.getElementById('s_drSigDate').value;
+
+    if (!pn || !pb || !sd || !proc || procTypes.length === 0 || !anaes) {
+      alert('Please complete all required fields — patient name, DOB, surgery date, full procedure name, at least one jaw/procedure type, and anaesthesia type.');
+      return;
+    }
+    if (!drSigPad.hasSignature() || !drSigDate) {
+      alert('Please add the surgeon\'s signature and date before generating the link.');
+      return;
+    }
+
+    const drsig = drSigPad.dataURL();
+    const p = new URLSearchParams({ mode:'patient', pn, pb, sd, dr, proc, procTypes: procTypes.join(','), procNotes, anaes, drsig, drsigdate: drSigDate });
+    const url = window.location.origin + window.location.pathname + '?' + p.toString();
+    navigator.clipboard.writeText(url).then(() => {
+      const toast = document.getElementById('staff-toast');
+      toast.classList.add('visible');
+      setTimeout(() => toast.classList.remove('visible'), 4000);
+    });
+  }
+
+  // ── Staff anaesthesia radio ──
+  function selectStaffAnaes(id) {
+    document.querySelectorAll('.staff-anaes-options .anaes-option').forEach(el => el.classList.remove('selected'));
     document.getElementById(id).classList.add('selected');
   }
 
@@ -883,70 +1107,79 @@
     document.getElementById(id).classList.toggle('checked', cb.checked);
   }
 
-  // Signature canvas
-  const canvas = document.getElementById('sigCanvas');
-  const ctx = canvas.getContext('2d');
-  const placeholder = document.getElementById('sigPlaceholder');
-  let drawing = false;
-  let hasSig = false;
+  // ── Reusable signature pad ──
+  function makeSigPad(canvasId, placeholderId) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    const placeholder = document.getElementById(placeholderId);
+    let drawing = false;
+    let hasSig = false;
 
-  function resizeCanvas() {
-    const ratio = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * ratio;
-    canvas.height = rect.height * ratio;
-    ctx.scale(ratio, ratio);
-    ctx.strokeStyle = '#1E2B3A';
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
+    function resizeCanvas() {
+      const ratio = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      ctx.scale(ratio, ratio);
+      ctx.strokeStyle = '#1E2B3A';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const t = e.touches ? e.touches[0] : e;
+      return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+    }
+
+    canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+    canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; hasSig = true; });
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseleave', () => drawing = false);
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; hasSig = true; }, { passive: false });
+    canvas.addEventListener('touchend', () => drawing = false);
+
+    return {
+      clear() { ctx.clearRect(0, 0, canvas.width, canvas.height); placeholder.style.display = 'flex'; hasSig = false; },
+      hasSignature() { return hasSig; },
+      dataURL() { return canvas.toDataURL('image/png'); }
+    };
   }
 
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
+  const sigPad = makeSigPad('sigCanvas', 'sigPlaceholder');
+  function clearSignature() { sigPad.clear(); }
 
-  function getPos(e) {
-    const rect = canvas.getBoundingClientRect();
-    const t = e.touches ? e.touches[0] : e;
-    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
-  }
-
-  canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
-  canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; hasSig = true; });
-  canvas.addEventListener('mouseup', () => drawing = false);
-  canvas.addEventListener('mouseleave', () => drawing = false);
-  canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
-  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); placeholder.style.display = 'none'; hasSig = true; }, { passive: false });
-  canvas.addEventListener('touchend', () => drawing = false);
-
-  function clearSignature() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    placeholder.style.display = 'flex';
-    hasSig = false;
+  let drSigPad;
+  if (!isPatient) {
+    drSigPad = makeSigPad('s_drSigCanvas', 's_drSigPlaceholder');
+    document.getElementById('s_drSigDate').valueAsDate = new Date();
   }
 
   // Auto-fill today's date
   document.getElementById('sigDate').valueAsDate = new Date();
 
-  // Form submit
+  // Form submit (legacy — patient mode uses print only)
   document.getElementById('consentForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const name = document.getElementById('patientName').value.trim();
-    const dob = document.getElementById('patientDOB').value;
     const sigName = document.getElementById('sigName').value.trim();
     const sigDate = document.getElementById('sigDate').value;
     const decls = document.querySelectorAll('.declaration-item input[type="checkbox"]');
     const allChecked = [...decls].every(cb => cb.checked);
 
-    if (!name || !dob || !sigName || !sigDate || !hasSig) {
-      alert('Please complete all required fields and provide your signature.');
+    if (!sigName || !sigDate || !sigPad.hasSignature()) {
+      alert('Please provide your full name, signature, and date.');
       return;
     }
     if (!allChecked) {
-      alert('Please confirm all declarations before submitting.');
+      alert('Please confirm all declarations before saving.');
       return;
     }
-    document.getElementById('successOverlay').classList.add('visible');
+    window.print();
   });
 </script>
 
