@@ -325,12 +325,26 @@
             Trouble connecting? Call us on <a href="tel:1300111324" style="color:rgba(255,255,255,0.75);text-decoration:underline;text-underline-offset:3px;">1300 111 324</a>.
           </p>
 
-          <div class="rounded-2xl overflow-hidden" style="background:#0f2a4d;box-shadow:0 8px 28px rgba(0,0,0,0.18);aspect-ratio:16/9;max-width:900px;margin:0 auto;">
+          <div id="telehealth-container" class="relative rounded-2xl overflow-hidden transition-all duration-300" style="background:#0f2a4d;box-shadow:0 8px 28px rgba(0,0,0,0.18);max-width:900px;margin:0 auto;">
+            <!-- Toggle Size Button -->
+            <button id="toggle-size-btn" class="absolute top-4 right-4 z-10 text-white rounded-full p-2.5 transition-all shadow-md focus:outline-none flex items-center justify-center" style="background: rgba(15, 42, 77, 0.85); border: 1px solid rgba(255,255,255,0.15);" aria-label="Toggle full window" title="Toggle full window">
+              <svg id="maximize-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0L15 15"/>
+              </svg>
+              <svg id="minimize-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9V4.5M15 9h4.5M15 9l-5.25-5.25M15 15v4.5M15 15h4.5M15 15l5.25 5.25"/>
+              </svg>
+            </button>
             <iframe
+              id="telehealth-iframe"
               src="https://app.coviu.com/t/wisdomsurgeryclinic/join/reception"
               title="Wisdom Surgery Clinic — Telehealth Waiting Room"
               allow="camera; microphone; fullscreen; display-capture; autoplay"
-              style="width:100%;height:100%;border:0;">
+              allowfullscreen="true"
+              webkitallowfullscreen="true"
+              mozallowfullscreen="true"
+              scrolling="no"
+              style="width:100%;height:100%;border:0;overflow:hidden;">
             </iframe>
           </div>
 
@@ -522,6 +536,35 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Telehealth full window toggle logic
+    const telehealthBtn = document.getElementById('toggle-size-btn');
+    const telehealthContainer = document.getElementById('telehealth-container');
+    const maxIcon = document.getElementById('maximize-icon');
+    const minIcon = document.getElementById('minimize-icon');
+
+    function toggleCinemaMode() {
+      const isCinema = telehealthContainer.classList.toggle('cinema-mode');
+      maxIcon.classList.toggle('hidden', isCinema);
+      minIcon.classList.toggle('hidden', !isCinema);
+      
+      if (isCinema) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (telehealthBtn && telehealthContainer) {
+      telehealthBtn.addEventListener('click', toggleCinemaMode);
+      
+      // Escape key to exit cinema mode
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && telehealthContainer.classList.contains('cinema-mode')) {
+          toggleCinemaMode();
+        }
+      });
+    }
   </script>
 
   <style>
@@ -529,6 +572,40 @@
     .faq-item.open .faq-answer { max-height: 400px; opacity: 1; }
     .faq-item.open .faq-icon { transform: rotate(45deg); }
     .faq-icon { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+
+    /* Telehealth Container responsive sizing to prevent scrollbars */
+    #telehealth-container {
+      aspect-ratio: 16/9;
+      min-height: 580px;
+    }
+    @media (max-width: 1024px) {
+      #telehealth-container {
+        aspect-ratio: auto;
+        height: 600px;
+      }
+    }
+
+    /* Cinema Mode (Full Window) Styling */
+    .cinema-mode {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none !important;
+      aspect-ratio: auto !important;
+      z-index: 9999 !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+    }
+    #toggle-size-btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #toggle-size-btn:hover {
+      background: #0d9488 !important; /* teal-600 */
+      transform: scale(1.05);
+    }
   </style>
 </body>
 </html>
