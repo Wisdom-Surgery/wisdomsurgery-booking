@@ -92,42 +92,10 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       New Patient Form
     </button>
-    <div class="book-dropdown">
-      <button class="tab-btn" id="tabBookBtn" onclick="toggleTabBooking(event)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        Book Your Location
-        <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="margin-left: 2px;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-      </button>
-      <div class="book-panel" id="tabBookPanel" style="left: 0; right: auto; top: 100%;">
-        <div class="book-panel-header"><p>Choose your location</p></div>
-        <div class="book-location" style="opacity: 0.55; cursor: not-allowed; border-bottom: 1px solid rgba(21,57,100,0.06);">
-          <div>
-            <div class="book-location-name">Cleveland <span style="display:inline-block; background:#fef3c7; color:#92400e; border-radius:4px; padding:1px 6px; font-size:9px; font-weight:600; text-transform:uppercase; margin-left:6px; vertical-align:middle;">Coming Soon</span></div>
-            <div class="book-location-sub">Coming soon</div>
-          </div>
-        </div>
-        <a class="book-location" href="https://healthengine.com.au/oral-and-maxillofacial-surgeon/qld/caboolture/wisdom-surgery-clinic-caboolture/s102322" target="_blank">
-          <div><div class="book-location-name">Caboolture</div><div class="book-location-sub">Caboolture Private Hospital</div></div>
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        </a>
-        <a class="book-location" href="https://healthengine.com.au/oral-and-maxillofacial-surgeon/qld/everton-park/wisdom-surgery-clinic-everton-park/s102324" target="_blank">
-          <div><div class="book-location-name">Everton Park</div><div class="book-location-sub">North West Private Hospital</div></div>
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        </a>
-        <a class="book-location" href="https://healthengine.com.au/oral-and-maxillofacial-surgeon/qld/kippa-ring/wisdom-surgery-clinic-kippa-ring/s102325" target="_blank">
-          <div><div class="book-location-name">Kippa-Ring</div><div class="book-location-sub">Peninsula Private Hospital</div></div>
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        </a>
-        <a class="book-location" href="https://healthengine.com.au/oral-and-maxillofacial-surgeon/qld/greenslopes/wisdom-surgery-clinic-greenslopes/s102323" target="_blank">
-          <div><div class="book-location-name">Greenslopes</div><div class="book-location-sub">Greenslopes Private Hospital</div></div>
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        </a>
-        <a class="book-location" href="https://healthengine.com.au/v2/appointment/book_webplugin/102616?practitioner=141495#specialty-selection" target="_blank">
-          <div><div class="book-location-name">Telehealth</div><div class="book-location-sub">Private Coviu Room</div></div>
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        </a>
-      </div>
-    </div>
+    <button class="tab-btn" id="tab-btn-booking" onclick="switchTab('booking')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Book Your Location
+    </button>
     <button class="tab-btn" id="tab-btn-online-forms" onclick="switchTab('online-forms')" style="display:none;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
       Patient Forms
@@ -477,6 +445,87 @@
   </div>
 </div>
 
+<!-- ═══ BOOKING TAB ═══ -->
+<div id="booking-tab" style="display:none" class="max-w-4xl mx-auto px-6 py-10">
+  <div class="mb-8 text-center md:text-left">
+    <h2 class="font-display text-2xl font-semibold text-navy-900 mb-2" style="letter-spacing:-0.01em">Book a Consultation</h2>
+    <p class="text-navy-500 text-sm" style="line-height:1.8">A valid referral is required to book a consultation with Dr Anna Raymond. Please select a location below to book online via HealthEngine.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Cleveland -->
+    <div class="form-card" style="opacity: 0.6; cursor: not-allowed;">
+      <div class="form-card-icon" style="background:rgba(21,57,100,0.06);">
+        <svg width="18" height="18" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <div class="form-card-body">
+        <p class="form-card-title">Cleveland <span style="display:inline-block; background:#fef3c7; color:#92400e; border-radius:4px; padding:1px 6px; font-size:9px; font-weight:600; text-transform:uppercase; margin-left:6px; vertical-align:middle;">Coming Soon</span></p>
+        <p class="form-card-desc">Coming soon</p>
+      </div>
+    </div>
+
+    <!-- Caboolture -->
+    <a href="https://healthengine.com.au/oral-and-maxillofacial-surgeon/qld/caboolture/wisdom-surgery-clinic-caboolture/s102322" target="_blank" class="form-card">
+      <div class="form-card-icon" style="background:rgba(42,180,180,0.1);">
+        <svg width="18" height="18" fill="none" stroke="#2ab4b4" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <div class="form-card-body">
+        <p class="form-card-title">Caboolture</p>
+        <p class="form-card-desc">Caboolture Private Hospital</p>
+      </div>
+      <svg class="form-card-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+    </a>
+
+    <!-- Everton Park -->
+    <a href="https://healthengine.com.au/oral-and-maxillofacial-surgeon/qld/everton-park/wisdom-surgery-clinic-everton-park/s102324" target="_blank" class="form-card">
+      <div class="form-card-icon" style="background:rgba(42,180,180,0.1);">
+        <svg width="18" height="18" fill="none" stroke="#2ab4b4" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <div class="form-card-body">
+        <p class="form-card-title">Everton Park</p>
+        <p class="form-card-desc">North West Private Hospital</p>
+      </div>
+      <svg class="form-card-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+    </a>
+
+    <!-- Kippa-Ring -->
+    <a href="https://healthengine.com.au/oral-and-maxillofacial-surgeon/qld/kippa-ring/wisdom-surgery-clinic-kippa-ring/s102325" target="_blank" class="form-card">
+      <div class="form-card-icon" style="background:rgba(42,180,180,0.1);">
+        <svg width="18" height="18" fill="none" stroke="#2ab4b4" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <div class="form-card-body">
+        <p class="form-card-title">Kippa-Ring</p>
+        <p class="form-card-desc">Peninsula Private Hospital</p>
+      </div>
+      <svg class="form-card-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+    </a>
+
+    <!-- Greenslopes -->
+    <a href="https://healthengine.com.au/oral-and-maxillofacial-surgeon/qld/greenslopes/wisdom-surgery-clinic-greenslopes/s102323" target="_blank" class="form-card">
+      <div class="form-card-icon" style="background:rgba(42,180,180,0.1);">
+        <svg width="18" height="18" fill="none" stroke="#2ab4b4" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <div class="form-card-body">
+        <p class="form-card-title">Greenslopes</p>
+        <p class="form-card-desc">Greenslopes Private Hospital</p>
+      </div>
+      <svg class="form-card-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+    </a>
+
+    <!-- Telehealth -->
+    <a href="https://healthengine.com.au/v2/appointment/book_webplugin/102616?practitioner=141495#specialty-selection" target="_blank" class="form-card">
+      <div class="form-card-icon" style="background:rgba(42,180,180,0.1);">
+        <svg width="18" height="18" fill="none" stroke="#2ab4b4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="15" height="12" rx="2"/><path d="m17 11 5-3v8l-5-3"/></svg>
+      </div>
+      <div class="form-card-body">
+        <p class="form-card-title">Telehealth</p>
+        <p class="form-card-desc">Private Coviu Room</p>
+      </div>
+      <svg class="form-card-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+    </a>
+  </div>
+</div>
+
 <!-- ═══ ONLINE FORMS TAB ═══ -->
 <div id="online-forms-tab" style="display:none">
   <div class="max-w-4xl mx-auto px-6 py-10">
@@ -685,9 +734,11 @@ function switchTab(tab) {
   document.getElementById('policies-tab').style.display = tab==='policies' ? '' : 'none';
   document.getElementById('form-tab').style.display = tab==='form' ? '' : 'none';
   document.getElementById('online-forms-tab').style.display = tab==='online-forms' ? '' : 'none';
+  document.getElementById('booking-tab').style.display = tab==='booking' ? '' : 'none';
   document.getElementById('tab-btn-policies').classList.toggle('active', tab==='policies');
   document.getElementById('tab-btn-form').classList.toggle('active', tab==='form');
   document.getElementById('tab-btn-online-forms').classList.toggle('active', tab==='online-forms');
+  document.getElementById('tab-btn-booking').classList.toggle('active', tab==='booking');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function toggleSection(id) {
@@ -695,6 +746,7 @@ function toggleSection(id) {
 }
 if (window.location.hash === '#form') switchTab('form');
 if (window.location.hash === '#forms') switchTab('online-forms');
+if (window.location.hash === '#booking' || window.location.hash === '#book') switchTab('booking');
 </script>
 
 <script>
@@ -702,18 +754,6 @@ function toggleBooking(e) {
   e.stopPropagation();
   const btn = document.getElementById('navBookBtn');
   const panel = document.getElementById('navBookPanel');
-  const isOpen = panel.classList.contains('open');
-  closeAllDropdowns();
-  if (!isOpen) {
-    btn.classList.add('open');
-    panel.classList.add('open');
-  }
-}
-
-function toggleTabBooking(e) {
-  e.stopPropagation();
-  const btn = document.getElementById('tabBookBtn');
-  const panel = document.getElementById('tabBookPanel');
   const isOpen = panel.classList.contains('open');
   closeAllDropdowns();
   if (!isOpen) {
@@ -736,7 +776,7 @@ function toggleCtaBooking(e, panelId, btnId) {
 
 function closeAllDropdowns() {
   document.querySelectorAll('.book-panel').forEach(p => p.classList.remove('open'));
-  document.querySelectorAll('.book-dropdown-btn, #tabBookBtn, #ctaBookBtn1, #ctaBookBtn2').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.book-dropdown-btn, #ctaBookBtn1, #ctaBookBtn2').forEach(b => b.classList.remove('open'));
 }
 
 document.addEventListener('click', function() {
