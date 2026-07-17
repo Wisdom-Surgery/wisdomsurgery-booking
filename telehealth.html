@@ -319,15 +319,8 @@
     </div>
   </section>
 
-  <!-- Mirrored Wave Divider (facing down) -->
-  <div class="wave-divider" style="background:#ffffff;">
-    <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
-      <path d="M0 0C240 32 480 48 720 48C960 48 1200 32 1440 0V48H0Z" fill="#f9fbfb"/>
-    </svg>
-  </div>
-
   <!-- ═══ WHAT YOU'LL NEED ═══ -->
-  <section class="py-20 md:py-28" style="background:#f9fbfb; border-bottom: 1px solid rgba(42,180,180,0.08);">
+  <section class="py-20 md:py-28" style="background:#f9fbfb; border-top: 1px solid rgba(42,180,180,0.08);">
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-14 fade-up">
         <p class="text-teal-500 font-semibold text-sm tracking-widest uppercase mb-3">Before You Connect</p>
@@ -381,8 +374,21 @@
     </div>
   </section>
 
+  <!-- Mirrored Wave Divider (facing down) -->
+  <div class="wave-divider" style="background:#f9fbfb;">
+    <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+      <defs>
+        <linearGradient id="teal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#f0fbfb" />
+          <stop offset="100%" stop-color="#e8f7f7" />
+        </linearGradient>
+      </defs>
+      <path d="M0 0C240 32 480 48 720 48C960 48 1200 32 1440 0V48H0Z" fill="url(#teal-grad)"/>
+    </svg>
+  </div>
+
   <!-- ═══ JOIN CARD ═══ -->
-  <section id="join" class="section-teal py-20 md:py-28">
+  <section id="join" class="section-teal pb-20 md:pb-28">
     <div class="max-w-6xl mx-auto px-6">
       <div class="join-card rounded-3xl p-10 md:p-16 text-center fade-up" style="position:relative;overflow:hidden;">
         <!-- Decorative radial -->
