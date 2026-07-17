@@ -170,7 +170,7 @@
             <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </a>
           <div class="nav-dropdown-menu">
-            <a href="https://wisdom-surgery.github.io/wisdomsurgery/new-patient-registration.html" class="nav-dropdown-item">
+            <a href="https://wisdomsurgery.me/patient-information.html#form" class="nav-dropdown-item">
               <svg class="w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               New Patient Form
             </a>
@@ -186,7 +186,22 @@
       </div>
 
       <div class="hidden md:flex items-center gap-3">
-        <a href="https://wisdom-surgery.github.io/wisdomsurgery/index.html#contact" class="nav-cta px-5 py-2.5 rounded-full text-sm font-semibold">Book Consultation</a>
+        <div class="relative inline-block text-left" id="headerDropdownContainer">
+          <button onclick="toggleHeaderDropdown(event)" class="nav-cta px-5 py-2.5 rounded-full text-sm font-semibold flex items-center gap-1.5 focus:outline-none">
+            Book Consultation
+            <svg class="w-3 h-3 transition-transform duration-200" id="dropdownArrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="headerDropdown" class="hidden absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-teal-100 shadow-xl overflow-hidden z-50">
+            <a href="#contact" class="flex flex-col px-4 py-3 text-sm text-navy-800 hover:bg-teal-50/50 border-b border-stone-100 transition-colors" onclick="closeDropdowns()">
+              <span class="font-semibold">Book with Office</span>
+              <span class="text-xs text-navy-400 mt-0.5">Email us via online contact form</span>
+            </a>
+            <a href="https://healthengine.com.au/v2/appointment/book_webplugin/102616?practitioner=141495#specialty-selection" target="_blank" class="flex flex-col px-4 py-3 text-sm text-navy-800 hover:bg-teal-50/50 transition-colors" onclick="closeDropdowns()">
+              <span class="font-semibold">Book Online</span>
+              <span class="text-xs text-navy-400 mt-0.5">Direct Telehealth booking</span>
+            </a>
+          </div>
+        </div>
         <a href="https://wisdom-surgery.github.io/wisdomsurgery/payment.html" class="nav-cta-ghost px-4 py-2.5 rounded-full text-sm font-medium flex items-center gap-1.5 bg-white">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
           Pay Invoice
@@ -202,13 +217,14 @@
     <div id="mobile-menu" class="mobile-menu hidden md:hidden px-6 pb-5 pt-1 border-t border-teal-100">
       <div class="flex flex-col gap-4">
         <a href="https://wisdom-surgery.github.io/wisdomsurgery/index.html#journey" class="nav-link py-1" onclick="closeMobileMenu()">Your Journey</a>
-        <a href="https://wisdom-surgery.github.io/wisdomsurgery/new-patient-registration.html" class="nav-link py-1 pl-4" style="color:#4a6274;font-size:0.85rem" onclick="closeMobileMenu()">↳ New Patient Form</a>
+        <a href="https://wisdomsurgery.me/patient-information.html#form" class="nav-link py-1 pl-4" style="color:#4a6274;font-size:0.85rem" onclick="closeMobileMenu()">↳ New Patient Form</a>
         <a href="telehealth.html" class="nav-link py-1 pl-4" style="color:#1e9696;font-size:0.85rem" onclick="closeMobileMenu()">↳ Telehealth</a>
         <a href="https://wisdom-surgery.github.io/wisdomsurgery/index.html#services" class="nav-link py-1" onclick="closeMobileMenu()">Services</a>
         <a href="https://wisdom-surgery.github.io/wisdomsurgery/index.html#about" class="nav-link py-1" onclick="closeMobileMenu()">About</a>
         <a href="https://wisdom-surgery.github.io/wisdomsurgery/index.html#faq" class="nav-link py-1" onclick="closeMobileMenu()">FAQ</a>
         <div class="flex flex-col gap-2 mt-1">
-          <a href="https://wisdom-surgery.github.io/wisdomsurgery/index.html#contact" class="nav-cta px-5 py-3 rounded-full text-sm font-semibold text-center" onclick="closeMobileMenu()">Book Consultation</a>
+          <a href="#contact" class="nav-cta px-5 py-3 rounded-full text-sm font-semibold text-center" onclick="closeMobileMenu()">Book with Office</a>
+          <a href="https://healthengine.com.au/v2/appointment/book_webplugin/102616?practitioner=141495#specialty-selection" target="_blank" class="nav-cta-ghost px-5 py-3 rounded-full text-sm font-semibold text-center bg-white border border-teal-200" onclick="closeMobileMenu()">Book Online</a>
           <a href="https://wisdom-surgery.github.io/wisdomsurgery/payment.html" class="nav-cta-ghost px-5 py-3 rounded-full text-sm font-medium text-center flex items-center justify-center gap-2 bg-white" onclick="closeMobileMenu()">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
             Pay Invoice
@@ -232,10 +248,10 @@
         </p>
         <img src="brand_assets/logo-black.PNG" alt="Dr Anna Raymond" class="h-28 w-auto mb-8 opacity-70" />
         <div class="flex flex-wrap gap-4">
-          <a href="https://wisdom-surgery.github.io/wisdomsurgery/index.html#contact" class="btn-primary px-7 py-3.5 rounded-full font-semibold text-base">
+          <a href="https://healthengine.com.au/v2/appointment/book_webplugin/102616?practitioner=141495#specialty-selection" target="_blank" class="btn-primary px-7 py-3.5 rounded-full font-semibold text-base">
             Book a Telehealth Appointment
           </a>
-          <a href="#join" class="btn-ghost px-7 py-3.5 rounded-full font-semibold text-base bg-white">
+          <a href="https://app.coviu.com/t/wisdomsurgeryclinic/join/drannaraymond" target="_blank" class="btn-ghost px-7 py-3.5 rounded-full font-semibold text-base bg-white">
             Join your appointment →
           </a>
         </div>
@@ -265,7 +281,7 @@
           </div>
           <h3 class="font-display font-semibold text-navy-800 text-lg mb-2">Book</h3>
           <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">
-            Contact us by phone or through our online link to arrange a telehealth consultation. We'll confirm a time that works for everyone.
+            Contact us by phone, email connection below, or through our online link to arrange a telehealth consultation. We'll confirm a time that works for everyone.
           </p>
         </div>
 
@@ -275,7 +291,7 @@
           </div>
           <h3 class="font-display font-semibold text-navy-800 text-lg mb-2">Receive your link</h3>
           <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">
-            Shortly before your appointment, you'll receive a secure, unique link via SMS or email. No account or download is required.
+            Shortly before your appointment, you'll receive a secure, unique link via SMS or email. Or just come here and click the Join your appointment button above. No account or download is required.
           </p>
         </div>
 
@@ -285,7 +301,7 @@
           </div>
           <h3 class="font-display font-semibold text-navy-800 text-lg mb-2">Join the call</h3>
           <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">
-            At your appointment time, click your link, enter your name, and allow camera and microphone access. Our clinic will welcome you from the waiting room.
+            We recommend arriving 5-10min before your appointment time, click your link, enter your name, view our consents, allow camera and microphone access... then relax and enjoy the waiting room. Our clinic will welcome you from the waiting room.
           </p>
         </div>
 
@@ -295,69 +311,16 @@
           </div>
           <h3 class="font-display font-semibold text-navy-800 text-lg mb-2">Your consultation</h3>
           <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">
-            Speak with Dr Anna face to face. She'll review your concerns, discuss your imaging, and walk you through your options — just as she would in person.
+            Speak with Dr Anna face to face. She'll review your concerns, discuss your imaging with easy to see Coviu sharing, and walk you through your options — just as she would in person.
           </p>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ JOIN CARD ═══ -->
-  <section id="join" class="section-teal py-20 md:py-28">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="join-card rounded-3xl p-10 md:p-16 text-center fade-up" style="position:relative;overflow:hidden;">
-        <!-- Decorative radial -->
-        <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255,255,255,0.07) 0%, transparent 60%);"></div>
-
-        <div class="relative">
-          <div class="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center" style="background:rgba(255,255,255,0.12);">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
-            </svg>
-          </div>
-
-          <h2 class="font-display text-3xl md:text-4xl font-semibold text-white mb-4" style="letter-spacing:-0.02em">Ready to join?</h2>
-          <p class="text-white mb-2 max-w-lg mx-auto" style="opacity:0.80;line-height:1.75">
-            Enter your name below and you'll be placed in our virtual waiting room. Dr Raymond will bring you in when it's your turn.
-          </p>
-          <p class="text-sm mb-8 max-w-md mx-auto" style="color:rgba(255,255,255,0.55);line-height:1.7">
-            Trouble connecting? Call us on <a href="tel:1300111324" style="color:rgba(255,255,255,0.75);text-decoration:underline;text-underline-offset:3px;">1300 111 324</a>.
-          </p>
-
-          <div id="telehealth-container" class="relative rounded-2xl overflow-hidden transition-all duration-300" style="background:#0f2a4d;box-shadow:0 8px 28px rgba(0,0,0,0.18);max-width:900px;margin:0 auto;">
-            <!-- Toggle Size Button -->
-            <button id="toggle-size-btn" class="absolute top-4 right-4 z-10 text-white rounded-full p-2.5 transition-all shadow-md focus:outline-none flex items-center justify-center" style="background: rgba(15, 42, 77, 0.85); border: 1px solid rgba(255,255,255,0.15);" aria-label="Toggle full window" title="Toggle full window">
-              <svg id="maximize-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0L15 15"/>
-              </svg>
-              <svg id="minimize-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9V4.5M15 9h4.5M15 9l-5.25-5.25M15 15v4.5M15 15h4.5M15 15l5.25 5.25"/>
-              </svg>
-            </button>
-            <iframe
-              id="telehealth-iframe"
-              src="https://app.coviu.com/t/wisdomsurgeryclinic/join/reception"
-              title="Wisdom Surgery Clinic — Telehealth Waiting Room"
-              allow="camera; microphone; fullscreen; display-capture; autoplay"
-              allowfullscreen="true"
-              webkitallowfullscreen="true"
-              mozallowfullscreen="true"
-              scrolling="no"
-              style="width:100%;height:100%;border:0;overflow:hidden;">
-            </iframe>
-          </div>
-
-          <a href="https://app.coviu.com/t/wisdomsurgeryclinic/join/reception" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-6 text-white text-sm" style="opacity:0.75;text-decoration:underline;text-underline-offset:3px;">
-            Having trouble with the embedded window? Open the waiting room in a new tab →
-          </a>
-        </div>
       </div>
     </div>
   </section>
 
   <!-- ═══ WHAT YOU'LL NEED ═══ -->
-  <section class="bg-white py-20 md:py-28">
+  <section class="py-20 md:py-28" style="background:#f9fbfb; border-top: 1px solid rgba(42,180,180,0.08); border-bottom: 1px solid rgba(42,180,180,0.08);">
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-14 fade-up">
         <p class="text-teal-500 font-semibold text-sm tracking-widest uppercase mb-3">Before You Connect</p>
@@ -407,6 +370,59 @@
           <p class="text-navy-500 text-sm leading-relaxed" style="line-height:1.7">Find a quiet, well-lit room where you can speak freely and feel comfortable during your consultation.</p>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ JOIN CARD ═══ -->
+  <section id="join" class="section-teal py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="join-card rounded-3xl p-10 md:p-16 text-center fade-up" style="position:relative;overflow:hidden;">
+        <!-- Decorative radial -->
+        <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255,255,255,0.07) 0%, transparent 60%);"></div>
+
+        <div class="relative">
+          <div class="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center" style="background:rgba(255,255,255,0.12);">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+            </svg>
+          </div>
+
+          <h2 class="font-display text-3xl md:text-4xl font-semibold text-white mb-4" style="letter-spacing:-0.02em">Ready to Join?</h2>
+          <p class="text-white mb-2 max-w-lg mx-auto" style="opacity:0.80;line-height:1.75">
+            You'll get a full screen view with your live link, but visit our Welcome Room here if you want to warm up to the space before hand. We hope every visit is a beautiful one and it's such an honor to serve you.
+          </p>
+          <p class="text-sm mb-8 max-w-md mx-auto" style="color:rgba(255,255,255,0.55);line-height:1.7">
+            Trouble connecting? Call us on <a href="tel:1300111324" style="color:rgba(255,255,255,0.75);text-decoration:underline;text-underline-offset:3px;">1300 111 324</a>.
+          </p>
+
+          <div id="telehealth-container" class="relative rounded-2xl overflow-hidden transition-all duration-300" style="background:#0f2a4d;box-shadow:0 8px 28px rgba(0,0,0,0.18);max-width:900px;margin:0 auto;">
+            <!-- Toggle Size Button -->
+            <button id="toggle-size-btn" class="absolute top-4 right-4 z-10 text-white rounded-full p-2.5 transition-all shadow-md focus:outline-none flex items-center justify-center" style="background: rgba(15, 42, 77, 0.85); border: 1px solid rgba(255,255,255,0.15);" aria-label="Toggle full window" title="Toggle full window">
+              <svg id="maximize-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0L15 15"/>
+              </svg>
+              <svg id="minimize-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9V4.5M15 9h4.5M15 9l-5.25-5.25M15 15v4.5M15 15h4.5M15 15l5.25 5.25"/>
+              </svg>
+            </button>
+            <iframe
+              id="telehealth-iframe"
+              src="https://app.coviu.com/t/wisdomsurgeryclinic/join/reception"
+              title="Wisdom Surgery Clinic — Telehealth Waiting Room"
+              allow="camera; microphone; fullscreen; display-capture; autoplay"
+              allowfullscreen="true"
+              webkitallowfullscreen="true"
+              mozallowfullscreen="true"
+              scrolling="no"
+              style="width:100%;height:100%;border:0;overflow:hidden;">
+            </iframe>
+          </div>
+
+          <a href="https://app.coviu.com/t/wisdomsurgeryclinic/join/reception" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-6 text-white text-sm" style="opacity:0.75;text-decoration:underline;text-underline-offset:3px;">
+            Having trouble with the embedded window? Open the waiting room in a new tab →
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -481,7 +497,7 @@
         </div>
       </div>
       <div class="mb-6">
-        <a href="https://wisdomsurgery.me" class="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white">
+        <a href="#contact" class="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           Book A Consultation
         </a>
@@ -565,6 +581,33 @@
         }
       });
     }
+
+    // ── Header Dropdown Logic ──
+    window.toggleHeaderDropdown = function(e) {
+      e.stopPropagation();
+      const dropdown = document.getElementById('headerDropdown');
+      const arrow = document.getElementById('dropdownArrow');
+      const isHidden = dropdown.classList.contains('hidden');
+      closeDropdowns();
+      if (isHidden) {
+        dropdown.classList.remove('hidden');
+        arrow.classList.add('rotate-180');
+      }
+    };
+
+    window.closeDropdowns = function() {
+      const dropdown = document.getElementById('headerDropdown');
+      const arrow = document.getElementById('dropdownArrow');
+      if (dropdown) dropdown.classList.add('hidden');
+      if (arrow) arrow.classList.remove('rotate-180');
+    };
+
+    document.addEventListener('click', function(e) {
+      const container = document.getElementById('headerDropdownContainer');
+      if (container && !container.contains(e.target)) {
+        closeDropdowns();
+      }
+    });
   </script>
 
   <style>
