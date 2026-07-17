@@ -342,7 +342,10 @@
         <div class="field-row">
           <div class="field-group">
             <span class="field-label">Medicare rebate amount <span class="req">*</span></span>
-            <input type="text" class="svc-rebate" placeholder="Auto-filled on item selection" />
+            <select class="svc-rebate">
+              <option value="">— Select item number first —</option>
+            </select>
+            <p class="note-text">Defaults to 1 July 2026 rate. Select old rate if needed for prior appointments.</p>
           </div>
           <div class="field-group">
             <span class="field-label">Service description</span>
@@ -545,11 +548,23 @@
   }
 
   // ── Service blocks ──
-  const REBATE_MAP = { '104':'$86.15','105':'$43.35','91822':'$86.15','91823':'$43.35','91833':'$43.35' };
+  // New rates effective 1 July 2026 | Previous rates shown as fallback option
+  const REBATE_NEW = { '104':'$88.40','105':'$44.45','91822':'$88.40','91823':'$44.45','91833':'$44.45' };
+  const REBATE_OLD = { '104':'$86.15','105':'$43.35','91822':'$86.15','91823':'$43.35','91833':'$43.35' };
 
   function autoFillRebate(select) {
     const code = select.value.split(' ')[0];
-    select.closest('.svc-block').querySelector('.svc-rebate').value = REBATE_MAP[code] || '';
+    const rebateSelect = select.closest('.svc-block').querySelector('.svc-rebate');
+    const newAmt = REBATE_NEW[code];
+    const oldAmt = REBATE_OLD[code];
+    if (newAmt) {
+      rebateSelect.innerHTML =
+        `<option value="${newAmt}">${newAmt} — from 1 Jul 2026</option>` +
+        `<option value="${oldAmt}">${oldAmt} — pre Jul 2026 (old rate)</option>`;
+      rebateSelect.value = newAmt;
+    } else {
+      rebateSelect.innerHTML = '<option value="">— Select item number first —</option>';
+    }
   }
 
   function pillSelect(radio) {
@@ -573,7 +588,8 @@
     clone.querySelector('.svc-time').value = '';
     clone.querySelector('.svc-dr').value = 'Dr Anna Raymond';
     clone.querySelector('.svc-item').value = '';
-    clone.querySelector('.svc-rebate').value = '';
+    const cloneRebate = clone.querySelector('.svc-rebate');
+    cloneRebate.innerHTML = '<option value="">— Select item number first —</option>';
     clone.querySelector('.svc-desc').value = 'Specialist Consultation';
     clone.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
     clone.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
