@@ -368,7 +368,7 @@
     <!-- Generate link -->
     <div class="generate-section">
       <h3>Ready to send to patient?</h3>
-      <p>Check all fields above are complete, then click below to copy a personalised link.<br>Paste it into an email to the patient — they'll fill in their details, sign, and email the PDF back.</p>
+      <p>Check all fields above are complete, then click below to copy a personalised link.<br>Paste it into an email to the patient — they'll fill in their details, sign, and submit it securely to the clinic.</p>
       <button class="btn-generate" id="generateBtn" onclick="generateLink()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
         Generate Patient Link
@@ -536,7 +536,7 @@
 
   if (MODE === 'patient') {
     document.getElementById('patientSection').style.display = 'block';
-    modeBarText.innerHTML = 'Please fill in your details below, draw your signature, then click <strong>Save as PDF</strong> and email it back to us.';
+    modeBarText.innerHTML = 'Please fill in your details below, draw your signature, then click <strong>Submit to Clinic</strong>. You can also save a PDF copy.';
     modeBarBtn.textContent = 'Save as PDF';
     modeBarBtn.onclick = () => window.print();
     populateFromParams(params);
@@ -741,22 +741,71 @@
     setTimeout(() => t.classList.remove('visible'), 3000);
   }
 
+  function signatureIsBlank(canvas) {
+    const ctx = canvas.getContext('2d');
+    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    for (let i = 3; i < pixels.length; i += 4) {
+      if (pixels[i] !== 0) return false;
+    }
+    return true;
+  }
+
+  async function createCompletedAobPdf() {
+    const formActions = document.querySelector('#patientSection .form-actions');
+    const previousActionsDisplay = formActions?.style.display || '';
+    if (formActions) formActions.style.display = 'none';
+
+    try {
+      const source = document.querySelector('.page-wrap');
+      const shot = await html2canvas(source, {
+        scale: 2,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        scrollX: 0,
+        scrollY: -window.scrollY,
+      });
+
+      const pdf = new jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 8;
+      const imgWidth = pageWidth - (margin * 2);
+      const imgHeight = (shot.height * imgWidth) / shot.width;
+      const printableHeight = pageHeight - (margin * 2);
+      const imgData = shot.toDataURL('image/jpeg', 0.96);
+
+      let remainingHeight = imgHeight;
+      let y = margin;
+      pdf.addImage(imgData, 'JPEG', margin, y, imgWidth, imgHeight);
+      remainingHeight -= printableHeight;
+
+      while (remainingHeight > 0) {
+        pdf.addPage();
+        y -= printableHeight;
+        pdf.addImage(imgData, 'JPEG', margin, y, imgWidth, imgHeight);
+        remainingHeight -= printableHeight;
+      }
+
+      return pdf;
+    } finally {
+      if (formActions) formActions.style.display = previousActionsDisplay;
+    }
+  }
+
   async function submitMedicareAob() {
     const btn = document.getElementById('submitAobBtn');
     const name = document.getElementById('sigName').value.trim();
     const date = document.getElementById('sigDate').value.trim();
     const canvas = document.getElementById('sigCanvas');
-    if (!name || !date || !canvas || !canvas.toDataURL()) {
+    if (!name || !date || !canvas || signatureIsBlank(canvas)) {
       showToast('Please complete your name, date, and signature first', true); return;
     }
-    btn.disabled = true; btn.textContent = 'Sending…';
+    btn.disabled = true; btn.textContent = 'Preparing PDF…';
     try {
-      const shot = await html2canvas(document.getElementById('patientSection'), { scale: 2, backgroundColor: '#ffffff', useCORS: true });
-      const pdf = new jspdf.jsPDF({ unit: 'mm', format: 'a4' });
-      const width = 210; const height = shot.height * width / shot.width;
-      pdf.addImage(shot.toDataURL('image/jpeg', 0.96), 'JPEG', 0, 0, width, height);
+      const pdf = await createCompletedAobPdf();
       const dataUri = pdf.output('datauristring');
       const pdfBase64 = dataUri.split(',')[1];
+      btn.textContent = 'Sending…';
       const response = await fetch('https://mhgdzxftvqpqwpxryurm.supabase.co/functions/v1/send-hospital-consent', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer sb_publishable_BtGpwhScIGtGO_Yx_LLKow_7HBigtxk', apikey: 'sb_publishable_BtGpwhScIGtGO_Yx_LLKow_7HBigtxk' },
         body: JSON.stringify({ patient_name: name, subject: `Medicare Assignment of Benefit - ${name}`, pdf_base64: pdfBase64 })
