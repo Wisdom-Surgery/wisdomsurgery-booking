@@ -529,10 +529,27 @@
 
   // ── Mode detection ──
   const params = new URLSearchParams(window.location.search);
-  const MODE = params.get('mode') === 'patient' ? 'patient' : 'staff';
+  const MODE = (params.get('mode') === 'patient' || params.get('m') === 'p') ? 'patient' : 'staff';
   const modeBar = document.getElementById('mode-bar');
   const modeBarText = document.getElementById('mode-bar-text');
   const modeBarBtn = document.getElementById('mode-bar-btn');
+
+  function itemLabelFromValue(value) {
+    const code = (value || '').split(' ')[0];
+    switch (code) {
+      case '104': return '104 — Initial Specialist Consultation (In Person)';
+      case '105': return '105 — Follow-Up Specialist Consultation (In Person)';
+      case '91822': return '91822 — Initial Specialist Consultation (Video Telehealth)';
+      case '91823': return '91823 — Follow-Up Specialist Consultation (Video Telehealth)';
+      case '91833': return '91833 — Follow-Up Telehealth (Phone)';
+      default: return value || '';
+    }
+  }
+
+  function formatRebateFromValue(value) {
+    if (!value) return '';
+    return value.startsWith('$') ? value : `$${value}`;
+  }
 
   if (MODE === 'patient') {
     document.getElementById('patientSection').style.display = 'block';
@@ -637,17 +654,20 @@
 
   // ── Populate patient mode from URL params ──
   function populateFromParams(p) {
-    const pn = p.get('pn') || '';
-    const pb = p.get('pb') || '';
+    const pn = p.get('n') || p.get('pn') || '';
+    const pb = p.get('b') || p.get('pb') || '';
 
-    // Pipe-separated per-service values
-    const ats     = (p.get('ats')     || '').split('|');
-    const dates   = (p.get('dates')   || '').split('|');
-    const times   = (p.get('times')   || '').split('|');
-    const drs     = (p.get('drs')     || '').split('|');
-    const items   = (p.get('items')   || '').split('|');
-    const rebates = (p.get('rebates') || '').split('|');
-    const svcs    = (p.get('svcs')    || '').split('|');
+    // Pipe-separated per-service values. Short keys keep patient email links compact;
+    // legacy keys are still supported for links generated before this change.
+    const ats     = (p.get('a')     || p.get('ats')     || '').split('|');
+    const dates   = (p.get('d')     || p.get('dates')   || '').split('|');
+    const times   = (p.get('t')     || p.get('times')   || '').split('|');
+    const rawItems = (p.get('i')    || p.get('items')   || '').split('|');
+    const items   = rawItems.map(itemLabelFromValue);
+    const rebates = (p.get('r')     || p.get('rebates') || '').split('|').map(formatRebateFromValue);
+    const svcs    = (p.get('s')     || p.get('svcs')    || '').split('|');
+    const drParam = p.get('dr') || p.get('drs') || '';
+    const drs     = drParam ? drParam.split('|') : items.map(() => 'Dr Anna Raymond');
 
     // Use first Dr name for agreement text
     const firstDr = drs[0] || '';
@@ -714,19 +734,20 @@
       return;
     }
 
-    const p = new URLSearchParams({ mode: 'patient', pn, pb,
-      ats: ats.join('|'), dates: dates.join('|'), times: times.join('|'),
-      drs: drs.join('|'), items: items.join('|'), rebates: rebates.join('|'), svcs: svcs.join('|') });
+    const itemCodes = items.map(item => item.split(' ')[0]);
+    const compactParams = { m: 'p', n: pn, b: pb, a: ats.join('|'), d: dates.join('|'), t: times.join('|'), i: itemCodes.join('|'), r: rebates.map(r => r.replace('$', '')).join('|') };
+    const customDrs = drs.some(dr => dr && dr !== 'Dr Anna Raymond');
+    const customSvcs = svcs.some(svc => svc && svc !== 'Specialist Consultation');
+    if (customDrs) compactParams.dr = drs.join('|');
+    if (customSvcs) compactParams.s = svcs.join('|');
+    const p = new URLSearchParams(compactParams);
     const url = window.location.origin + window.location.pathname + '?' + p.toString();
     const subject = 'Wisdom Surgery Medicare Assignment of Benefit form';
-    const body = `Hi ${pn},
+    const body = `Hello ${pn},
 
-Please complete and sign your Medicare Assignment of Benefit form using the secure link below. Once submitted, it will be sent directly to Wisdom Surgery Clinic.
+Here is your Medicare Assignment of Benefits form for your bulk billed service. Please read over it and sign it and click send to our clinic. If for some reason you don't get a sent confirmation, please save as PDF and send to adminteam@wisdomsurgery.clinic
 
-${url}
-
-Kind regards,
-Wisdom Surgery Clinic`;
+${url}`;
     const mailtoUrl = `mailto:${encodeURIComponent(pe)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     const btn = document.getElementById('generateBtn');
 
