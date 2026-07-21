@@ -698,6 +698,7 @@
   function generateLink() {
     const pn = document.getElementById('s_patientName').value.trim();
     const pb = document.getElementById('s_patientDOB').value;
+    const pe = document.getElementById('s_patientEmail').value.trim();
 
     const blocks = document.querySelectorAll('.svc-block');
     const ats     = [...blocks].map(b => b.querySelector('input[type="radio"]:checked')?.value || '');
@@ -708,7 +709,7 @@
     const rebates = [...blocks].map(b => b.querySelector('.svc-rebate').value.trim());
     const svcs    = [...blocks].map(b => b.querySelector('.svc-desc').value.trim());
 
-    if (!pn || !pb || ats.some(v=>!v) || dates.some(v=>!v) || times.some(v=>!v) || items.some(v=>!v) || rebates.some(v=>!v)) {
+    if (!pn || !pb || !pe || ats.some(v=>!v) || dates.some(v=>!v) || times.some(v=>!v) || items.some(v=>!v) || rebates.some(v=>!v)) {
       showToast('Please complete all required fields first', true);
       return;
     }
@@ -717,19 +718,27 @@
       ats: ats.join('|'), dates: dates.join('|'), times: times.join('|'),
       drs: drs.join('|'), items: items.join('|'), rebates: rebates.join('|'), svcs: svcs.join('|') });
     const url = window.location.origin + window.location.pathname + '?' + p.toString();
+    const subject = 'Wisdom Surgery Medicare Assignment of Benefit form';
+    const body = `Hi ${pn},
 
-    navigator.clipboard.writeText(url).then(() => {
-      const btn = document.getElementById('generateBtn');
-      btn.classList.add('copied');
-      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Link Copied!`;
-      showToast('Patient link copied — paste it into your email');
-      setTimeout(() => {
-        btn.classList.remove('copied');
-        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Generate Patient Link`;
-      }, 3000);
-    }).catch(() => {
-      showToast('Could not copy — try a different browser', true);
-    });
+Please complete and sign your Medicare Assignment of Benefit form using the secure link below. Once submitted, it will be sent directly to Wisdom Surgery Clinic.
+
+${url}
+
+Kind regards,
+Wisdom Surgery Clinic`;
+    const mailtoUrl = `mailto:${encodeURIComponent(pe)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const btn = document.getElementById('generateBtn');
+
+    navigator.clipboard.writeText(url).catch(() => null);
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Email Draft Opened`;
+    showToast('Email draft opened and patient link copied');
+    window.location.href = mailtoUrl;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Generate Patient Link`;
+    }, 3000);
   }
 
   // ── Toast ──
