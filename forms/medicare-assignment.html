@@ -727,11 +727,17 @@
     return ((params.get('d') || params.get('dates') || '').split('|')[0] || '').trim();
   }
 
+  function firstServiceTime() {
+    return ((params.get('t') || params.get('times') || '').split('|')[0] || '').trim();
+  }
+
   function medicareAobPdfFilename() {
     const patientName = filenameSafePart(params.get('n') || params.get('pn') || document.getElementById('sigName')?.value, 'Patient');
     const appointmentDate = filenameSafePart(firstServiceDate(), '');
-    return appointmentDate
-      ? `Medicare AOB - ${patientName} - ${appointmentDate}.pdf`
+    const appointmentTime = filenameSafePart(firstServiceTime().replace(':', ''), '');
+    const appointmentStamp = [appointmentDate, appointmentTime].filter(Boolean).join(' - ');
+    return appointmentStamp
+      ? `Medicare AOB - ${patientName} - ${appointmentStamp}.pdf`
       : `Medicare AOB - ${patientName}.pdf`;
   }
 
