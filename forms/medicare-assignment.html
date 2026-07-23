@@ -195,22 +195,55 @@
     .form-footer { text-align: center; margin-top: 36px; font-size: 0.78rem; color: var(--ink-light); line-height: 1.7; }
 
     @media print {
-      @page { size: A4; margin: 14mm; }
-      body { background: white; font-size: 10pt; }
+      @page { size: A4; margin: 10mm; }
+      body { background: white; font-size: 9pt; }
       .page-wrap { max-width: 100%; padding: 0; }
-      .form-header { margin-bottom: 12px; padding-bottom: 10px; }
-      .logo-img { height: 52px; margin-bottom: 8px; }
-      .form-title { font-size: 1.4rem; }
-      .form-subtitle { font-size: 0.8rem; }
-      .accent-bar { margin: 6px auto 0; }
-      .section, .agreement-section, .svc-card { background: white; border: 1px solid #ccc; box-shadow: none; break-inside: avoid; margin-bottom: 10px; padding: 12px 16px; }
-      input, select, textarea { border: 1px solid #bbb; background: white !important; font-size: 9.5pt; }
-      .sig-wrap canvas { height: 80px; }
+      .form-header { margin-bottom: 8px; padding-bottom: 6px; }
+      .logo-img { height: 42px; margin-bottom: 4px; }
+      .form-title { font-size: 1.3rem; margin-bottom: 2px; }
+      .form-subtitle { font-size: 0.78rem; }
+      .accent-bar { margin: 4px auto 0; }
+      .section, .agreement-section, .svc-card { background: white; border: 1px solid #ccc; box-shadow: none; break-inside: avoid; margin-bottom: 8px; padding: 10px 14px; border-radius: 6px; }
+      input, select, textarea { border: 1px solid #bbb; background: white !important; font-size: 8.5pt; padding: 4px 8px; }
+      .sig-wrap canvas { height: 65px; }
       .form-actions, .btn, .generate-section, #mode-bar, #nav-bar { display: none !important; }
       .info-badge { background: white; border: 1px solid #ccc; }
-      .section-heading { margin-bottom: 8px; padding-bottom: 8px; }
-      .field-group { margin-bottom: 10px; }
+      .section-heading { margin-bottom: 6px; padding-bottom: 4px; font-size: 0.9rem; }
+      .field-group { margin-bottom: 6px; }
+      .statement-item { padding: 6px 10px; margin-bottom: 5px; font-size: 0.8rem; line-height: 1.3; }
+      .body-text { font-size: 0.82rem; line-height: 1.4; }
+      .body-text p + p { margin-top: 5px; }
+      .form-footer { margin-top: 12px; font-size: 0.68rem; line-height: 1.35; }
     }
+
+    /* PDF compact generation mode */
+    .pdf-compact { max-width: 780px !important; padding: 0 !important; }
+    .pdf-compact .form-header { margin-bottom: 10px !important; padding-bottom: 8px !important; }
+    .pdf-compact .logo-img { height: 46px !important; margin-bottom: 4px !important; }
+    .pdf-compact .form-title { font-size: 1.35rem !important; margin-bottom: 2px !important; }
+    .pdf-compact .form-subtitle { font-size: 0.8rem !important; }
+    .pdf-compact .accent-bar { margin: 4px auto 0 !important; }
+    .pdf-compact .section, 
+    .pdf-compact .agreement-section, 
+    .pdf-compact .svc-card { background: #ffffff !important; border: 1px solid #d0c8bd !important; box-shadow: none !important; margin-bottom: 8px !important; padding: 10px 14px !important; border-radius: 6px !important; }
+    .pdf-compact .section-heading,
+    .pdf-compact .agreement-heading { font-size: 0.92rem !important; margin-bottom: 6px !important; padding-bottom: 6px !important; }
+    .pdf-compact .body-text { font-size: 0.82rem !important; line-height: 1.4 !important; }
+    .pdf-compact .body-text p + p { margin-top: 6px !important; }
+    .pdf-compact .statement-item { padding: 6px 10px !important; margin-bottom: 5px !important; font-size: 0.8rem !important; line-height: 1.35 !important; }
+    .pdf-compact .svc-card-header { margin-bottom: 8px !important; padding-bottom: 6px !important; }
+    .pdf-compact .svc-card-grid { gap: 6px 14px !important; }
+    .pdf-compact .svc-card-label { font-size: 0.65rem !important; }
+    .pdf-compact .svc-card-value { font-size: 0.85rem !important; }
+    .pdf-compact .sig-grid { margin-top: 10px !important; padding-top: 10px !important; gap: 10px !important; }
+    .pdf-compact .sig-wrap canvas { height: 75px !important; }
+    .pdf-compact .field-group { margin-bottom: 6px !important; }
+    .pdf-compact .field-label { font-size: 0.7rem !important; margin-bottom: 3px !important; }
+    .pdf-compact input, 
+    .pdf-compact select, 
+    .pdf-compact textarea { padding: 6px 10px !important; font-size: 0.88rem !important; }
+    .pdf-compact .form-footer { margin-top: 12px !important; font-size: 0.68rem !important; line-height: 1.4 !important; }
+    .pdf-compact .form-footer p { margin-bottom: 6px !important; }
 
     @media (max-width: 600px) {
       .sig-grid, .svc-card-grid, .field-row { grid-template-columns: 1fr; }
@@ -819,12 +852,14 @@ ${url}`;
   }
 
   async function createCompletedAobPdf() {
+    const source = document.querySelector('.page-wrap');
     const formActions = document.querySelector('#patientSection .form-actions');
     const previousActionsDisplay = formActions?.style.display || '';
     if (formActions) formActions.style.display = 'none';
 
+    source.classList.add('pdf-compact');
+
     try {
-      const source = document.querySelector('.page-wrap');
       const shot = await html2canvas(source, {
         scale: 2,
         backgroundColor: '#ffffff',
@@ -856,6 +891,7 @@ ${url}`;
 
       return pdf;
     } finally {
+      source.classList.remove('pdf-compact');
       if (formActions) formActions.style.display = previousActionsDisplay;
     }
   }
