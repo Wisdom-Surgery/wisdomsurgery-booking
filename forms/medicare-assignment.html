@@ -600,12 +600,23 @@
     const clone = template.cloneNode(true);
     const idx = container.querySelectorAll('.svc-block').length + 1;
 
-    // Clear values — reinit Flatpickr on the fresh date input
-    const cloneDateInput = clone.querySelector('.svc-date');
-    cloneDateInput.removeAttribute('style');
-    cloneDateInput.value = '';
-    clone.querySelectorAll('.flatpickr-input').forEach(el => { if (el !== cloneDateInput) el.remove(); });
-    flatpickr(cloneDateInput, DATEPICKER_CFG);
+    // ── Fix: fully remove all Flatpickr artifacts from the cloned date field ──
+    // cloneNode(true) copies Flatpickr's hidden original input + its visible alt input.
+    // We must remove ALL of them and insert a clean input to avoid duplicate date fields.
+    const dateFieldGroup = clone.querySelector('.svc-date').closest('.field-group');
+    const oldDateInputs = dateFieldGroup.querySelectorAll('input');
+    oldDateInputs.forEach(el => el.remove());
+    // Also remove any cloned Flatpickr calendar containers that might exist inside
+    clone.querySelectorAll('.flatpickr-calendar').forEach(el => el.remove());
+
+    const freshDateInput = document.createElement('input');
+    freshDateInput.type = 'text';
+    freshDateInput.className = 'svc-date';
+    freshDateInput.placeholder = 'DD/MM/YYYY';
+    freshDateInput.autocomplete = 'off';
+    dateFieldGroup.appendChild(freshDateInput);
+    flatpickr(freshDateInput, DATEPICKER_CFG);
+
     clone.querySelector('.svc-time').value = '';
     clone.querySelector('.svc-dr').value = 'Dr Anna Raymond';
     clone.querySelector('.svc-item').value = '';
