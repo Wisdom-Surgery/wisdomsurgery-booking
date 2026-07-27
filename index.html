@@ -29,6 +29,7 @@
   </script>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
@@ -292,7 +293,7 @@
         </div>
         <div class="fgroup" style="grid-column:span 2;">
           <label class="flabel">Additional notes</label>
-          <textarea class="finput" id="f-notes" placeholder="Anything you'd like us to know — symptoms, concerns, previous treatment…"></textarea>
+          <textarea class="finput" id="f-notes" placeholder="If we don't have your referral please add it in the later step, or let us know if one is being sent to us. If there is anything else you'd like us to know, please include it here."></textarea>
         </div>
       </div>
       <div style="margin-top:28px;display:flex;justify-content:space-between;">
@@ -343,15 +344,15 @@
           <input class="finput" id="f-refdate" type="date" />
         </div>
         <div class="fgroup">
-          <label class="flabel">Medicare number</label>
-          <input class="finput" id="f-medicare" type="text" placeholder="2345 67890 1" />
+          <label class="flabel">Doctor's Provider Number</label>
+          <input class="finput" id="f-provider" type="text" placeholder="123456AB" />
         </div>
       </div>
 
       <!-- Referral letter upload -->
       <div class="fgroup" style="margin-bottom:24px;">
         <label class="flabel">Referral letter <span class="req">*</span></label>
-        <p style="font-size:12px;color:#b8a090;margin-bottom:8px;font-family:'DM Sans',sans-serif;">Upload a scan or photo — PDF, JPG or PNG, max 10 MB</p>
+        <p style="font-size:12px;color:#b8a090;margin-bottom:8px;font-family:'DM Sans',sans-serif;">Please upload a digital copy or photo of your referral. If you were given scans to share with us, please upload those as well. PDF, JPG or PNG, max 10 MB.</p>
         <div class="upload-zone" id="upload-zone"
              onclick="document.getElementById('f-referral').click()"
              ondragover="handleDragOver(event)"
@@ -392,14 +393,49 @@
             <label class="flabel">Health fund</label>
             <select class="finput" id="f-phifund">
               <option value="">Select fund…</option>
-              <option>BUPA</option><option>Medibank</option><option>HCF</option>
-              <option>nib</option><option>HBF</option><option>Teachers Health</option>
-              <option>AHM</option><option>Frank</option><option>Other</option>
+              <option>Australian Unity</option>
+              <option>BUPA</option>
+              <option>CBHS Health Fund</option>
+              <option>CUA Health</option>
+              <option>Defence Health</option>
+              <option>Frank Health Insurance</option>
+              <option>GMHBA</option>
+              <option>HBF</option>
+              <option>HCF</option>
+              <option>Health Partners</option>
+              <option>Health.com.au</option>
+              <option>HIF</option>
+              <option>Latrobe Health Services</option>
+              <option>Medibank</option>
+              <option>nib</option>
+              <option>NRMA Health</option>
+              <option>Peoplecare</option>
+              <option>Phoenix Health Fund</option>
+              <option>Police Health</option>
+              <option>Queensland Country Health Fund</option>
+              <option>Reserve Bank Health Society</option>
+              <option>St.LukesHealth</option>
+              <option>Teachers Health</option>
+              <option>Territory Health Fund</option>
+              <option>TUH (Teachers Union Health)</option>
+              <option>Union Health</option>
+              <option>Westfund</option>
+              <option>Other</option>
             </select>
           </div>
           <div class="fgroup">
             <label class="flabel">Membership number</label>
             <input class="finput" id="f-phinum" type="text" placeholder="xxxxxxxx" />
+          </div>
+          <div class="fgroup" style="grid-column:span 2;">
+            <label class="flabel">Cover type</label>
+            <select class="finput" id="f-covertype">
+              <option value="">Select cover type</option>
+              <option>Hospital Cover Only</option>
+              <option>Extras Cover Only (Dental)</option>
+              <option>Hospital &amp; Extras (same fund)</option>
+              <option>Hospital &amp; Extras (different funds)</option>
+            </select>
           </div>
         </div>
       </div>

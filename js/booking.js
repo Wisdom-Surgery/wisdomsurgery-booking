@@ -18,7 +18,9 @@ const LOCATIONS = [
   { id:'CAB', name:'Caboolture Private Hospital',      addr:'McKean St, Caboolture' },
   { id:'PEN', name:'Peninsula Private Hospital',       addr:'Cnr George & Florence Sts, Kippa-Ring' },
   { id:'BPV', name:'Brisbane Private Hospital',        addr:'259 Wickham Tce, Spring Hill' },
-  { id:'CLE', name:'Wisdom Surgery Clinic Cleveland',  addr:'Cleveland' },
+  // Named ready for launch but flagged comingSoon per Bryan's call —
+  // still shows so patients know it's on the way, but can't be selected.
+  { id:'CLE', name:'Ramsey Surgical Clinic, Cleveland', addr:'Cleveland — opening soon', comingSoon: true },
   { id:'TH',  name:'Telehealth',                       addr:'Video consultation — anywhere comfortable, and we can walk through your procedure together' },
   { id:'ANY', name:'No preference',                    addr:"If you've left your preferred times and are flexible about where you're seen, we'll match the most suitable location for your schedule." },
 ];
@@ -47,10 +49,13 @@ function buildProcGrid() {
 
 function buildLocGrid() {
   document.getElementById('loc-grid').innerHTML = LOCATIONS.map(l => `
-    <div class="loc-card" id="lc-${l.id}" onclick="toggleLoc('${l.id}')">
+    <div class="loc-card${l.comingSoon ? ' loc-card-disabled' : ''}" id="lc-${l.id}"
+         ${l.comingSoon ? '' : `onclick="toggleLoc('${l.id}')"`}>
       <div class="loc-dot" id="ld-${l.id}"><div class="loc-dot-inner"></div></div>
       <div>
-        <p style="font-size:14px;font-weight:600;color:#1e1a17;font-family:'DM Sans',sans-serif;">${l.name}</p>
+        <p style="font-size:14px;font-weight:600;color:#1e1a17;font-family:'DM Sans',sans-serif;">
+          ${l.name}${l.comingSoon ? ' <span style="font-size:11px;font-weight:600;color:#c4a84a;">· Coming soon</span>' : ''}
+        </p>
         <p style="font-size:12px;color:#7a6655;margin-top:2px;font-family:'DM Sans',sans-serif;">${l.addr}</p>
       </div>
     </div>`).join('');
@@ -205,7 +210,7 @@ function buildReview() {
   const phi    = document.querySelector('input[name="phi"]:checked');
   const phiVal = phi ? phi.value : 'no';
   const phiDetail = phiVal === 'yes'
-    ? ` — ${document.getElementById('f-phifund').value || 'Not specified'}` : '';
+    ? ` — ${document.getElementById('f-phifund').value || 'Not specified'}${document.getElementById('f-covertype').value ? ` (${document.getElementById('f-covertype').value})` : ''}` : '';
 
   const rows = [
     ['Name',            v('firstname') + ' ' + v('lastname')],
@@ -221,7 +226,7 @@ function buildReview() {
     ['Location(s)',     selectedLocations.map(id => LOCATIONS.find(l=>l.id===id)?.name).join(', ')],
     ['Referrer',        v('refname') + (v('refpractice') ? ` — ${v('refpractice')}` : '')],
     ['Referral date',   v('refdate') || '—'],
-    ['Medicare',        v('medicare') || '—'],
+    ["Doctor's Provider Number", v('provider') || '—'],
     ['Referral letter', referralFile ? referralFile.name : '—'],
     ['Health insurance',phiVal === 'yes' ? `Yes${phiDetail}` : phiVal === 'no' ? 'No' : 'Not sure'],
   ];
@@ -252,41 +257,71 @@ async function submitForm() {
   const phi = document.querySelector('input[name="phi"]:checked');
 
   const payload = {
-    firstName:        v('firstname'),
-    lastName:         v('lastname'),
-    dob:              v('dob'),
+    first_name:      v('firstname'),
+    last_name:        v('lastname'),
+    dob:              v('dob') || null,
     phone:            v('phone'),
     email:            v('email'),
     suburb:           v('suburb'),
-    patientType:      v('patienttype'),
+    patient_type:     v('patienttype'),
     procedures:       selectedProcedures.map(id => PROCEDURES.find(p=>p.id===id)?.label),
     urgency:          v('urgency'),
-    timeOfDay:        v('timeofday'),
-    preferredDays:    days,
+    time_of_day:      v('timeofday'),
+    preferred_days:   days,
     notes:            v('notes'),
     locations:        selectedLocations.map(id => LOCATIONS.find(l=>l.id===id)?.name),
-    refName:          v('refname'),
-    refPractice:      v('refpractice'),
-    refDate:          v('refdate'),
-    medicare:         v('medicare'),
+    ref_name:         v('refname'),
+    ref_practice:     v('refpractice'),
+    ref_date:         v('refdate') || null,
+    provider_number:  v('provider'),
     phi:              phi ? phi.value : 'no',
-    phiFund:          v('phifund'),
-    referralFileName: referralFile ? referralFile.name : null,
+    phi_fund:         v('phifund'),
+    phi_cover_type:   v('covertype'),
   };
 
-  // TODO: Supabase integration
-  // const { data, error } = await supabase
-  //   .from('appointment_requests')
-  //   .insert([payload]);
-  //
-  // if (referralFile) {
-  //   const { data: fileData, error: fileError } = await supabase.storage
-  //     .from('referral-letters')
-  //     .upload(`${Date.now()}-${referralFile.name}`, referralFile);
-  // }
+  try {
+    const sb = supabase.createClient(
+      'https://mhgdzxftvqpqwpxryurm.supabase.co',
+      'sb_publishable_BtGpwhScIGtGO_Yx_LLKow_7HBigtxk'
+    );
 
-  console.log('Ready for Supabase:', payload);
-  showSuccess();
+    // Upload the referral letter first — the row can reference its path,
+    // and a failed booking doesn't leave an orphaned file.
+    if (referralFile) {
+      const path = `${Date.now()}-${referralFile.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+      const { error: uploadError } = await sb.storage
+        .from('appointment-referral-files')
+        .upload(path, referralFile);
+      if (uploadError) throw new Error('File upload failed: ' + uploadError.message);
+      payload.referral_file_path = path;
+    }
+
+    // Generated client-side rather than read back after insert — anon
+    // only has INSERT on this table, and .select() after insert needs
+    // SELECT too, which 401s for a real visitor even though the row saved.
+    const requestId = crypto.randomUUID();
+    const { error: insertError } = await sb
+      .from('appointment_requests')
+      .insert({ id: requestId, ...payload });
+
+    if (insertError) throw new Error('Could not submit your request: ' + insertError.message);
+
+    // The booking is already saved at this point — a failure here means
+    // "the practice wasn't emailed," not "the request was lost."
+    const { error: notifyError } = await sb.functions.invoke('notify-appointment-request', {
+      body: { request_id: requestId }
+    });
+    if (notifyError) {
+      console.warn('Practice notification email failed (booking was still saved):', notifyError);
+    }
+
+    showSuccess();
+  } catch (err) {
+    console.error('Booking submission failed:', err);
+    btn.textContent = 'Try again';
+    btn.disabled = false;
+    alert('Something went wrong sending your request. Please try again, or call the practice directly. ' + (err.message || ''));
+  }
 }
 
 function showSuccess() {

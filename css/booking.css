@@ -126,6 +126,8 @@
       display: flex; align-items: flex-start; gap: 14px;
     }
     .loc-card:hover    { border-color: #2ab4b4; background: rgba(240,251,251,0.70); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(42,180,180,0.10); }
+    .loc-card-disabled { cursor: default; opacity: 0.55; }
+    .loc-card-disabled:hover { border-color: rgba(200,165,120,0.22); background: rgba(255,252,247,0.75); transform: none; box-shadow: none; }
     .loc-card.selected { border-color: #2ab4b4; background: rgba(240,251,251,0.80); box-shadow: 0 0 0 3px rgba(42,180,180,0.12); }
     .loc-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(200,165,120,0.30); flex-shrink: 0; margin-top: 2px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
     .loc-card.selected .loc-dot { border-color: #2ab4b4; background: #2ab4b4; }
