@@ -190,7 +190,15 @@ function goTo(n) {
   next.classList.add('fade-up');
   currentStep = n;
   updateProgress();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Scroll to the progress bar, not page top — jumping to (0,0) sent
+  // patients back past the hero/nav and away from the form they were
+  // filling in every time a step changed.
+  const anchor = document.getElementById('prog-wrap');
+  if (anchor) {
+    const navOffset = 80;
+    const top = anchor.getBoundingClientRect().top + window.pageYOffset - navOffset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
 }
 
 function updateProgress() {
