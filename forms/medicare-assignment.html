@@ -877,12 +877,19 @@ ${url}`;
       const printableHeight = pageHeight - (margin * 2);
       const imgData = shot.toDataURL('image/jpeg', 0.96);
 
+      // A form that's genuinely one page was sometimes exporting as two, the
+      // second nearly blank — shot.height comes from html2canvas at 2x scale,
+      // and a fraction of a millimetre of rounding past printableHeight was
+      // enough to trip `> 0` and add a whole extra page. A 2mm tolerance
+      // absorbs that noise; a form that legitimately needs a second page
+      // (e.g. one with attachments) overflows by far more than that.
+      const overflowTolerance = 2;
       let remainingHeight = imgHeight;
       let y = margin;
       pdf.addImage(imgData, 'JPEG', margin, y, imgWidth, imgHeight);
       remainingHeight -= printableHeight;
 
-      while (remainingHeight > 0) {
+      while (remainingHeight > overflowTolerance) {
         pdf.addPage();
         y -= printableHeight;
         pdf.addImage(imgData, 'JPEG', margin, y, imgWidth, imgHeight);
