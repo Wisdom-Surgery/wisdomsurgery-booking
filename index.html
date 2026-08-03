@@ -215,8 +215,9 @@
         </div>
         <div class="fgroup">
           <label class="flabel">Date of birth <span class="req">*</span></label>
-          <input class="finput" id="f-dob" type="date" />
-          <span class="ferror" id="e-dob">Please enter your date of birth.</span>
+          <input class="finput" id="f-dob" type="text" inputmode="numeric" maxlength="10"
+                 placeholder="dd/mm/yyyy" autocomplete="bday" oninput="maskAUDate(this)" />
+          <span class="ferror" id="e-dob">Please enter your date of birth as dd/mm/yyyy.</span>
         </div>
         <div class="fgroup">
           <label class="flabel">Phone <span class="req">*</span></label>
@@ -341,7 +342,9 @@
         </div>
         <div class="fgroup">
           <label class="flabel">Referral date</label>
-          <input class="finput" id="f-refdate" type="date" />
+          <input class="finput" id="f-refdate" type="text" inputmode="numeric" maxlength="10"
+                 placeholder="dd/mm/yyyy" oninput="maskAUDate(this)" />
+          <span class="ferror" id="e-refdate">Please enter the referral date as dd/mm/yyyy.</span>
         </div>
         <div class="fgroup">
           <label class="flabel">Doctor's Provider Number</label>
@@ -351,7 +354,7 @@
 
       <!-- Referral letter upload -->
       <div class="fgroup" style="margin-bottom:24px;">
-        <label class="flabel">Referral letter <span class="req">*</span></label>
+        <label class="flabel">Referral letter</label>
         <p style="font-size:12px;color:#b8a090;margin-bottom:8px;font-family:'DM Sans',sans-serif;">Please upload a digital copy or photo of your referral. If you were given scans to share with us, please upload those as well. PDF, JPG or PNG, max 10 MB.</p>
         <div class="upload-zone" id="upload-zone"
              onclick="document.getElementById('f-referral').click()"
@@ -375,8 +378,12 @@
           </div>
         </div>
         <span class="ferror" id="e-referral">Please upload your referral letter to continue.</span>
+        <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;margin-top:12px;font-size:13px;color:#7a6655;font-family:'DM Sans',sans-serif;line-height:1.5;">
+          <input type="checkbox" id="f-noreferral" style="accent-color:#2ab4b4;margin-top:2px;flex-shrink:0;" />
+          <span>I don't have a copy of my referral — please help me arrange one.</span>
+        </label>
         <p style="font-size:12px;color:#b8a090;margin-top:6px;font-family:'DM Sans',sans-serif;">
-          Don't have a digital copy? Our team can follow up — just note it in the additional notes on the previous step.
+          Tick the box above and our team will follow up with you or your referrer to obtain it.
         </p>
       </div>
 
@@ -429,13 +436,59 @@
           </div>
           <div class="fgroup" style="grid-column:span 2;">
             <label class="flabel">Cover type</label>
-            <select class="finput" id="f-covertype">
+            <select class="finput" id="f-covertype" onchange="toggleSecondFund()">
               <option value="">Select cover type</option>
               <option>Hospital Cover Only</option>
               <option>Extras Cover Only (Dental)</option>
               <option>Hospital &amp; Extras (same fund)</option>
               <option>Hospital &amp; Extras (different funds)</option>
             </select>
+          </div>
+
+          <!-- Shown only for "different funds" — the fund above is the hospital
+               cover, this one is the extras/dental cover. -->
+          <div class="fgroup" id="fund2-wrap" style="grid-column:span 2;display:none;padding-top:14px;border-top:1px solid rgba(200,165,120,0.14);">
+            <p style="font-size:12px;color:#b8a090;margin-bottom:10px;font-family:'DM Sans',sans-serif;">Because your hospital and extras cover are with different funds, please add your second fund below. The fund above is taken as your <strong style="color:#7a6655;">hospital</strong> cover.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="fg-2">
+              <div class="fgroup">
+                <label class="flabel">Second fund (extras / dental)</label>
+                <select class="finput" id="f-phifund2">
+                  <option value="">Select fund…</option>
+                  <option>Australian Unity</option>
+                  <option>BUPA</option>
+                  <option>CBHS Health Fund</option>
+                  <option>CUA Health</option>
+                  <option>Defence Health</option>
+                  <option>Frank Health Insurance</option>
+                  <option>GMHBA</option>
+                  <option>HBF</option>
+                  <option>HCF</option>
+                  <option>Health Partners</option>
+                  <option>Health.com.au</option>
+                  <option>HIF</option>
+                  <option>Latrobe Health Services</option>
+                  <option>Medibank</option>
+                  <option>nib</option>
+                  <option>NRMA Health</option>
+                  <option>Peoplecare</option>
+                  <option>Phoenix Health Fund</option>
+                  <option>Police Health</option>
+                  <option>Queensland Country Health Fund</option>
+                  <option>Reserve Bank Health Society</option>
+                  <option>St.LukesHealth</option>
+                  <option>Teachers Health</option>
+                  <option>Territory Health Fund</option>
+                  <option>TUH (Teachers Union Health)</option>
+                  <option>Union Health</option>
+                  <option>Westfund</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="fgroup">
+                <label class="flabel">Second membership number</label>
+                <input class="finput" id="f-phinum2" type="text" placeholder="xxxxxxxx" />
+              </div>
+            </div>
           </div>
         </div>
       </div>

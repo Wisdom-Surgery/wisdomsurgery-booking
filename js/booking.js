@@ -2,13 +2,13 @@
 // ── Data ─────────────────────────────────────────────────────
 const PROCEDURES = [
   { id:'wisdom',  label:'Wisdom tooth removal' },
+  { id:'tooth',   label:'Other tooth removal' },
   { id:'implants',label:'Dental implants' },
   { id:'bone',    label:'Bone graft / sinus lift' },
   { id:'jaw',     label:'Jaw (orthognathic) surgery' },
   { id:'expose',  label:'Orthodontic tooth exposure' },
   { id:'tissue',  label:'Soft tissue procedure' },
   { id:'cyst',    label:'Jaw cyst / bone lesion' },
-  { id:'prepros', label:'Pre-prosthetic surgery' },
   { id:'other',   label:'Not sure / other' },
 ];
 
@@ -17,13 +17,44 @@ const LOCATIONS = [
   { id:'NW',  name:'North West Private Hospital',      addr:'137 Flockton St, Everton Park' },
   { id:'CAB', name:'Caboolture Private Hospital',      addr:'McKean St, Caboolture' },
   { id:'PEN', name:'Peninsula Private Hospital',       addr:'Cnr George & Florence Sts, Kippa-Ring' },
-  { id:'BPV', name:'Brisbane Private Hospital',        addr:'259 Wickham Tce, Spring Hill' },
-  // Named ready for launch but flagged comingSoon per Bryan's call —
-  // still shows so patients know it's on the way, but can't be selected.
-  { id:'CLE', name:'Ramsey Surgical Clinic, Cleveland', addr:'Cleveland — opening soon', comingSoon: true },
+  { id:'CLE', name:'Ramsay Surgical Centre Cleveland',  addr:'19-21 Middle St, Cleveland' },
   { id:'TH',  name:'Telehealth',                       addr:'Video consultation — anywhere comfortable, and we can walk through your procedure together' },
   { id:'ANY', name:'No preference',                    addr:"If you've left your preferred times and are flexible about where you're seen, we'll match the most suitable location for your schedule." },
 ];
+
+// ── Dates ────────────────────────────────────────────────────
+// A native <input type="date"> renders in the *viewer's* OS locale, which
+// puts a US-configured device into mm/dd/yyyy with no way for the page to
+// override it. These are Australian patients, so the date fields are plain
+// text with a day-first mask instead — same order on every device — and we
+// convert to ISO only at the point of submission.
+
+function maskAUDate(el) {
+  const digits = el.value.replace(/\D/g, '').slice(0, 8);
+  let out = digits.slice(0, 2);
+  if (digits.length > 2) out += '/' + digits.slice(2, 4);
+  if (digits.length > 4) out += '/' + digits.slice(4, 8);
+  el.value = out;
+}
+
+// Returns ISO (YYYY-MM-DD) for a valid dd/mm/yyyy, or '' if it isn't a real
+// calendar date — the round-trip check rejects 31/02 and friends, which a
+// plain regex would happily accept.
+function auDateToISO(str) {
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec((str || '').trim());
+  if (!m) return '';
+  const [, dd, mm, yyyy] = m;
+  const d = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+  if (d.getFullYear() !== Number(yyyy) || d.getMonth() !== Number(mm) - 1 || d.getDate() !== Number(dd)) return '';
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+// For dates that arrive back from storage in ISO form.
+function fmtDateAU(iso) {
+  if (!iso) return '';
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.trim());
+  return m ? `${m[3]}/${m[2]}/${m[1]}` : iso;
+}
 
 // ── State ─────────────────────────────────────────────────────
 let currentStep        = 1;
@@ -85,6 +116,20 @@ function toggleLoc(id) {
 
 function togglePHI(show) {
   document.getElementById('phi-fields').style.display = show ? 'grid' : 'none';
+  // Collapsing the whole block has to take the second fund with it, or a
+  // patient who switches Yes → No leaves a stale second fund in the payload.
+  if (!show) document.getElementById('fund2-wrap').style.display = 'none';
+  else toggleSecondFund();
+}
+
+// Hospital and extras with different insurers is common enough for OMS
+// patients that we capture both funds rather than one plus a free-text note.
+function isSplitCover() {
+  return document.getElementById('f-covertype').value === 'Hospital & Extras (different funds)';
+}
+
+function toggleSecondFund() {
+  document.getElementById('fund2-wrap').style.display = isSplitCover() ? 'block' : 'none';
 }
 
 // ── File upload ───────────────────────────────────────────────
@@ -145,7 +190,10 @@ function validateStep(n) {
     ['firstname','lastname','dob','phone','email','patienttype'].forEach(f => clearError(f));
     if (!document.getElementById('f-firstname').value.trim())  ok = showError('firstname');
     if (!document.getElementById('f-lastname').value.trim())   ok = showError('lastname');
-    if (!document.getElementById('f-dob').value)               ok = showError('dob');
+    // The picker used to guarantee a real date; a text field has to check.
+    const dobRaw = document.getElementById('f-dob').value.trim();
+    if (!dobRaw) ok = showError('dob');
+    else if (!auDateToISO(dobRaw)) ok = showError('dob', 'Please enter a valid date as dd/mm/yyyy.');
     if (!document.getElementById('f-phone').value.trim())      ok = showError('phone');
     const em = document.getElementById('f-email').value.trim();
     if (!em || !/\S+@\S+\.\S+/.test(em)) ok = showError('email', 'Please enter a valid email.');
@@ -163,9 +211,14 @@ function validateStep(n) {
   }
   if (n === 4) {
     clearError('refname');
+    clearError('refdate');
     if (!document.getElementById('f-refname').value.trim()) ok = showError('refname');
-    if (!referralFile) { document.getElementById('e-referral').style.display = 'block'; ok = false; }
-    else document.getElementById('e-referral').style.display = 'none';
+    // Optional — but if they typed something it has to be a real date.
+    const refRaw = document.getElementById('f-refdate').value.trim();
+    if (refRaw && !auDateToISO(refRaw)) ok = showError('refdate', 'Please enter a valid date as dd/mm/yyyy.');
+    // The referral letter is no longer required to proceed — patients who
+    // don't have a digital copy can still submit and we follow up.
+    document.getElementById('e-referral').style.display = 'none';
   }
   return ok;
 }
@@ -218,7 +271,7 @@ function buildReview() {
   const phi    = document.querySelector('input[name="phi"]:checked');
   const phiVal = phi ? phi.value : 'no';
   const phiDetail = phiVal === 'yes'
-    ? ` — ${document.getElementById('f-phifund').value || 'Not specified'}${document.getElementById('f-covertype').value ? ` (${document.getElementById('f-covertype').value})` : ''}` : '';
+    ? ` — ${document.getElementById('f-phifund').value || 'Not specified'}${document.getElementById('f-covertype').value ? ` (${document.getElementById('f-covertype').value})` : ''}${isSplitCover() && v('phifund2') ? ` + ${v('phifund2')} (extras)` : ''}` : '';
 
   const rows = [
     ['Name',            v('firstname') + ' ' + v('lastname')],
@@ -235,7 +288,9 @@ function buildReview() {
     ['Referrer',        v('refname') + (v('refpractice') ? ` — ${v('refpractice')}` : '')],
     ['Referral date',   v('refdate') || '—'],
     ["Doctor's Provider Number", v('provider') || '—'],
-    ['Referral letter', referralFile ? referralFile.name : '—'],
+    ['Referral letter', referralFile ? referralFile.name
+                        : document.getElementById('f-noreferral').checked ? "No copy — we'll help arrange one"
+                        : '—'],
     ['Health insurance',phiVal === 'yes' ? `Yes${phiDetail}` : phiVal === 'no' ? 'No' : 'Not sure'],
   ];
 
@@ -267,7 +322,9 @@ async function submitForm() {
   const payload = {
     first_name:      v('firstname'),
     last_name:        v('lastname'),
-    dob:              v('dob') || null,
+    // dob is a Postgres `date` column, so it has to go in as ISO even though
+    // the patient typed dd/mm/yyyy. ref_date is stored ISO too, for sorting.
+    dob:              auDateToISO(v('dob')) || null,
     phone:            v('phone'),
     email:            v('email'),
     suburb:           v('suburb'),
@@ -280,11 +337,17 @@ async function submitForm() {
     locations:        selectedLocations.map(id => LOCATIONS.find(l=>l.id===id)?.name),
     ref_name:         v('refname'),
     ref_practice:     v('refpractice'),
-    ref_date:         v('refdate') || null,
+    ref_date:         auDateToISO(v('refdate')) || null,
     provider_number:  v('provider'),
     phi:              phi ? phi.value : 'no',
     phi_fund:         v('phifund'),
+    // The form has always collected a membership number and thrown it away —
+    // it was never in the payload, so it never reached the practice.
+    phi_num:          v('phinum'),
     phi_cover_type:   v('covertype'),
+    phi_fund_2:       isSplitCover() ? v('phifund2') : '',
+    phi_num_2:        isSplitCover() ? v('phinum2')  : '',
+    no_referral_copy: document.getElementById('f-noreferral').checked,
   };
 
   try {
