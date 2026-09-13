@@ -21,6 +21,38 @@
       box-shadow: 0 2px 20px rgba(180,140,100,0.06), 0 1px 4px rgba(0,0,0,0.03);
     }
 
+    /* Nav on phones.
+       The row is one non-wrapping flex line sized for desktop: logo + five
+       items need 522px. On a 393px phone the browser widened the layout
+       viewport to 522 to fit it, which shrank the whole page, and flex
+       squeezed the logo down to zero width — the missing logo and the
+       "doesn't display cleanly" were the same bug.
+       display:contents lifts the link wrapper's children into this row so
+       they can be ordered and wrapped individually. The ::after is a
+       zero-height full-width spacer that forces the break after the
+       Book Consultation button. Inline styles on the markup mean these
+       need !important. */
+    @media (max-width: 767px) {
+      .nav-wrap > div {
+        height: auto !important;
+        padding: 8px 12px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        row-gap: 7px !important;
+        column-gap: 10px !important;
+      }
+      .nav-wrap > div > div { display: contents !important; }
+      .nav-wrap > div > a:first-child { order: 1; flex: 0 0 auto !important; }
+      .nav-wrap > div > a:first-child img { height: 22px !important; }
+      .nav-wrap .book-dropdown { order: 2; }
+      .nav-wrap .book-dropdown-btn { font-size: 12px !important; padding: 7px 14px !important; }
+      .nav-wrap > div::after { content: ''; order: 3; width: 100%; height: 0; margin: 0; }
+      .nav-wrap > div > div > a { order: 4; font-size: 11px !important; white-space: nowrap; }
+      .nav-wrap > div > div > a[href="/telehealth.html"] { padding: 5px 10px !important; gap: 4px !important; }
+      .nav-wrap > div > div > a[href="/telehealth.html"] svg { width: 11px; height: 11px; }
+    }
+
     /* Hero split layout */
     .hero-wrap {
       background:
