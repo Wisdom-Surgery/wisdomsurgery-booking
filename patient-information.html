@@ -746,7 +746,11 @@ function toggleSection(id) {
   document.getElementById(id).classList.toggle('open');
 }
 if (window.location.hash === '#form') switchTab('form');
-if (window.location.hash === '#forms') switchTab('online-forms');
+// #forms opens the New Patient Form tab as well. It used to open the Patient
+// Forms tab, whose tab button is display:none — so the patient landed on a
+// page where no tab looked selected, and had to work out for themselves that
+// the link button lived behind "New Patient Form".
+if (window.location.hash === '#forms') switchTab('form');
 if (window.location.hash === '#booking' || window.location.hash === '#book') switchTab('booking');
 
 // Open a policy section linked to directly (e.g. #ps-privacy from the main
